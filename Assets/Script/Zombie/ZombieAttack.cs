@@ -21,7 +21,8 @@ public class ZombieAttack : MonoBehaviour
     private void StartReset()
     {
         gm = GameObject.FindGameObjectWithTag("GM").GetComponent<GameManager>();
-        ani = GameObject.Find("Zombie").GetComponent<Animator>();
+        ani = transform.parent.gameObject.GetComponent<Animator>();
+
         if (gm != null)
         {
             Debug.Log("GameManager Find Success");
@@ -33,7 +34,9 @@ public class ZombieAttack : MonoBehaviour
         {
             Debug.LogWarning("GameManager Fail");
         }
+
         player_HP = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerHP>();
+
         if (player_HP != null)
         {
             Debug.Log("Player Hp Find Success");
@@ -44,12 +47,14 @@ public class ZombieAttack : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerStay(Collider other)
     {
-        if (other.tag == "Player")
-        {
-            ani.SetTrigger("Attack");
-            player_HP.playerHP -= attackDamage;
+        if (other.tag == "Player") {
+            NormalZombie zombie = transform.parent.gameObject.GetComponent<NormalZombie>();
+
+            zombie.onAttack();
+
+            player_HP.playerHP -= zombie.attackDamage;
             player_HP.DamageAni();
         }
     }

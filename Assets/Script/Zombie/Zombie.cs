@@ -1,44 +1,44 @@
 using System.Collections;
 using System.Collections.Generic;
+
 using UnityEngine;
 using UnityEngine.AI;
 
+public enum ZombieType {
+    Normal, Heavy, Lite
+}
 
-public class Zombie : MonoBehaviour
-{
-    private Transform playerTr;
-    private NavMeshAgent nav;
-    private Animator myAni;
+public abstract class Zombie : MonoBehaviour {
+    protected List<Transform> playerTr = new List<Transform>();
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        NavStartSet();
-        playerTr = GameObject.Find("Player").GetComponent<Transform>();
-        myAni = GetComponent<Animator>();
+    protected Animator ani;
+    protected NavMeshAgent agent;
+    protected ParticleSystem particle;
+
+    public ZombieType type { get; set; }
+
+    public float health { get; set; }
+    public float attackDamage { get; set; }
+    public float attackDelay { get; set; }
+    public float attackCooldown { get; set; }
+    public float moveSpeed { get; set; }
+
+    public Color zombieColor { get; set; }
+
+    void OnEnable() {
+        Debug.Log(transform.GetComponent<NormalZombie>() == null);
+
+        onSpawn();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        nav.SetDestination(playerTr.position);
-        ZombieAniSet();
+    void Update() {
+        onMove();
+        onDeath();
     }
 
-    private void NavStartSet()
-    {
-        nav = GetComponent<NavMeshAgent>();
-        nav.stoppingDistance = 1.5f;
-    }
-    private void ZombieAniSet()
-    {
-        if (nav.velocity.x != 0 && nav.velocity.z !=0 )
-        {
-            myAni.SetBool("Run", true);
-        }
-        else
-        {
-            myAni.SetBool("Run", false);
-        }
-    }
+    public abstract void onSpawn();
+    public abstract void onMove();
+    public abstract void onAttack();
+    public abstract void onDamaged();
+    public abstract void onDeath();
 }

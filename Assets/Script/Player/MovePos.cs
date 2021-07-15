@@ -10,19 +10,18 @@ public class MovePos : MonoBehaviour
     private Vector3 movePos;
     private float h, v;
     private float TurnSpeed = 2;
-    private float moveSpeed;
-    private float jumpPos;
-    private bool isJump;
-    private bool isWalk;
 
+    [SerializeField]
+    private float moveSpeed = 12f;
+    //private float jumpPos;
+    //private bool isJump;
+    //private bool isWalk;
 
-    // Start is called before the first frame update
     void Start()
     {
         StartReset();
     }
 
-    // Update is called once per frame
     void Update()
     {
         MovePosSet();
@@ -31,10 +30,9 @@ public class MovePos : MonoBehaviour
     {
         playerRigid = GetComponent<Rigidbody>();
         playerAni = GetComponent<Animator>();
-        moveSpeed = 10.0f;
-        jumpPos = 5;
-        isJump = false;
-        isWalk = false;
+        //jumpPos = 5;
+        //isJump = false;
+        //isWalk = false;
 
     }
     private void MovePosSet()
@@ -48,11 +46,11 @@ public class MovePos : MonoBehaviour
         if (h == 0 && v== 0)
         {
             playerAni.SetBool("Walk", false);
-            isWalk = false;
+            //isWalk = false;
         }
         else
         {
-            isWalk = true;
+            //isWalk = true;
             playerAni.SetBool("Walk", true);
         }
 

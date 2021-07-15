@@ -14,11 +14,9 @@ public class Gun : MonoBehaviour
 
     public Transform fireEffectTransform;
     public ParticleSystem muzzleFlashEffect;
-    public ParticleSystem blood;
+    // public ParticleSystem blood;
     public GameObject bloodTransform;
     private LineRenderer bulletLineRenderer;
-
-
 
     public float damage; //총의 데미지 값 (각 총마다 데미지 값을 만들어서 태그로 비교하는 함수 제작)
     public float timeBetFire = 0.12f; // 총알 발사 간격
@@ -44,22 +42,27 @@ public class Gun : MonoBehaviour
     }
     private void Shot()
     {
+        GameObject _target = null;
         RaycastHit hit;
 
         Vector3 hitPos = new Vector3(0, 0, 0);
-        string target="";
+        string target = "";
 
         if (Physics.Raycast(fireEffectTransform.position , fireEffectTransform.forward , out hit , bulletDistance))
         {
             //레이가 어떤 오브젝트에 충돌한 경우 
-            target = hit.collider.gameObject.tag;
+            _target = hit.collider.gameObject;
+            target = _target.tag;
+
             if (target != null)
             {
                 DamageSet();
             }
+
             //맞은위치 저장
             hitPos = hit.point;
-            Debug.LogWarning(target);
+
+            // Debug.LogWarning(target);
         }
         else
         {
@@ -68,7 +71,9 @@ public class Gun : MonoBehaviour
             hitPos = fireEffectTransform.position + fireEffectTransform.forward * bulletDistance;
         }
 
-        StartCoroutine(ShotEffect(hitPos , target));
+        if (target != null) {
+            StartCoroutine(ShotEffect(hitPos, _target));
+        }
 
     }
     private void DamageSet()
@@ -76,18 +81,25 @@ public class Gun : MonoBehaviour
         //현재 사용되는 총을 게임오브젝트 태그로 갖고와서 각 총마다 데미지를 세팅하고 레이충돌시  enemy hp 스크립트 에 hp 벨류 값 --
     }
 
-    private IEnumerator ShotEffect(Vector3 pos, string tag)
+    private IEnumerator ShotEffect(Vector3 pos, GameObject target)
     {
         muzzleFlashEffect.Play();
 
         bulletLineRenderer.SetPosition(0, fireEffectTransform.position);
         bulletLineRenderer.SetPosition(1, pos);
         bulletLineRenderer.enabled = true;
-        if (tag == "Zombie")
-        {
-            bloodTransform.transform.position = pos;
-            blood.Play();
+
+        if (target != null && target.tag == "Zombie") {
+            if (target.transform.parent == null) {
+                target.GetComponentInChildren<ParticleSystem>().gameObject.transform.position = pos;
+                target.GetComponent<Zombie>().onDamaged();
+            }
+            else {
+                target.transform.parent.GetComponentInChildren<ParticleSystem>().gameObject.transform.position = pos;
+                target.transform.parent.GetComponent<Zombie>().onDamaged();
+            }
         }
+
         yield return new WaitForSeconds(0.03f);
         bulletLineRenderer.enabled = false;
     }

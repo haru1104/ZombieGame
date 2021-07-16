@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerHP : MonoBehaviour
 {
-    public int playerHP;
+    public float playerHP;
     private int attackDamage;
     private Animator ani;
 
@@ -18,13 +18,13 @@ public class PlayerHP : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.LogError("플레이어의 현재 데미지 : "+playerHP);
+        // Debug.LogError("플레이어의 현재 데미지 : "+playerHP);
         
     }
     private void Reset()
     {
-        playerHP = 100;
-        ani =GameObject.Find("Player").GetComponent<Animator>();
+        playerHP = 100f;
+        ani = GetComponent<Animator>();
     }
     public void DamageAni()
     {

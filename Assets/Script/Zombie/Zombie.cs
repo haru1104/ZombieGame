@@ -1,44 +1,52 @@
 using System.Collections;
 using System.Collections.Generic;
+
 using UnityEngine;
 using UnityEngine.AI;
 
+public enum ZombieType {
+    Normal, Heavy, Lite
+}
 
-public class Zombie : MonoBehaviour
-{
-    private Transform playerTr;
-    private NavMeshAgent nav;
-    private Animator myAni;
+public abstract class Zombie : MonoBehaviour {
+    protected List<Transform> playerTr = new List<Transform>();
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        NavStartSet();
-        playerTr = GameObject.Find("Player").GetComponent<Transform>();
-        myAni = GetComponent<Animator>();
+    protected Animator ani;
+    protected NavMeshAgent agent;
+    protected ParticleSystem particle;
+
+    public bool isDead { get; protected set; }
+
+    public ZombieType type { get; set; }
+
+    public float health { get; set; }
+    public float attackDamage { get; set; }
+    public float attackSpeed { get; set; }
+    public float moveSpeed { get; set; }
+
+    public Color zombieColor { get; set; }
+
+    void OnEnable() {
+        Debug.Log(transform.GetComponent<NormalZombie>() == null);
+        isDead = false;
+
+        onSpawn();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        nav.SetDestination(playerTr.position);
-        ZombieAniSet();
+    void Update() {
+        onMove();
+        onDeath();
     }
 
-    private void NavStartSet()
-    {
-        nav = GetComponent<NavMeshAgent>();
-        nav.stoppingDistance = 1.5f;
+    public virtual void onDamaged(float damage) {
+        health -= damage;
+        particle.Play();
+
+        Debug.LogWarning("[Zombie] 좀비가 " + damage + " 만큼의 대미지를 입음! 현재 체력: " + health);
     }
-    private void ZombieAniSet()
-    {
-        if (nav.velocity.x != 0 && nav.velocity.z !=0 )
-        {
-            myAni.SetBool("Run", true);
-        }
-        else
-        {
-            myAni.SetBool("Run", false);
-        }
-    }
+
+    public abstract void onSpawn();
+    public abstract void onMove();
+    public abstract void onAttack();
+    public abstract void onDeath();
 }

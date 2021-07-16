@@ -32,8 +32,7 @@ public class NormalZombie : Zombie {
         health = 100f;
 
         attackDamage = 2f;
-        attackDelay = 2f;
-        attackCooldown = 0f;
+        attackSpeed = 1.7f;
 
         moveSpeed = speed;
 
@@ -66,15 +65,7 @@ public class NormalZombie : Zombie {
     }
 
     public override void onAttack() {
-        if (attackCooldown < Time.time) {
-            attackCooldown = Time.time + attackDelay;
-
-            ani.SetTrigger("Attack");
-        }
-    }
-
-    public override void onDamaged() {
-        particle.Play();
+        ani.SetTrigger("Attack");
     }
 
     public override void onDeath() {

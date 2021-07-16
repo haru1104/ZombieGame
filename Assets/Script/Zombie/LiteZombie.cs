@@ -32,8 +32,7 @@ public class LiteZombie : Zombie {
         health = 70f;
 
         attackDamage = 1.7f;
-        attackDelay = 1.7f;
-        attackCooldown = 0f;
+        attackSpeed = 2f;
 
         moveSpeed = speed;
 
@@ -66,15 +65,7 @@ public class LiteZombie : Zombie {
     }
 
     public override void onAttack() {
-        if (attackCooldown < Time.time) {
-            attackCooldown = Time.time + attackDelay;
-
-            ani.SetTrigger("Attack");
-        }
-    }
-
-    public override void onDamaged() {
-        particle.Play();
+        ani.SetTrigger("Attack");
     }
 
     public override void onDeath() {

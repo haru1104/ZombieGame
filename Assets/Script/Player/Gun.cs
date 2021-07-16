@@ -18,7 +18,7 @@ public class Gun : MonoBehaviour
     public GameObject bloodTransform;
     private LineRenderer bulletLineRenderer;
 
-    public float damage; //총의 데미지 값 (각 총마다 데미지 값을 만들어서 태그로 비교하는 함수 제작)
+    public float damage = 20f; //총의 데미지 값 (각 총마다 데미지 값을 만들어서 태그로 비교하는 함수 제작)
     public float timeBetFire = 0.12f; // 총알 발사 간격
     public float bulletDistance = 50.0f;
     public float lastFireTime;
@@ -54,15 +54,8 @@ public class Gun : MonoBehaviour
             _target = hit.collider.gameObject;
             target = _target.tag;
 
-            if (target != null)
-            {
-                DamageSet();
-            }
-
             //맞은위치 저장
             hitPos = hit.point;
-
-            // Debug.LogWarning(target);
         }
         else
         {
@@ -72,16 +65,12 @@ public class Gun : MonoBehaviour
         }
 
         if (target != null) {
-            StartCoroutine(ShotEffect(hitPos, _target));
+            StartCoroutine(FireGun(hitPos, _target));
         }
 
     }
-    private void DamageSet()
-    {
-        //현재 사용되는 총을 게임오브젝트 태그로 갖고와서 각 총마다 데미지를 세팅하고 레이충돌시  enemy hp 스크립트 에 hp 벨류 값 --
-    }
 
-    private IEnumerator ShotEffect(Vector3 pos, GameObject target)
+    private IEnumerator FireGun(Vector3 pos, GameObject target)
     {
         muzzleFlashEffect.Play();
 
@@ -89,18 +78,19 @@ public class Gun : MonoBehaviour
         bulletLineRenderer.SetPosition(1, pos);
         bulletLineRenderer.enabled = true;
 
+        GameObject zombie = target;
+
         if (target != null && target.tag == "Zombie") {
-            if (target.transform.parent == null) {
-                target.GetComponentInChildren<ParticleSystem>().gameObject.transform.position = pos;
-                target.GetComponent<Zombie>().onDamaged();
+            if (target.transform.parent != null) {
+                zombie = target.transform.parent.gameObject;
             }
-            else {
-                target.transform.parent.GetComponentInChildren<ParticleSystem>().gameObject.transform.position = pos;
-                target.transform.parent.GetComponent<Zombie>().onDamaged();
-            }
+
+            zombie.GetComponentInChildren<ParticleSystem>().gameObject.transform.position = pos;
+            zombie.GetComponent<Zombie>().onDamaged(damage);
         }
 
         yield return new WaitForSeconds(0.03f);
+
         bulletLineRenderer.enabled = false;
     }
     private void Update()

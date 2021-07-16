@@ -47,15 +47,30 @@ public class ZombieAttack : MonoBehaviour
         }
     }
 
-    private void OnTriggerStay(Collider other)
-    {
+    private void OnTriggerEnter(Collider other) {
         if (other.tag == "Player") {
-            NormalZombie zombie = transform.parent.gameObject.GetComponent<NormalZombie>();
+            Zombie zombie = transform.parent.gameObject.GetComponent<Zombie>();
 
+            StartCoroutine(ContinueAttack(zombie));
+        }
+    }
+
+    private void OnTriggerExit(Collider other) {
+        if (other.tag == "Player") {
+            Zombie zombie = transform.parent.gameObject.GetComponent<Zombie>();
+
+            StopCoroutine(ContinueAttack(zombie));
+        }
+    }
+
+    IEnumerator ContinueAttack(Zombie zombie) {
+        while (true) {
             zombie.onAttack();
 
             player_HP.playerHP -= zombie.attackDamage;
             player_HP.DamageAni();
+
+            yield return new WaitForSeconds(zombie.attackSpeed);
         }
     }
 }

@@ -24,7 +24,7 @@ public class PlayerHP : MonoBehaviour
     private void Reset()
     {
         playerHP = 100f;
-        ani =GameObject.Find("Player").GetComponent<Animator>();
+        ani = GetComponent<Animator>();
     }
     public void DamageAni()
     {

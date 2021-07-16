@@ -35,6 +35,27 @@ public class GameManager : MonoBehaviour
     {
         
     }
+
+    void OnGUI() {
+        GUI.BeginGroup(new Rect(175, 40, 300, 500));
+
+        GUI.Box(new Rect(0, 0, 300, 600), "게임 디버그 메뉴");
+
+        if (GUI.Button(new Rect(30, 40, 230, 40), "일반 좀비 스폰")) {
+            Debug.LogWarning("[Debug] 일반 좀비를 강제로 스폰합니다.");
+        }
+
+        if (GUI.Button(new Rect(30, 90, 230, 40), "라이트 좀비 스폰")) {
+            Debug.LogWarning("[Debug] 라이트 좀비를 강제로 스폰합니다.");
+        }
+
+        if (GUI.Button(new Rect(30, 140, 230, 40), "헤비 좀비 스폰")) {
+            Debug.LogWarning("[Debug] 헤비 좀비를 강제로 스폰합니다.");
+        }
+
+        GUI.EndGroup();
+    }
+
     private void Spawn()
     {
         playerSpawnPoint = GameObject.Find("PlayerSpawnPosition").GetComponent<Transform>();

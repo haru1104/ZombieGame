@@ -32,8 +32,7 @@ public class HeavyZombie : Zombie {
         health = 200f;
 
         attackDamage = 2.3f;
-        attackDelay = 2.5f;
-        attackCooldown = 0f;
+        attackSpeed = 3.2f;
 
         moveSpeed = speed;
 
@@ -47,37 +46,38 @@ public class HeavyZombie : Zombie {
     }
 
     public override void onMove() {
-        findPlayers();
+        if (agent.enabled && !agent.isStopped) {
+            findPlayers();
 
-        int index = 0;
-        float dist = float.MaxValue;
+            int index = 0;
+            float dist = float.MaxValue;
 
-        for (int i = 0; i < playerTr.Count; i++) {
-            float tempDist = Vector3.Distance(transform.position, playerTr[i].position);
+            for (int i = 0; i < playerTr.Count; i++) {
+                float tempDist = Vector3.Distance(transform.position, playerTr[i].position);
 
-            if (tempDist <= dist) {
-                index = i;
-                dist = tempDist;
+                if (tempDist <= dist) {
+                    index = i;
+                    dist = tempDist;
+                }
             }
-        }
 
-        agent.SetDestination(playerTr[index].position);
-        playZombieAnimation();
+            agent.SetDestination(playerTr[index].position);
+            playZombieAnimation();
+        }
     }
 
     public override void onAttack() {
-        if (attackCooldown < Time.time) {
-            attackCooldown = Time.time + attackDelay;
-
-            ani.SetTrigger("Attack");
-        }
-    }
-
-    public override void onDamaged() {
-        particle.Play();
+        ani.SetTrigger("Attack");
     }
 
     public override void onDeath() {
+        if (!isDead && health <= 0) {
+            isDead = true;
 
+            agent.isStopped = true;
+            agent.enabled = false;
+
+            ani.SetTrigger("Die " + Random.Range(1, 3));
+        }
     }
 }

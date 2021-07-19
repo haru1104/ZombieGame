@@ -7,6 +7,8 @@ TagManager:
   - GM
   - Zombie
   - Fire
+  - Barricade
+  - Barrel
   layers:
   - Default
   - TransparentFX

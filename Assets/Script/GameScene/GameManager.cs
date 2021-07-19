@@ -3,6 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
 
+[System.Serializable]
+public class Zombies {
+    public GameObject normal;
+    public GameObject lite;
+    public GameObject heavy;
+}
+
 public class GameManager : MonoBehaviour
 {
     private CinemachineVirtualCamera camSet;
@@ -21,7 +28,9 @@ public class GameManager : MonoBehaviour
     private bool gameOver;
     public int Round=1;
     private int getCoin;
-   
+
+    public Zombies zombie;
+
     //개발자 전용 무기 하나 제작 
 
     // Start is called before the first frame update
@@ -37,12 +46,13 @@ public class GameManager : MonoBehaviour
     }
 
     void OnGUI() {
-        GUI.BeginGroup(new Rect(175, 40, 300, 500));
+        GUI.BeginGroup(new Rect(40, 30, 300, 500));
 
         GUI.Box(new Rect(0, 0, 300, 600), "게임 디버그 메뉴");
-
+        
         if (GUI.Button(new Rect(30, 40, 230, 40), "일반 좀비 스폰")) {
             Debug.LogWarning("[Debug] 일반 좀비를 강제로 스폰합니다.");
+            Instantiate(zombie.normal, transform.position, Quaternion.identity);
         }
 
         if (GUI.Button(new Rect(30, 90, 230, 40), "라이트 좀비 스폰")) {
@@ -51,6 +61,16 @@ public class GameManager : MonoBehaviour
 
         if (GUI.Button(new Rect(30, 140, 230, 40), "헤비 좀비 스폰")) {
             Debug.LogWarning("[Debug] 헤비 좀비를 강제로 스폰합니다.");
+        }
+
+        if (GUI.Button(new Rect(30, 190, 230, 40), "현재 위치에 장애물 설치")) {
+            Debug.LogWarning("[Debug] 폭발물(Barrel)을 설치하였습니다.");
+
+            GameObject barrel = GameObject.FindGameObjectWithTag("Barrel");
+            Material mat = barrel.GetComponent<MeshRenderer>().material;
+
+            barrel.GetComponent<Barrel>().isOk = true;
+            
         }
 
         GUI.EndGroup();

@@ -42,6 +42,14 @@ public class Barrel : MonoBehaviour
         }
     }
 
+    private void OnTriggerEnter(Collider other) {
+        Debug.LogWarning("[OTEnter()] other.tag: " + other.tag);
+    }
+
+    private void OnTriggerExit(Collider other) {
+        Debug.LogWarning("[OTExit()] other.tag: " + other.tag);
+    }
+
     IEnumerator Destory()
     {
         explosion.Play();

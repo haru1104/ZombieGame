@@ -69,15 +69,4 @@ public class HeavyZombie : Zombie {
     public override void onAttack() {
         ani.SetTrigger("Attack");
     }
-
-    public override void onDeath() {
-        if (!isDead && health <= 0) {
-            isDead = true;
-
-            agent.isStopped = true;
-            agent.enabled = false;
-
-            ani.SetTrigger("Die " + Random.Range(1, 3));
-        }
-    }
 }

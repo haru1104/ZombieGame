@@ -10,6 +10,7 @@ public enum ZombieType {
 
 public abstract class Zombie : MonoBehaviour {
     protected List<Transform> playerTr = new List<Transform>();
+    protected List<Transform> obstacleTr = new List<Transform>();
 
     protected Animator ani;
     protected NavMeshAgent agent;
@@ -27,7 +28,6 @@ public abstract class Zombie : MonoBehaviour {
     public Color zombieColor { get; set; }
 
     void OnEnable() {
-        Debug.Log(transform.GetComponent<NormalZombie>() == null);
         isDead = false;
 
         onSpawn();
@@ -45,8 +45,18 @@ public abstract class Zombie : MonoBehaviour {
         Debug.LogWarning("[Zombie] 좀비가 " + damage + " 만큼의 대미지를 입음! 현재 체력: " + health);
     }
 
+    public virtual void onDeath() {
+        if (!isDead && health <= 0) {
+            isDead = true;
+
+            agent.isStopped = true;
+            agent.enabled = false;
+
+            ani.SetTrigger("Die " + Random.Range(1, 3));
+        }
+    }
+
     public abstract void onSpawn();
     public abstract void onMove();
     public abstract void onAttack();
-    public abstract void onDeath();
 }

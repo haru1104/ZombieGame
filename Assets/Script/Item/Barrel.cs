@@ -10,7 +10,8 @@ public class Barrel : MonoBehaviour
     public bool isOk = false;
     public ParticleSystem explosion;
     public bool remove = false;
-
+    private List<Zombie> zombies = new List<Zombie>();
+ 
     // Start is called before the first frame update
     void Start()
     {
@@ -42,20 +43,36 @@ public class Barrel : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter(Collider other) {
-        Debug.LogWarning("[OTEnter()] other.tag: " + other.tag);
-    }
+    private void OnTriggerEnter(Collider other)
+    {
+        Debug.LogError("In : " + other.tag);
+        if (other.tag == "Zombie")
+        {
+            zombies.Add(other.gameObject.GetComponent<Zombie>());
+           
+            Debug.LogError(other.tag);
+        }
 
-    private void OnTriggerExit(Collider other) {
-        Debug.LogWarning("[OTExit()] other.tag: " + other.tag);
     }
-
+    private void OnTriggerExit(Collider other)
+    {
+        Debug.LogError("out : "+other.tag);
+        if (other.tag == "Zombie")
+        {
+            zombies.Remove(other.gameObject.GetComponent<Zombie>());
+            Debug.LogError(other.tag);
+        }
+    }
     IEnumerator Destory()
     {
         explosion.Play();
+        for (int i = 0; i < zombies.Count; i++)
+        {
+            Debug.LogError(zombies[i]);
+            zombies[i].onDamaged(100);
+        }
         yield return new WaitForSeconds(1.5f);
         Destroy(gameObject);
-       
     }
 
 }

@@ -8,7 +8,7 @@ public class Barricade : MonoBehaviour
     private Transform barricadeTr;
     public bool isOk = false; // isOk == false (플레이어를 따라서 움직임) is0k == true (플레이어 추적 금지)
     private Vector3 moveTr;
-    private int hp = 50;
+    private int hp = 100;
 
     // Start is called before the first frame update
     void Start()

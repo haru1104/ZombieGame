@@ -142,7 +142,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hp: 100
-  isOk: 1
+  isOk: 0
   explosion: {fileID: 4258896205553290849}
   remove: 0
 --- !u!1001 &4153951075547794823

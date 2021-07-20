@@ -2,42 +2,42 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Barricade : MonoBehaviour
-{
+public class Barricade : MonoBehaviour {
     private Transform playerTr;
     private Transform barricadeTr;
-    public bool isOk = false; // isOk == false (ÇÃ·¹ÀÌ¾î¸¦ µû¶ó¼­ ¿òÁ÷ÀÓ) is0k == true (ÇÃ·¹ÀÌ¾î ÃßÀû ±ÝÁö)
     private Vector3 moveTr;
-    private int hp = 100;
 
-    // Start is called before the first frame update
-    void Start()
-    {
+    public float health = 100.0f;
+
+    public bool isSetted = false;
+
+    void Start() {
         playerTr = GameObject.Find("Player").GetComponent<Transform>();
         barricadeTr = GetComponent<Transform>();
 
     }
 
-    // Update is called once per frame
-    void Update()
-    {
+    void Update() {
         MoveSet();
-        DamageChack();
+        DamageCheck();
     }
-    private void MoveSet()
-    {
-        if (isOk == false)
-        {
+
+    private void MoveSet() {
+        if (!isSetted) {
             moveTr = playerTr.position;
             barricadeTr.position = moveTr;
             barricadeTr.rotation = playerTr.rotation;
         }
     }
-    private void DamageChack()
-    {
-        if (hp <= 0 )
-        {
+
+    private void DamageCheck() {
+        if (health <= 0) {
             Destroy(gameObject);
         }
+    }
+
+    public void onDamaged(float damage) {
+        health -= damage;
+        Debug.Log("[Barricade] " + damage + "ï¿½ï¿½Å­ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½. ï¿½ï¿½ï¿½ï¿½ Ã¼ï¿½ï¿½: " + health);
     }
 }

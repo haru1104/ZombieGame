@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 3403766452894667709}
   m_Layer: 0
   m_Name: AttackRange
-  m_TagString: Zombie
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -101,7 +101,7 @@ GameObject:
   - component: {fileID: 3403766453126603221}
   m_Layer: 0
   m_Name: HeadUV
-  m_TagString: Zombie
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1483,7 +1483,7 @@ GameObject:
   - component: {fileID: 3403766453126603223}
   m_Layer: 0
   m_Name: EyesUV
-  m_TagString: Zombie
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2357,7 +2357,7 @@ GameObject:
   - component: {fileID: 3403766453126603229}
   m_Layer: 0
   m_Name: ShirtUV
-  m_TagString: Zombie
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2815,7 +2815,7 @@ GameObject:
   - component: {fileID: 3403766453126603231}
   m_Layer: 0
   m_Name: RetopoPantsUV
-  m_TagString: Zombie
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3023,7 +3023,7 @@ GameObject:
   - component: {fileID: 3403766453126603217}
   m_Layer: 0
   m_Name: LowRetopoUV
-  m_TagString: Zombie
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3169,7 +3169,7 @@ GameObject:
   - component: {fileID: 3403766453126603219}
   m_Layer: 0
   m_Name: LegsUV
-  m_TagString: Zombie
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3473,7 +3473,7 @@ GameObject:
   - component: {fileID: 3403766453140697247}
   m_Layer: 0
   m_Name: metarig
-  m_TagString: Zombie
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3486,7 +3486,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3403766453140204927}
   m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
-  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 91.15342, y: 91.15342, z: 91.15342}
   m_Children:
   - {fileID: 3403766453140697237}
@@ -3506,7 +3506,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1000012909287652, guid: 492fc1eb075103a4e9efcc70316deab9, type: 3}
       propertyPath: m_TagString
-      value: Zombie
+      value: Untagged
       objectReference: {fileID: 0}
     - target: {fileID: 4000013488956786, guid: 492fc1eb075103a4e9efcc70316deab9, type: 3}
       propertyPath: m_RootOrder

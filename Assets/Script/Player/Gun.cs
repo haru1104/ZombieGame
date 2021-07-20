@@ -80,13 +80,15 @@ public class Gun : MonoBehaviour
 
         GameObject zombie = target;
 
-        if (target != null && target.tag == "Zombie") {
+        if (target != null) {
             if (target.transform.parent != null) {
                 zombie = target.transform.parent.gameObject;
             }
 
-            zombie.GetComponentInChildren<ParticleSystem>().gameObject.transform.position = pos;
-            zombie.GetComponent<Zombie>().onDamaged(damage);
+            if (zombie.tag == "Zombie") {
+                zombie.GetComponentInChildren<ParticleSystem>().gameObject.transform.position = pos;
+                zombie.GetComponent<Zombie>().onDamaged(damage);
+            }
         }
 
         yield return new WaitForSeconds(0.03f);

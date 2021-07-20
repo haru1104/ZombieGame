@@ -1,14 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
+
 using UnityEngine;
 
-public class ZombieAttack : MonoBehaviour
-{
-    private int attackDamage=2;
+public class ZombieAttack : MonoBehaviour {
     private GameManager gm;
     private PlayerHP player_HP;
     private Animator ani;
 
+    private int attackDamage = 2;
 
     // Start is called before the first frame update
     void Start()
@@ -48,29 +48,62 @@ public class ZombieAttack : MonoBehaviour
     }
 
     private void OnTriggerEnter(Collider other) {
-        if (other.tag == "Player") {
-            Zombie zombie = transform.parent.gameObject.GetComponent<Zombie>();
+        Debug.LogWarning("[Zombie:Attack_Enter] " + other.tag);
 
-            StartCoroutine(ContinueAttack(zombie));
+        if (other.tag == "Player") {
+            StartCoroutine("AttackPlayer");
+        }
+
+        if (other.tag == "Barricade" || other.tag == "Barrel") {
+            StartCoroutine("AttackObstacles", other.gameObject);
         }
     }
 
     private void OnTriggerExit(Collider other) {
-        if (other.tag == "Player") {
-            Zombie zombie = transform.parent.gameObject.GetComponent<Zombie>();
+        Debug.LogWarning("[Zombie:Attack_Exit] " + other.tag);
 
-            StopCoroutine(ContinueAttack(zombie));
+        if (other.tag == "Player") {
+            StopCoroutine("AttackPlayer");
+        }
+
+        if (other.tag == "Barricade" || other.tag == "Barrel") {
+            StopCoroutine("AttackObstacles");
         }
     }
 
-    IEnumerator ContinueAttack(Zombie zombie) {
-        while (true) {
-            zombie.onAttack();
+    IEnumerator AttackPlayer() {
+        Zombie zombie = transform.parent.gameObject.GetComponent<Zombie>();
 
-            player_HP.playerHP -= zombie.attackDamage;
-            player_HP.DamageAni();
+        if (!zombie.isDead) {
+            while (true) {
+                zombie.onAttack();
 
-            yield return new WaitForSeconds(zombie.attackSpeed);
+                yield return new WaitForSeconds(0.475f);
+                player_HP.onDamaged(zombie.attackDamage);
+
+                yield return new WaitForSeconds(zombie.attackSpeed);
+            }
+        }
+    }
+
+    // 나중에 장애물 더 추가할 예정이라면 Obstacles 클래스로 정리할 것
+    IEnumerator AttackObstacles(GameObject obj) {
+        Zombie zombie = transform.parent.gameObject.GetComponent<Zombie>();
+
+        if (!zombie.isDead && obj != null) {
+            while (true) {
+                zombie.onAttack();
+
+                if (obj.tag == "Barrel") {
+                    obj.GetComponent<Barrel>().onDamaged(zombie.attackDamage);
+                }
+
+                else if (obj.tag == "Barricade") {
+                    obj.GetComponent<Barricade>().onDamaged(zombie.attackDamage);
+                }
+
+                yield return new WaitForSeconds(zombie.attackSpeed);
+            }
         }
     }
 }

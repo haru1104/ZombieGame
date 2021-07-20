@@ -13,23 +13,26 @@ public class Zombies {
 public class GameManager : MonoBehaviour
 {
     private CinemachineVirtualCamera camSet;
+
     private GameObject playerPrefab;
-    private GameObject zombiePrefab;
     private GameObject playerSpawnPosition;
     private GameObject zombieSpawnPosition;
+
     private Transform playerSpawnPoint;
-    public List<Transform> zombieSpawnPoint = new List<Transform>();
-  
+
+    private int getCoin;
 
     private bool isSpawnPlayer;
     private bool isSpawnZombie;
-    public bool isPlayerDead;
     private bool nextGame;
     private bool gameOver;
-    public int Round=1;
-    private int getCoin;
+
+    public List<Transform> zombieSpawnPoint = new List<Transform>();
 
     public Zombies zombie;
+
+    public int Round = 1;
+    public bool isPlayerDead;
 
     //개발자 전용 무기 하나 제작 
 
@@ -57,20 +60,12 @@ public class GameManager : MonoBehaviour
 
         if (GUI.Button(new Rect(30, 90, 230, 40), "라이트 좀비 스폰")) {
             Debug.LogWarning("[Debug] 라이트 좀비를 강제로 스폰합니다.");
+            Instantiate(zombie.lite, transform.position, Quaternion.identity);
         }
 
         if (GUI.Button(new Rect(30, 140, 230, 40), "헤비 좀비 스폰")) {
             Debug.LogWarning("[Debug] 헤비 좀비를 강제로 스폰합니다.");
-        }
-
-        if (GUI.Button(new Rect(30, 190, 230, 40), "현재 위치에 장애물 설치")) {
-            Debug.LogWarning("[Debug] 폭발물(Barrel)을 설치하였습니다.");
-
-            GameObject barrel = GameObject.FindGameObjectWithTag("Barrel");
-            Material mat = barrel.GetComponent<MeshRenderer>().material;
-
-            barrel.GetComponent<Barrel>().isOk = true;
-            
+            Instantiate(zombie.heavy, transform.position, Quaternion.identity);
         }
 
         GUI.EndGroup();

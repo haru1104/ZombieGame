@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1735848021}
   m_Layer: 0
   m_Name: AttackRange
-  m_TagString: Zombie
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -42,10 +42,10 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_Enabled: 1
-  m_Radius: 0.86974645
+  m_Radius: 1.0115154
   m_Height: 2.7737973
   m_Direction: 0
-  m_Center: {x: 0.022138057, y: 0.36855963, z: 0.59472406}
+  m_Center: {x: 0.022138057, y: 0.36855963, z: 0.7364928}
 --- !u!114 &1735848021
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -120,7 +120,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1000012909287652, guid: 492fc1eb075103a4e9efcc70316deab9, type: 3}
       propertyPath: m_TagString
-      value: Zombie
+      value: Untagged
       objectReference: {fileID: 0}
     - target: {fileID: 4000013488956786, guid: 492fc1eb075103a4e9efcc70316deab9, type: 3}
       propertyPath: m_RootOrder
@@ -209,11 +209,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 100014, guid: b08d3f4e6e325da4b90f4ef6b08c7808, type: 3}
       propertyPath: m_TagString
-      value: Zombie
+      value: Untagged
       objectReference: {fileID: 0}
     - target: {fileID: 100068, guid: b08d3f4e6e325da4b90f4ef6b08c7808, type: 3}
       propertyPath: m_TagString
-      value: Zombie
+      value: Untagged
       objectReference: {fileID: 0}
     - target: {fileID: 400012, guid: b08d3f4e6e325da4b90f4ef6b08c7808, type: 3}
       propertyPath: m_RootOrder

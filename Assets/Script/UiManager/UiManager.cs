@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -9,24 +9,50 @@ public class UiManager : MonoBehaviour
     public GameObject destoryButton;
     public GameObject installButton;
     public GameObject hpBer;
+    public GameObject shopInven;
+    private ItemSpawn itemSpawn;
 
     public bool istimeCheck = true;
+    public bool isShopDown = false;
 
+    private void Start()
+    {
+        itemSpawn = GameObject.Find("ItemSpawn").GetComponent<ItemSpawn>();
+    }
     public void Breaktime()
     {
         attackButton.SetActive(false);
         shopButton.SetActive(true);
-        destoryButton.SetActive(true);
-        installButton.SetActive(true);
+        
         hpBer.SetActive(false);
     }
     public void GamePlayTime()
     {
-        installButton.SetActive(false);
-        destoryButton.SetActive(false);
+      
         shopButton.SetActive(false);
         attackButton.SetActive(true);
         hpBer.SetActive(true);
+    }
+    
+    public void ShopOnclick()
+    {
+        isShopDown = !isShopDown;
+    }
+    public void OnClickInstall()
+    {
+        itemSpawn.IsInstall();
+    }
+    public void OnClickCancle()
+    {
+        itemSpawn.IsCancel();
+    }
+    public void OnClickBarrel()
+    {
+        itemSpawn.Barrel();
+    }
+    public void OnClickBarricade()
+    {
+        itemSpawn.Barricade();
     }
     public void Update()
     {
@@ -38,6 +64,28 @@ public class UiManager : MonoBehaviour
         {
             GamePlayTime();
         }
+        ShopUiDown();
+    }
+    private void ShopUiDown()
+    {
+        int downSpeed = 10;
+
+        Transform shopTr = shopInven.GetComponent<Transform>();
+        Vector3 targetPos = new Vector3(shopTr.position.x, 735, shopTr.position.z);
+        if (isShopDown == true)
+        {
+            shopTr.position = Vector3.MoveTowards(shopTr.position, targetPos, 10 );
+            destoryButton.SetActive(true);
+            installButton.SetActive(true);
+        }
+        else
+        {
+            targetPos = new Vector3(shopTr.position.x, 1420, shopTr.position.z);
+            shopTr.position = Vector3.MoveTowards(shopTr.position, targetPos, 10);
+            installButton.SetActive(false);
+            destoryButton.SetActive(false);
+        }
+
     }
 
 }

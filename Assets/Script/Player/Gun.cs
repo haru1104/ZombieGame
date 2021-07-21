@@ -1,22 +1,26 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Gun : MonoBehaviour
 {
+    private LineRenderer bulletLineRenderer;
+
+    private int maxAmmo = 20;
+    private int nowAmmo = 20;
+
     public enum GunCurrentState // 현재 총의 상태
     {
         Ready, //탄창에 총알이 있고 지금 바로 총을 사용할수 있는 상태
         Empty,//탄창이 다 떨어지고 없을때
         ReLoading // 재장전
     }
+
     public GunCurrentState gunCurrentState { get; private set; }
 
     public Transform fireEffectTransform;
     public ParticleSystem muzzleFlashEffect;
-    // public ParticleSystem blood;
     public GameObject bloodTransform;
-    private LineRenderer bulletLineRenderer;
 
     public float damage = 20f; //총의 데미지 값 (각 총마다 데미지 값을 만들어서 태그로 비교하는 함수 제작)
     public float timeBetFire = 0.12f; // 총알 발사 간격
@@ -38,10 +42,18 @@ public class Gun : MonoBehaviour
         //총 발사시점 갱신
         lastFireTime = Time.time;
 
-        Shot();
+        if (nowAmmo > 0) {
+            Shot();
+        }
+        else {
+            Debug.Log("Reloading cover me!!!");
+            nowAmmo = 20;
+        }
     }
     private void Shot()
     {
+        nowAmmo--;
+
         GameObject _target = null;
         RaycastHit hit;
 

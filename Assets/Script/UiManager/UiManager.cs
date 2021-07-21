@@ -42,7 +42,7 @@ public class UiManager : MonoBehaviour
     {
         itemSpawn.IsInstall();
     }
-    public void OnClickCancle()
+    public void OnClickCancel()
     {
         itemSpawn.IsCancel();
     }
@@ -68,7 +68,7 @@ public class UiManager : MonoBehaviour
     }
     private void ShopUiDown()
     {
-        int downSpeed = 10;
+        // int downSpeed = 10;
 
         Transform shopTr = shopInven.GetComponent<Transform>();
         Vector3 targetPos = new Vector3(shopTr.position.x, 735, shopTr.position.z);

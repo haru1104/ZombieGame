@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -13,7 +13,6 @@ public class PlayerHP : MonoBehaviour {
     }
 
     void Update() {
-        // Debug.LogError("플레이어의 현재 데미지 : "+playerHP);
         
     }
     private void Reset() {

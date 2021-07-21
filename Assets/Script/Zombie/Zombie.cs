@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 
 using UnityEngine;
@@ -130,8 +130,6 @@ public abstract class Zombie : MonoBehaviour {
     public virtual void onDamaged(float damage) {
         health -= damage;
         particle.Play();
-
-        Debug.LogWarning("[Zombie] 좀비가 " + damage + " 만큼의 대미지를 입음! 현재 체력: " + health);
     }
 
     public virtual void onDeath() {

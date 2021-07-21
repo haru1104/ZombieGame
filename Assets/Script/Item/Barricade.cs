@@ -7,6 +7,8 @@ public class Barricade : MonoBehaviour {
     private Transform barricadeTr;
     private Vector3 moveTr;
 
+    private bool isDestory = false;
+
     public float health = 100.0f;
 
     public bool isSetted = false;
@@ -31,13 +33,13 @@ public class Barricade : MonoBehaviour {
     }
 
     private void DamageCheck() {
-        if (health <= 0) {
+        if (health <= 0 && !isSetted && !isDestory) {
+            isDestory = true;
             Destroy(gameObject);
         }
     }
 
     public void onDamaged(float damage) {
         health -= damage;
-        Debug.Log("[Barricade] " + damage + "��ŭ�� ������� ����. ���� ü��: " + health);
     }
 }

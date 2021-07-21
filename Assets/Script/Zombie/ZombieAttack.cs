@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 
 using UnityEngine;
@@ -48,8 +48,6 @@ public class ZombieAttack : MonoBehaviour {
     }
 
     private void OnTriggerEnter(Collider other) {
-        Debug.LogWarning("[Zombie:Attack_Enter] " + other.tag);
-
         if (other.tag == "Player") {
             StartCoroutine("AttackPlayer");
         }
@@ -60,8 +58,6 @@ public class ZombieAttack : MonoBehaviour {
     }
 
     private void OnTriggerExit(Collider other) {
-        Debug.LogWarning("[Zombie:Attack_Exit] " + other.tag);
-
         if (other.tag == "Player") {
             StopCoroutine("AttackPlayer");
         }

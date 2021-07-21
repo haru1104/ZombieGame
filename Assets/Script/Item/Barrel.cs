@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,9 +8,12 @@ public class Barrel : MonoBehaviour {
     
     private List<Zombie> zombies = new List<Zombie>();
 
+    private bool isDestory = false;
+
     public ParticleSystem explosion;
 
     public float health = 100.0f;
+
     public bool isSetted = false;
 
     void Start() {
@@ -24,13 +27,14 @@ public class Barrel : MonoBehaviour {
         DamageCheck();
     }
     private void PositionCheck() {
-        if (isSetted == false) {
+        if (!isSetted) {
             myTr.position = playerTr.position;
             myTr.rotation = playerTr.rotation;
         }
     }
     private void DamageCheck() {
-        if (health <= 0 && isSetted) {
+        if (health <= 0 && isSetted && !isDestory) {
+            isDestory = true;
             StartCoroutine("Destory");
         }
     }
@@ -40,18 +44,21 @@ public class Barrel : MonoBehaviour {
     }
 
     private void OnTriggerEnter(Collider other) {
-        if (other.tag == "Zombie") {
-            zombies.Add(other.gameObject.GetComponent<Zombie>());
-           
-            Debug.LogError(other.tag);
+        Zombie zombie = other.gameObject.transform.root.GetComponent<Zombie>();
+
+        if (other.tag == "Zombie" && !zombies.Contains(zombie)) {
+            zombies.Add(zombie);
         }
 
     }
     private void OnTriggerExit(Collider other) {
-        if (other.tag == "Zombie"){
-            zombies.Remove(other.gameObject.GetComponent<Zombie>());
+        Zombie zombie = other.gameObject.transform.root.GetComponent<Zombie>();
+
+        if (other.tag == "Zombie" && zombies.Contains(zombie)) {
+            zombies.Remove(zombie);
         }
     }
+
     IEnumerator Destory() {
         explosion.Play();
 
@@ -59,7 +66,7 @@ public class Barrel : MonoBehaviour {
             zombies[i].onDamaged(100);
         }
 
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(1.0f);
         Destroy(gameObject);
     }
 

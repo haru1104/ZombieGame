@@ -1,4 +1,4 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 
 using UnityEngine;
@@ -13,7 +13,7 @@ public class ZombieAttack : MonoBehaviour {
     // Start is called before the first frame update
     void Start()
     {
-        //½ºÆù°ú µ¿½Ã¿¡ °ø°İ·Â ¼¼ÆÃ
+        //ìŠ¤í°ê³¼ ë™ì‹œì— ê³µê²©ë ¥ ì„¸íŒ…
         StartReset();
 
     }
@@ -26,9 +26,9 @@ public class ZombieAttack : MonoBehaviour {
         if (gm != null)
         {
             Debug.Log("GameManager Find Success");
-            //±âº» µ¥¹ÌÁö * ¶ó¿îµå ¼ö
+            //ê¸°ë³¸ ë°ë¯¸ì§€ * ë¼ìš´ë“œ ìˆ˜
             attackDamage = attackDamage * gm.Round;
-            Debug.Log("Á»ºñ °ø°İ·Â ¼ÂÆÃ : " + attackDamage);
+            Debug.Log("ì¢€ë¹„ ê³µê²©ë ¥ ì…‹íŒ… : " + attackDamage);
         }
         else
         {
@@ -86,7 +86,7 @@ public class ZombieAttack : MonoBehaviour {
         }
     }
 
-    // ³ªÁß¿¡ Àå¾Ö¹° ´õ Ãß°¡ÇÒ ¿¹Á¤ÀÌ¶ó¸é Obstacles Å¬·¡½º·Î Á¤¸®ÇÒ °Í
+    // ë‚˜ì¤‘ì— ì¥ì• ë¬¼ ë” ì¶”ê°€í•  ì˜ˆì •ì´ë¼ë©´ Obstacles í´ë˜ìŠ¤ë¡œ ì •ë¦¬í•  ê²ƒ
     IEnumerator AttackObstacles(GameObject obj) {
         Zombie zombie = transform.parent.gameObject.GetComponent<Zombie>();
 

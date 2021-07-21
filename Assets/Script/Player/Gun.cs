@@ -1,14 +1,14 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Gun : MonoBehaviour
 {
-    public enum GunCurrentState // ÇöÀç ÃÑÀÇ »óÅÂ
+    public enum GunCurrentState // í˜„ì¬ ì´ì˜ ìƒíƒœ
     {
-        Ready, //ÅºÃ¢¿¡ ÃÑ¾ËÀÌ ÀÖ°í Áö±İ ¹Ù·Î ÃÑÀ» »ç¿ëÇÒ¼ö ÀÖ´Â »óÅÂ
-        Empty,//ÅºÃ¢ÀÌ ´Ù ¶³¾îÁö°í ¾øÀ»¶§
-        ReLoading // ÀçÀåÀü
+        Ready, //íƒ„ì°½ì— ì´ì•Œì´ ìˆê³  ì§€ê¸ˆ ë°”ë¡œ ì´ì„ ì‚¬ìš©í• ìˆ˜ ìˆëŠ” ìƒíƒœ
+        Empty,//íƒ„ì°½ì´ ë‹¤ ë–¨ì–´ì§€ê³  ì—†ì„ë•Œ
+        ReLoading // ì¬ì¥ì „
     }
     public GunCurrentState gunCurrentState { get; private set; }
 
@@ -18,8 +18,8 @@ public class Gun : MonoBehaviour
     public GameObject bloodTransform;
     private LineRenderer bulletLineRenderer;
 
-    public float damage = 20f; //ÃÑÀÇ µ¥¹ÌÁö °ª (°¢ ÃÑ¸¶´Ù µ¥¹ÌÁö °ªÀ» ¸¸µé¾î¼­ ÅÂ±×·Î ºñ±³ÇÏ´Â ÇÔ¼ö Á¦ÀÛ)
-    public float timeBetFire = 0.12f; // ÃÑ¾Ë ¹ß»ç °£°İ
+    public float damage = 20f; //ì´ì˜ ë°ë¯¸ì§€ ê°’ (ê° ì´ë§ˆë‹¤ ë°ë¯¸ì§€ ê°’ì„ ë§Œë“¤ì–´ì„œ íƒœê·¸ë¡œ ë¹„êµí•˜ëŠ” í•¨ìˆ˜ ì œì‘)
+    public float timeBetFire = 0.12f; // ì´ì•Œ ë°œì‚¬ ê°„ê²©
     public float bulletDistance = 50.0f;
     public float lastFireTime;
 
@@ -27,15 +27,15 @@ public class Gun : MonoBehaviour
     {
         bulletLineRenderer = GetComponent<LineRenderer>();
 
-        //»ç¿ëÇÒ Á¡À» µÎ°³·Î º¯°æ 
+        //ì‚¬ìš©í•  ì ì„ ë‘ê°œë¡œ ë³€ê²½ 
         bulletLineRenderer.positionCount = 2;
-        //¶óÀÎ ·»´õ·¯¸¦ ºñÈ°¼ºÈ­
+        //ë¼ì¸ ë Œë”ëŸ¬ë¥¼ ë¹„í™œì„±í™”
         bulletLineRenderer.enabled = false;
 
     }
     private void Fire()
     {
-        //ÃÑ ¹ß»ç½ÃÁ¡ °»½Å
+        //ì´ ë°œì‚¬ì‹œì  ê°±ì‹ 
         lastFireTime = Time.time;
 
         Shot();
@@ -50,17 +50,17 @@ public class Gun : MonoBehaviour
 
         if (Physics.Raycast(fireEffectTransform.position , fireEffectTransform.forward , out hit , bulletDistance))
         {
-            //·¹ÀÌ°¡ ¾î¶² ¿ÀºêÁ§Æ®¿¡ Ãæµ¹ÇÑ °æ¿ì 
+            //ë ˆì´ê°€ ì–´ë–¤ ì˜¤ë¸Œì íŠ¸ì— ì¶©ëŒí•œ ê²½ìš° 
             _target = hit.collider.gameObject;
             target = _target.tag;
 
-            //¸ÂÀºÀ§Ä¡ ÀúÀå
+            //ë§ì€ìœ„ì¹˜ ì €ì¥
             hitPos = hit.point;
         }
         else
         {
-            //·¹ÀÌ°¡ ´Ù¸¥ ¿ÀºêÁ§Æ®¿Í Ãæµ¹ÇÏÁö ¾Ê¾Ò´Ù¸é 
-            //ÃÑ¾ËÀÌ ÃÖ´ë »çÁ¤°Å¸®±îÁö ³¯¾Æ°¬À»¶§ÀÇ À§Ä¡¸¦ ÀúÀå
+            //ë ˆì´ê°€ ë‹¤ë¥¸ ì˜¤ë¸Œì íŠ¸ì™€ ì¶©ëŒí•˜ì§€ ì•Šì•˜ë‹¤ë©´ 
+            //ì´ì•Œì´ ìµœëŒ€ ì‚¬ì •ê±°ë¦¬ê¹Œì§€ ë‚ ì•„ê°”ì„ë•Œì˜ ìœ„ì¹˜ë¥¼ ì €ì¥
             hitPos = fireEffectTransform.position + fireEffectTransform.forward * bulletDistance;
         }
 

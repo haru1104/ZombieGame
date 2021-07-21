@@ -1,4 +1,4 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 
 using UnityEngine;
@@ -131,7 +131,7 @@ public abstract class Zombie : MonoBehaviour {
         health -= damage;
         particle.Play();
 
-        Debug.LogWarning("[Zombie] Á»ºñ°¡ " + damage + " ¸¸Å­ÀÇ ´ë¹ÌÁö¸¦ ÀÔÀ½! ÇöÀç Ã¼·Â: " + health);
+        Debug.LogWarning("[Zombie] ì¢€ë¹„ê°€ " + damage + " ë§Œí¼ì˜ ëŒ€ë¯¸ì§€ë¥¼ ì…ìŒ! í˜„ì¬ ì²´ë ¥: " + health);
     }
 
     public virtual void onDeath() {

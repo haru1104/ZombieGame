@@ -1,4 +1,4 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -25,14 +25,14 @@ public class PlayerGun : MonoBehaviour
     {
         gunPivot.position = plaAni.GetIKHintPosition(AvatarIKHint.RightElbow);
 
-        // IK¸¦ »ç¿ëÇÏ¿© ¿Ş¼ÕÀÇ À§Ä¡¿Í È¸ÀüÀ» ÃÑÀÇ ¿À¸¥ÂÊ ¼ÕÀâÀÌ¿¡ ¸ÂÃá´Ù
+        // IKë¥¼ ì‚¬ìš©í•˜ì—¬ ì™¼ì†ì˜ ìœ„ì¹˜ì™€ íšŒì „ì„ ì´ì˜ ì˜¤ë¥¸ìª½ ì†ì¡ì´ì— ë§ì¶˜ë‹¤
         plaAni.SetIKPositionWeight(AvatarIKGoal.LeftHand, 1.0f);
         plaAni.SetIKRotationWeight(AvatarIKGoal.LeftHand, 1.0f);
 
         plaAni.SetIKPosition(AvatarIKGoal.LeftHand, leftHandPos.position);
         plaAni.SetIKRotation(AvatarIKGoal.LeftHand, leftHandPos.rotation);
 
-        // IK¸¦ »ç¿ëÇÏ¿© ¿À¸¥¼ÕÀÇ À§Ä¡¿Í È¸ÀüÀ» ÃÑÀÇ ¿À¸¥ÂÊ ¼ÕÀâÀÌ¿¡ ¸ÂÃá´Ù
+        // IKë¥¼ ì‚¬ìš©í•˜ì—¬ ì˜¤ë¥¸ì†ì˜ ìœ„ì¹˜ì™€ íšŒì „ì„ ì´ì˜ ì˜¤ë¥¸ìª½ ì†ì¡ì´ì— ë§ì¶˜ë‹¤
         plaAni.SetIKPositionWeight(AvatarIKGoal.RightHand, 1.0f);
         plaAni.SetIKRotationWeight(AvatarIKGoal.RightHand, 1.0f);
       

@@ -1,4 +1,4 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -13,7 +13,7 @@ public class PlayerHP : MonoBehaviour {
     }
 
     void Update() {
-        // Debug.LogError("ÇÃ·¹ÀÌ¾îÀÇ ÇöÀç µ¥¹ÌÁö : "+playerHP);
+        // Debug.LogError("í”Œë ˆì´ì–´ì˜ í˜„ì¬ ë°ë¯¸ì§€ : "+playerHP);
         
     }
     private void Reset() {

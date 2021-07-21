@@ -1,4 +1,4 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
@@ -34,7 +34,7 @@ public class GameManager : MonoBehaviour
     public int Round = 1;
     public bool isPlayerDead;
 
-    //°³¹ßÀÚ Àü¿ë ¹«±â ÇÏ³ª Á¦ÀÛ 
+    //ê°œë°œì ì „ìš© ë¬´ê¸° í•˜ë‚˜ ì œì‘ 
 
     // Start is called before the first frame update
     void Start()
@@ -51,20 +51,20 @@ public class GameManager : MonoBehaviour
     void OnGUI() {
         GUI.BeginGroup(new Rect(40, 30, 300, 500));
 
-        GUI.Box(new Rect(0, 0, 300, 600), "°ÔÀÓ µğ¹ö±× ¸Ş´º");
+        GUI.Box(new Rect(0, 0, 300, 600), "ê²Œì„ ë””ë²„ê·¸ ë©”ë‰´");
         
-        if (GUI.Button(new Rect(30, 40, 230, 40), "ÀÏ¹İ Á»ºñ ½ºÆù")) {
-            Debug.LogWarning("[Debug] ÀÏ¹İ Á»ºñ¸¦ °­Á¦·Î ½ºÆùÇÕ´Ï´Ù.");
+        if (GUI.Button(new Rect(30, 40, 230, 40), "ì¼ë°˜ ì¢€ë¹„ ìŠ¤í°")) {
+            Debug.LogWarning("[Debug] ì¼ë°˜ ì¢€ë¹„ë¥¼ ê°•ì œë¡œ ìŠ¤í°í•©ë‹ˆë‹¤.");
             Instantiate(zombie.normal, transform.position, Quaternion.identity);
         }
 
-        if (GUI.Button(new Rect(30, 90, 230, 40), "¶óÀÌÆ® Á»ºñ ½ºÆù")) {
-            Debug.LogWarning("[Debug] ¶óÀÌÆ® Á»ºñ¸¦ °­Á¦·Î ½ºÆùÇÕ´Ï´Ù.");
+        if (GUI.Button(new Rect(30, 90, 230, 40), "ë¼ì´íŠ¸ ì¢€ë¹„ ìŠ¤í°")) {
+            Debug.LogWarning("[Debug] ë¼ì´íŠ¸ ì¢€ë¹„ë¥¼ ê°•ì œë¡œ ìŠ¤í°í•©ë‹ˆë‹¤.");
             Instantiate(zombie.lite, transform.position, Quaternion.identity);
         }
 
-        if (GUI.Button(new Rect(30, 140, 230, 40), "Çìºñ Á»ºñ ½ºÆù")) {
-            Debug.LogWarning("[Debug] Çìºñ Á»ºñ¸¦ °­Á¦·Î ½ºÆùÇÕ´Ï´Ù.");
+        if (GUI.Button(new Rect(30, 140, 230, 40), "í—¤ë¹„ ì¢€ë¹„ ìŠ¤í°")) {
+            Debug.LogWarning("[Debug] í—¤ë¹„ ì¢€ë¹„ë¥¼ ê°•ì œë¡œ ìŠ¤í°í•©ë‹ˆë‹¤.");
             Instantiate(zombie.heavy, transform.position, Quaternion.identity);
         }
 
@@ -80,13 +80,13 @@ public class GameManager : MonoBehaviour
     {
         if (nextGame == true)
         {
-            //°ÔÀÓÅ¬¸®¾î¸¦ ¼º°øÇÏ¸é Á»ºñ½ºÆù&&Æ¯¼öÁ»ºñ ½ºÆù È®·ü Áõ°¡.
-            //ÇÃ·¹ÀÌ¾î ÅëÇÕ (¹«±â)Æ÷ÀÎÆ® Áõ°¡ 
+            //ê²Œì„í´ë¦¬ì–´ë¥¼ ì„±ê³µí•˜ë©´ ì¢€ë¹„ìŠ¤í°&&íŠ¹ìˆ˜ì¢€ë¹„ ìŠ¤í° í™•ë¥  ì¦ê°€.
+            //í”Œë ˆì´ì–´ í†µí•© (ë¬´ê¸°)í¬ì¸íŠ¸ ì¦ê°€ 
 
         }
         else if (gameOver == true)
         {
-            //°ÔÀÓ¿À¹ö½Ã ÃÊ±â°ªÀ¸·Î µ¹·ÁÁÖ´Â ·çÆ¾ Á¦ÀÛ
+            //ê²Œì„ì˜¤ë²„ì‹œ ì´ˆê¸°ê°’ìœ¼ë¡œ ëŒë ¤ì£¼ëŠ” ë£¨í‹´ ì œì‘
         }
     }
 }

@@ -14,6 +14,10 @@ public class SoundManager : MonoBehaviour
     public AudioClip barricadeDamage;
     public AudioClip bombSound;
 
+    public AudioClip gunShot;
+    public AudioClip gunReload;
+    public AudioClip barrelHit;
+
     public void Start()
     {
         audioSource = GetComponent<AudioSource>();
@@ -53,5 +57,16 @@ public class SoundManager : MonoBehaviour
         {
             audioSource.PlayOneShot(startZombieSound_3);
         }
+    }
+    public void GunShotSound() {
+        audioSource.PlayOneShot(gunShot);
+    }
+
+    public void GunReloadSound() {
+        audioSource.PlayOneShot(gunReload);
+    }
+
+    public void BarrelHitSound() {
+        audioSource.PlayOneShot(barrelHit);
     }
 }

@@ -1,10 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Gun : MonoBehaviour
 {
     private LineRenderer bulletLineRenderer;
+    private SoundManager audioManager;
 
     private int maxAmmo = 20;
     private int nowAmmo = 20;
@@ -20,7 +22,8 @@ public class Gun : MonoBehaviour
 
     public Transform fireEffectTransform;
     public ParticleSystem muzzleFlashEffect;
-    public GameObject bloodTransform;
+
+    public Text remainAmmo;
 
     public float damage = 20f; //총의 데미지 값 (각 총마다 데미지 값을 만들어서 태그로 비교하는 함수 제작)
     public float timeBetFire = 0.12f; // 총알 발사 간격
@@ -37,6 +40,23 @@ public class Gun : MonoBehaviour
         bulletLineRenderer.enabled = false;
 
     }
+
+    private void Start() {
+        audioManager = GameObject.Find("AudioManager").GetComponent<SoundManager>();
+    }
+
+    private void Update() {
+        updateAmmoStatus();
+
+        if (Input.GetMouseButtonDown(0)) {
+            Fire();
+        }
+    }
+
+    private void updateAmmoStatus() {
+        remainAmmo.text = nowAmmo + " / " + maxAmmo;
+    }
+
     private void Fire()
     {
         //총 발사시점 갱신
@@ -46,13 +66,14 @@ public class Gun : MonoBehaviour
             Shot();
         }
         else {
-            Debug.Log("Reloading cover me!!!");
-            nowAmmo = 20;
+            reloadAmmo();
         }
     }
+
     private void Shot()
     {
         nowAmmo--;
+        audioManager.GunShotSound();
 
         GameObject _target = null;
         RaycastHit hit;
@@ -107,11 +128,10 @@ public class Gun : MonoBehaviour
 
         bulletLineRenderer.enabled = false;
     }
-    private void Update()
-    {
-        if (Input.GetMouseButtonDown(0))
-        {
-            Fire();
-        }
+
+    public void reloadAmmo() {
+        audioManager.GunReloadSound();
+        Debug.Log("Reloading cover me!!!");
+        nowAmmo = 20;
     }
 }

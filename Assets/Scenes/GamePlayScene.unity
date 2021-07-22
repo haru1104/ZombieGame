@@ -3467,7 +3467,7 @@ MonoBehaviour:
   m_Elasticity: 0.1
   m_Inertia: 1
   m_DecelerationRate: 0.135
-  m_ScrollSensitivity: 1
+  m_ScrollSensitivity: 35
   m_Viewport: {fileID: 694949924}
   m_HorizontalScrollbar: {fileID: 0}
   m_VerticalScrollbar: {fileID: 429791649}
@@ -4846,7 +4846,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fireEffectTransform: {fileID: 301357663}
   muzzleFlashEffect: {fileID: 117421907}
-  bloodTransform: {fileID: 0}
+  remainAmmo: {fileID: 334986607}
   damage: 20
   timeBetFire: 0.12
   bulletDistance: 50
@@ -5996,7 +5996,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
-  m_LocalRotation: {x: 0.41326675, y: 0.000000015668302, z: -0.000000007110824, w: 0.9106101}
+  m_LocalRotation: {x: 0.41326675, y: -0.000000015668304, z: 0.0000000071108244, w: 0.9106101}
   m_LocalPosition: {x: 0, y: 6.39, z: -5.59}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -7754,7 +7754,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1235164121}
-  m_LocalRotation: {x: 0.41326675, y: 0.000000015668302, z: -0.000000007110824, w: 0.9106101}
+  m_LocalRotation: {x: 0.41326675, y: -0.000000015668304, z: 0.0000000071108244, w: 0.9106101}
   m_LocalPosition: {x: 0, y: 6.39, z: -5.59}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -7801,6 +7801,9 @@ MonoBehaviour:
   startZombieSound_3: {fileID: 8300000, guid: dfd2ac0a6f36910479755fcdc92571d7, type: 3}
   barricadeDamage: {fileID: 8300000, guid: d7c47075b70bd2e49a5f973ffa0cc24d, type: 3}
   bombSound: {fileID: 8300000, guid: bd0cb70a9cc21e340919799feef00b72, type: 3}
+  gunShot: {fileID: 8300000, guid: d506ab2ae3aff4a4c85ddbac53a6fe80, type: 3}
+  gunReload: {fileID: 8300000, guid: abb698c34ff445941b594c5b0fd98585, type: 3}
+  barrelHit: {fileID: 8300000, guid: 6d809ecd9c796954dadb5225ce864f63, type: 3}
 --- !u!82 &1242079432
 AudioSource:
   m_ObjectHideFlags: 0
@@ -7813,7 +7816,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
-  m_Volume: 0.434
+  m_Volume: 0.25
   m_Pitch: 1
   Loop: 0
   Mute: 0

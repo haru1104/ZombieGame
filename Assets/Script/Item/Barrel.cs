@@ -41,6 +41,7 @@ public class Barrel : MonoBehaviour {
 
     public void onDamaged(float damage) {
         health -= damage;
+        sound.BarrelHitSound();
     }
 
     private void OnTriggerEnter(Collider other) {
@@ -62,7 +63,7 @@ public class Barrel : MonoBehaviour {
     IEnumerator Destory() {
         explosion.Play();
         sound.BombSoundPlay();
-        //sound.BoomSound();
+
         for (int i = 0; i < zombies.Count; i++) {
             zombies[i].onDamaged(100);
         }

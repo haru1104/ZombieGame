@@ -34,14 +34,13 @@ public class Barricade : MonoBehaviour {
     }
 
     private void DamageCheck() {
-        if (health <= 0 && !isSetted && !isDestory) {
+        if (health <= 0 && isSetted && !isDestory) {
             isDestory = true;
             Destroy(gameObject);
         }
     }
 
     public void onDamaged(float damage) {
-    
         sound.BarricadeDamage();
         health -= damage;
     }

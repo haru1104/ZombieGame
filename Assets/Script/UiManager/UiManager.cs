@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.UI;
 public class UiManager : MonoBehaviour
 {
     public GameObject attackButton;
@@ -11,6 +11,9 @@ public class UiManager : MonoBehaviour
     public GameObject hpBer;
     public GameObject shopInven;
     private ItemSpawn itemSpawn;
+    private Button gunFireButton;
+    private GameManager gm;
+    private Gun gun;
 
     public bool istimeCheck = true;
     public bool isShopDown = false;
@@ -18,6 +21,8 @@ public class UiManager : MonoBehaviour
     private void Start()
     {
         itemSpawn = GameObject.Find("ItemSpawn").GetComponent<ItemSpawn>();
+        gunFireButton = GameObject.Find("AttackButton").GetComponent<Button>();
+        gm = GameObject.Find("GameManager").GetComponent<GameManager>();
     }
     public void Breaktime()
     {
@@ -65,6 +70,7 @@ public class UiManager : MonoBehaviour
             GamePlayTime();
         }
         ShopUiDown();
+        
     }
     private void ShopUiDown()
     {
@@ -86,6 +92,16 @@ public class UiManager : MonoBehaviour
             destoryButton.SetActive(false);
         }
 
+    }
+    public void AttackButton()
+    {
+        if (gm.isPlayerSpawn == true)
+        {
+            Debug.Log(gunFireButton);
+
+            gun = GameObject.Find("Player").GetComponentInChildren<Gun>();
+            gunFireButton.onClick.AddListener( gun.Fire);
+        }
     }
 
 }

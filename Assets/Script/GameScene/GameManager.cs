@@ -20,11 +20,12 @@ public class GameManager : MonoBehaviour
     private GameObject zombieSpawnPosition;
     private Text roundText;
     private Transform playerSpawnPoint;
-
+    private UiManager ui;
     private int getCoin;
 
     private bool isSpawnPlayer;
     private bool isSpawnZombie;
+    public bool isPlayerSpawn = true;
     private bool nextGame;
     private bool gameOver;
 
@@ -41,6 +42,7 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         roundText = GameObject.Find("RoundText").GetComponent<Text>();
+        ui = GameObject.Find("GamePlayUi").GetComponent<UiManager>();
         Spawn();
     }
 
@@ -79,7 +81,7 @@ public class GameManager : MonoBehaviour
     private void Spawn()
     {
         playerSpawnPoint = GameObject.Find("PlayerSpawnPosition").GetComponent<Transform>();
-    
+        ui.AttackButton();
     }
     private void GetPoint()
     {

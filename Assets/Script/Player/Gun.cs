@@ -47,17 +47,13 @@ public class Gun : MonoBehaviour
 
     private void Update() {
         updateAmmoStatus();
-
-        if (Input.GetMouseButtonDown(0)) {
-            Fire();
-        }
     }
-
+  
     private void updateAmmoStatus() {
         remainAmmo.text = nowAmmo + " / " + maxAmmo;
     }
 
-    private void Fire()
+    public void Fire()
     {
         //총 발사시점 갱신
         lastFireTime = Time.time;

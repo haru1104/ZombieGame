@@ -6,6 +6,7 @@ public class Barricade : MonoBehaviour {
     private Transform playerTr;
     private Transform barricadeTr;
     private Vector3 moveTr;
+    private SoundManager sound;
 
     private bool isDestory = false;
 
@@ -16,7 +17,7 @@ public class Barricade : MonoBehaviour {
     void Start() {
         playerTr = GameObject.Find("Player").GetComponent<Transform>();
         barricadeTr = GetComponent<Transform>();
-
+        sound = GameObject.FindGameObjectWithTag("Audio").GetComponent<SoundManager>();
     }
 
     void Update() {
@@ -27,7 +28,7 @@ public class Barricade : MonoBehaviour {
     private void MoveSet() {
         if (!isSetted) {
             moveTr = playerTr.position;
-            barricadeTr.position = moveTr;
+            barricadeTr.position = moveTr ;
             barricadeTr.rotation = playerTr.rotation;
         }
     }
@@ -40,6 +41,8 @@ public class Barricade : MonoBehaviour {
     }
 
     public void onDamaged(float damage) {
+    
+        sound.BarricadeDamage();
         health -= damage;
     }
 }

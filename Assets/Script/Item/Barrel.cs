@@ -5,7 +5,7 @@ using UnityEngine;
 public class Barrel : MonoBehaviour {
     private Transform myTr;
     private Transform playerTr;
-    
+    private SoundManager sound;
     private List<Zombie> zombies = new List<Zombie>();
 
     private bool isDestory = false;
@@ -19,7 +19,7 @@ public class Barrel : MonoBehaviour {
     void Start() {
         myTr = GetComponent<Transform>();
         playerTr = GameObject.Find("Player").GetComponent<Transform>();
-
+        sound = GameObject.FindGameObjectWithTag("Audio").GetComponent<SoundManager>();
     }
 
     void Update() {
@@ -61,7 +61,8 @@ public class Barrel : MonoBehaviour {
 
     IEnumerator Destory() {
         explosion.Play();
-
+        sound.BombSoundPlay();
+        //sound.BoomSound();
         for (int i = 0; i < zombies.Count; i++) {
             zombies[i].onDamaged(100);
         }

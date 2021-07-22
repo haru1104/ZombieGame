@@ -29,12 +29,12 @@ public class ItemSpawn : MonoBehaviour
             if (go.tag == "Barricade")
             {
                 go.GetComponent<Barricade>().isSetted = true;
-                go = null;
+                
             }
             if (go.tag == "Barrel")
             {
                 go.GetComponent<Barrel>().isSetted = true;
-                go = null;
+             
             }
         }
     }

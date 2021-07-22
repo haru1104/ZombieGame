@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -25,6 +25,7 @@ public class MovePos : MonoBehaviour
     void Update()
     {
         MovePosSet();
+        
     }
     private void StartReset()
     {
@@ -37,8 +38,8 @@ public class MovePos : MonoBehaviour
     }
     private void MovePosSet()
     {
-        h = Input.GetAxis("Horizontal");
-        v = Input.GetAxis("Vertical");
+       // h = Input.GetAxis("Horizontal");
+        //v = Input.GetAxis("Vertical");
         movePos = v*transform.forward;
         movePos = movePos.normalized * moveSpeed * Time.deltaTime;
         playerRigid.MovePosition(transform.position + movePos);
@@ -55,6 +56,10 @@ public class MovePos : MonoBehaviour
         }
 
     }
-
+    public void OnStickChanged(Vector3 stickPos)
+    {
+        h = stickPos.x;
+        v = stickPos.y;
+    }
 
 }

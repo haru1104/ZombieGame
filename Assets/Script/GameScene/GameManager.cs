@@ -1,7 +1,8 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
+using UnityEngine.UI;
 
 [System.Serializable]
 public class Zombies {
@@ -17,7 +18,7 @@ public class GameManager : MonoBehaviour
     private GameObject playerPrefab;
     private GameObject playerSpawnPosition;
     private GameObject zombieSpawnPosition;
-
+    private Text roundText;
     private Transform playerSpawnPoint;
 
     private int getCoin;
@@ -39,15 +40,19 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        roundText = GameObject.Find("RoundText").GetComponent<Text>();
         Spawn();
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        RoundTextUpdata();
     }
-
+    private void RoundTextUpdata()
+    {
+        roundText.text = "Round : " + Round;
+    }
     void OnGUI() {
         GUI.BeginGroup(new Rect(40, 30, 300, 500));
 

@@ -6092,7 +6092,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
-  m_LocalRotation: {x: 0.41326675, y: 0.000000015668302, z: -0.000000007110824, w: 0.9106101}
+  m_LocalRotation: {x: 0.41326675, y: -0.000000015668304, z: 0.0000000071108244, w: 0.9106101}
   m_LocalPosition: {x: 0, y: 6.39, z: -5.59}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -7911,7 +7911,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1235164121}
-  m_LocalRotation: {x: 0.41326675, y: 0.000000015668302, z: -0.000000007110824, w: 0.9106101}
+  m_LocalRotation: {x: 0.41326675, y: -0.000000015668304, z: 0.0000000071108244, w: 0.9106101}
   m_LocalPosition: {x: 0, y: 6.39, z: -5.59}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -12184,13 +12184,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ec36c358df43874980b17edc1940e79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isPlayerSpawn: 1
   zombieSpawnPoint:
   - {fileID: 1620358958}
   - {fileID: 1778471550}
   - {fileID: 1309117996}
   - {fileID: 966616555}
   zombie:
-    normal: {fileID: 6787311726178144169, guid: f2a1e34354af00c4a8ec0d00be367fa8, type: 3}
+    normal: {fileID: 6787311726178144169, guid: 38c0abb9b3cf35d439f282849f2e4fe1, type: 3}
     lite: {fileID: 5790214385896362971, guid: 40a5e3aad3d5384479133415f760eede, type: 3}
     heavy: {fileID: 8280681985055354509, guid: 57bf4a9760c7e924a87e602fbf6b3c66, type: 3}
   Round: 1

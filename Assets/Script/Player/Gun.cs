@@ -1,12 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
+
+using Photon.Pun;
+
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Gun : MonoBehaviour
+public class Gun : MonoBehaviourPun
 {
     private LineRenderer bulletLineRenderer;
     private SoundManager audioManager;
+
+    private Text remainAmmo;
 
     private int maxAmmo = 20;
     private int nowAmmo = 20;
@@ -22,8 +27,6 @@ public class Gun : MonoBehaviour
 
     public Transform fireEffectTransform;
     public ParticleSystem muzzleFlashEffect;
-
-    public Text remainAmmo;
 
     public float damage = 20f; //총의 데미지 값 (각 총마다 데미지 값을 만들어서 태그로 비교하는 함수 제작)
     public float timeBetFire = 0.12f; // 총알 발사 간격
@@ -43,6 +46,8 @@ public class Gun : MonoBehaviour
 
     private void Start() {
         audioManager = GameObject.Find("AudioManager").GetComponent<SoundManager>();
+
+        remainAmmo = GameObject.Find("Ammo Status").GetComponent<Text>();
     }
 
     private void Update() {
@@ -53,8 +58,11 @@ public class Gun : MonoBehaviour
         remainAmmo.text = nowAmmo + " / " + maxAmmo;
     }
 
-    public void Fire()
-    {
+    public void Fire() {
+        if (!photonView.IsMine) {
+            return;
+        }
+
         //총 발사시점 갱신
         lastFireTime = Time.time;
 
@@ -127,7 +135,6 @@ public class Gun : MonoBehaviour
 
     public void reloadAmmo() {
         audioManager.GunReloadSound();
-        Debug.Log("Reloading cover me!!!");
         nowAmmo = 20;
     }
 }

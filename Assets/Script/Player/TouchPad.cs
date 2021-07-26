@@ -1,8 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
+
+using Photon.Pun;
+
 using UnityEngine;
 
-public class TouchPad : MonoBehaviour
+public class TouchPad : MonoBehaviourPun
 {
     //touchPad 오브젝트를 연결한다.
     private RectTransform _touchPad;
@@ -28,7 +31,7 @@ public class TouchPad : MonoBehaviour
         _touchPad = GetComponent<RectTransform>();
         //터치 패드의 좌표를 가져옵니다.=>움직임의 기준값이 됩니다.
         _startPos = _touchPad.position;
-        _player = GameObject.Find("Player").GetComponent<MovePos>();
+        // _player = GameObject.FindGameObjectWithTag("Player").GetComponent<MovePos>();
     }
 
     public void ButtonDown()
@@ -97,13 +100,15 @@ public class TouchPad : MonoBehaviour
     //물리연산이 가능한 업데이트 
     private void FixedUpdate()
     {
-        //모바일에서는 터치패드 방식으로 여러 터치 입력 받아 처리
-        HandleTouchInput();
-        //모바일이 아닌 pc나 유니티 에디터 상에서 작동할때는 
-        //터치 입력이 아닌 마우스로 입력받습니다.
-#if UNITY_EDITOR || UNITY_STANDALONE_OSX || UINTY_STANDLONE_WIN || UNITY_WEBPLAYER
-        HandleInput(Input.mousePosition);
-#endif
+        if (photonView.IsMine) {
+            //모바일에서는 터치패드 방식으로 여러 터치 입력 받아 처리
+            HandleTouchInput();
+            //모바일이 아닌 pc나 유니티 에디터 상에서 작동할때는 
+            //터치 입력이 아닌 마우스로 입력받습니다.
+            #if UNITY_EDITOR || UNITY_STANDALONE_OSX || UINTY_STANDLONE_WIN || UNITY_WEBPLAYER
+                HandleInput(Input.mousePosition);
+            #endif
+        }
     }
 
     void HandleTouchInput()
@@ -162,6 +167,8 @@ public class TouchPad : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        if (_player == null && GameObject.Find("GameManager").GetComponent<GameManager>().isPlayerSpawn) {
+            _player = GameObject.FindGameObjectWithTag("Player").GetComponent<MovePos>();
+        }
     }
 }

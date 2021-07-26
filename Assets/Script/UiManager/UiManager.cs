@@ -1,8 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
+
+using Photon.Pun;
+
 using UnityEngine;
 using UnityEngine.UI;
-public class UiManager : MonoBehaviour
+public class UiManager : MonoBehaviourPun
 {
     public GameObject attackButton;
     public GameObject shopButton;
@@ -10,6 +13,9 @@ public class UiManager : MonoBehaviour
     public GameObject installButton;
     public GameObject hpBer;
     public GameObject shopInven;
+
+    public Text roundText;
+
     private ItemSpawn itemSpawn;
     private Button gunFireButton;
     private GameManager gm;
@@ -61,6 +67,10 @@ public class UiManager : MonoBehaviour
     }
     public void Update()
     {
+        if (PhotonNetwork.CurrentRoom.PlayerCount <= 1) {
+            roundText.text = "Waiting for players... (1/2)";
+        }
+
         if (istimeCheck == true)
         {
             Breaktime();
@@ -99,7 +109,7 @@ public class UiManager : MonoBehaviour
         {
             Debug.Log(gunFireButton);
 
-            gun = GameObject.Find("Player").GetComponentInChildren<Gun>();
+            gun = GameObject.FindGameObjectWithTag("Player").GetComponentInChildren<Gun>();
             gunFireButton.onClick.AddListener( gun.Fire);
         }
     }

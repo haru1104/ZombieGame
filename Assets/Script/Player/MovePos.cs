@@ -2,8 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Photon.Pun;
+using Photon.Realtime;
 
-public class MovePos : MonoBehaviour
+public class MovePos : MonoBehaviourPunCallbacks
 {
     private Animator playerAni;
     private Rigidbody playerRigid;
@@ -38,6 +40,10 @@ public class MovePos : MonoBehaviour
     }
     private void MovePosSet()
     {
+        if (photonView.IsMine == false && PhotonNetwork.IsConnected == true)
+        {
+            return;
+        }
        // h = Input.GetAxis("Horizontal");
         //v = Input.GetAxis("Vertical");
         movePos = v*transform.forward;

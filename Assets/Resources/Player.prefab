@@ -2708,18 +2708,18 @@ MonoBehaviour:
   ShowParameterInspector: 1
   m_SynchronizeParameters:
   - Type: 4
-    SynchronizeType: 0
+    SynchronizeType: 2
     Name: Walk
   - Type: 4
-    SynchronizeType: 0
+    SynchronizeType: 2
     Name: Dead
   - Type: 9
-    SynchronizeType: 0
+    SynchronizeType: 2
     Name: Damage
   m_SynchronizeLayers:
-  - SynchronizeType: 0
+  - SynchronizeType: 2
     LayerIndex: 0
-  - SynchronizeType: 0
+  - SynchronizeType: 2
     LayerIndex: 1
 --- !u!1 &2921231113536198376
 GameObject:

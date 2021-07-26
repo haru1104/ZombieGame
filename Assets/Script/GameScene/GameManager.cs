@@ -5,6 +5,7 @@ using Cinemachine;
 using UnityEngine.UI;
 using Photon.Pun;
 
+
 [System.Serializable]
 public class Zombies {
     public GameObject normal;
@@ -14,9 +15,9 @@ public class Zombies {
 
 public class GameManager : MonoBehaviourPun
 {
-    private CinemachineVirtualCamera camSet;
+    public CinemachineVirtualCamera camSet;
 
-    private GameObject playerPrefab;
+    private GameObject player;
     private GameObject playerSpawnPosition;
     private GameObject zombieSpawnPosition;
     private Text roundText;
@@ -46,7 +47,7 @@ public class GameManager : MonoBehaviourPun
     {
         roundText = GameObject.Find("RoundText").GetComponent<Text>();
         ui = GameObject.Find("GamePlayUi").GetComponent<UiManager>();
-        Spawn();
+        SpawnSet();
     }
 
     // Update is called once per frame
@@ -87,11 +88,12 @@ public class GameManager : MonoBehaviourPun
     }
     
 
-    private void Spawn()
+    private void SpawnSet()
     {
         playerSpawnPoint = GameObject.Find("PlayerSpawnPosition").GetComponent<Transform>();
-        PhotonNetwork.Instantiate("Player", playerSpawnPoint.position, Quaternion.identity);
-
+        player = PhotonNetwork.Instantiate("Player", playerSpawnPoint.position, Quaternion.identity);
+        camSet.Follow = player.transform;
+        camSet.LookAt = player.transform;
         isPlayerSpawn = true;
         ui.AttackButton();
     }

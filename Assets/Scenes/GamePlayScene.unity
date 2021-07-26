@@ -674,6 +674,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1127577876616808837, guid: 455289530efb1ea43a5c53851893e84f, type: 3}
+      propertyPath: sceneViewId
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 3031539665473504048, guid: 455289530efb1ea43a5c53851893e84f, type: 3}
       propertyPath: m_Size.x
       value: 7.030031
@@ -7358,6 +7362,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -7661672953761245213, guid: d1b23372f081a30498e3f5448d4cc127, type: 3}
+      propertyPath: sceneViewId
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 4153192341419275006, guid: d1b23372f081a30498e3f5448d4cc127, type: 3}
       propertyPath: m_Name
       value: Barrel
@@ -12046,6 +12054,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ec36c358df43874980b17edc1940e79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  camSet: {fileID: 1235164122}
   isPlayerSpawn: 1
   zombieSpawnPoint:
   - {fileID: 1620358958}

@@ -42,7 +42,6 @@ public class GameManager : MonoBehaviourPun
 
     //개발자 전용 무기 하나 제작 
 
-    // Start is called before the first frame update
     void Start()
     {
         roundText = GameObject.Find("RoundText").GetComponent<Text>();
@@ -50,7 +49,6 @@ public class GameManager : MonoBehaviourPun
         SpawnSet();
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (PhotonNetwork.CurrentRoom.PlayerCount >= 2) {

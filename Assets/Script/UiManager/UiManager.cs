@@ -110,7 +110,7 @@ public class UiManager : MonoBehaviourPun
             Debug.Log(gunFireButton);
 
             gun = GameObject.FindGameObjectWithTag("Player").GetComponentInChildren<Gun>();
-            gunFireButton.onClick.AddListener( gun.Fire);
+            gunFireButton.onClick.AddListener(gun.Fire);
         }
     }
 

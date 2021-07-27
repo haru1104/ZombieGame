@@ -1,49 +1,65 @@
 using System.Collections;
 using System.Collections.Generic;
+
+using Photon.Pun;
+
 using UnityEngine;
 
 public class ItemSpawn : MonoBehaviour
 {
-   private GameObject go;
+   private GameObject obstacle;
    private GameObject player;
-   public GameObject barricadePrefab;
-   public GameObject barrelPrefab;
 
     private void Start()
     {
-        player = GameObject.FindWithTag("Player");
-
+        
     }
+
     public void Barricade()
     {
-        go = Instantiate(barricadePrefab, player.transform.position, Quaternion.identity);
+        FindPlayer();
+        obstacle = PhotonNetwork.Instantiate("Barricade", player.transform.position, Quaternion.identity);
     }
+
     public void Barrel()
     {
-        go = Instantiate(barrelPrefab,player.transform.position,Quaternion.identity);
+        FindPlayer();
+        obstacle = PhotonNetwork.Instantiate("Barrel", player.transform.position, Quaternion.identity);
     }
+
     public void IsInstall()
     {
-        if (go != null)
+        if (obstacle != null)
         {
-            if (go.tag == "Barricade")
+            if (obstacle.tag == "Barricade")
             {
-                go.GetComponent<Barricade>().isSetted = true;
+                obstacle.GetComponent<Barricade>().SetPosition();
                 
             }
-            if (go.tag == "Barrel")
+            if (obstacle.tag == "Barrel")
             {
-                go.GetComponent<Barrel>().isSetted = true;
+                obstacle.GetComponent<Barrel>().SetPosition();
              
             }
         }
     }
+
     public void IsCancel()
     {
-        if (go != null)
+        if (obstacle != null)
         {
-            Destroy(go.gameObject);
-            go = null;
+            Destroy(obstacle.gameObject);
+            obstacle = null;
+        }
+    }
+
+    private void FindPlayer() {
+        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+
+        for (int i = 0; i < players.Length; i++) {
+            if (players[i].GetComponent<PhotonView>().IsMine) {
+                player = players[i];
+            }
         }
     }
 }

@@ -1,24 +1,22 @@
 using System.Collections;
 using System.Collections.Generic;
+using Photon.Pun;
+
 using UnityEngine;
 
 public class Barrel : MonoBehaviour {
-    private Transform myTr;
     private Transform playerTr;
     private SoundManager sound;
     private List<Zombie> zombies = new List<Zombie>();
 
+    private bool isSetted = false;
     private bool isDestory = false;
 
     public ParticleSystem explosion;
 
     public float health = 100.0f;
 
-    public bool isSetted = false;
-
     void Start() {
-        myTr = GetComponent<Transform>();
-        playerTr = GameObject.Find("Player").GetComponent<Transform>();
         sound = GameObject.FindGameObjectWithTag("Audio").GetComponent<SoundManager>();
     }
 
@@ -27,9 +25,11 @@ public class Barrel : MonoBehaviour {
         DamageCheck();
     }
     private void PositionCheck() {
+        FindPlayer();
+
         if (!isSetted) {
-            myTr.position = playerTr.position;
-            myTr.rotation = playerTr.rotation;
+            transform.position = playerTr.position;
+            transform.rotation = playerTr.rotation;
         }
     }
     private void DamageCheck() {
@@ -42,6 +42,11 @@ public class Barrel : MonoBehaviour {
     public void onDamaged(float damage) {
         health -= damage;
         sound.BarrelHitSound();
+    }
+
+    public void SetPosition() {
+        isSetted = true;
+        GetComponent<CapsuleCollider>().isTrigger = false;
     }
 
     private void OnTriggerEnter(Collider other) {
@@ -72,4 +77,13 @@ public class Barrel : MonoBehaviour {
         Destroy(gameObject);
     }
 
+    private void FindPlayer() {
+        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+
+        for (int i = 0; i < players.Length; i++) {
+            if (players[i].GetComponent<PhotonView>().IsMine) {
+                playerTr = players[i].transform;
+            }
+        }
+    }
 }

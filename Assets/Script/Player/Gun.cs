@@ -76,16 +76,19 @@ public class Gun : MonoBehaviourPun
 
     private void Shot()
     {
-        nowAmmo--;
         audioManager.GunShotSound();
-
+        photonView.RPC("RpcShot", RpcTarget.AllBuffered);
+    }
+    [PunRPC]
+    private void RpcShot() {
+        nowAmmo--;
         GameObject _target = null;
         RaycastHit hit;
 
         Vector3 hitPos = new Vector3(0, 0, 0);
         string target = "";
 
-        if (Physics.Raycast(fireEffectTransform.position , fireEffectTransform.forward , out hit , bulletDistance))
+        if (Physics.Raycast(fireEffectTransform.position, fireEffectTransform.forward, out hit, bulletDistance))
         {
             //레이가 어떤 오브젝트에 충돌한 경우 
             _target = hit.collider.gameObject;
@@ -101,12 +104,15 @@ public class Gun : MonoBehaviourPun
             hitPos = fireEffectTransform.position + fireEffectTransform.forward * bulletDistance;
         }
 
-        if (target != null) {
+        if (target != null)
+        {
             StartCoroutine(FireGun(hitPos, _target));
         }
 
     }
-
+  
+       
+   
     private IEnumerator FireGun(Vector3 pos, GameObject target)
     {
         muzzleFlashEffect.Play();

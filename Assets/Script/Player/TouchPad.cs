@@ -97,15 +97,13 @@ public class TouchPad : MonoBehaviour
     //물리연산이 가능한 업데이트 
     private void FixedUpdate()
     {
-     
-            //모바일에서는 터치패드 방식으로 여러 터치 입력 받아 처리
-            HandleTouchInput();
-            //모바일이 아닌 pc나 유니티 에디터 상에서 작동할때는 
-            //터치 입력이 아닌 마우스로 입력받습니다.
-            #if UNITY_EDITOR || UNITY_STANDALONE_OSX || UINTY_STANDLONE_WIN || UNITY_WEBPLAYER
-                HandleInput(Input.mousePosition);
-            #endif
-        
+         //모바일에서는 터치패드 방식으로 여러 터치 입력 받아 처리
+         HandleTouchInput();
+         //모바일이 아닌 pc나 유니티 에디터 상에서 작동할때는 
+         //터치 입력이 아닌 마우스로 입력받습니다.
+
+         HandleInput(Input.mousePosition);
+
     }
 
     void HandleTouchInput()

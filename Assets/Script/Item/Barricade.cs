@@ -1,11 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using Photon.Pun;
-using Photon.Realtime;
 
 using UnityEngine;
 
-public class Barricade : MonoBehaviour {
+public class Barricade : MonoBehaviourPun {
     private Transform playerTr;
     private Vector3 moveTr;
     private SoundManager sound;
@@ -25,7 +24,7 @@ public class Barricade : MonoBehaviour {
     }
 
     private void MoveSet() {
-        FindPlayer();
+        FindPlayer(GameManager.viewId);
 
         if (!isSetted) {
             moveTr = playerTr.position;
@@ -46,16 +45,24 @@ public class Barricade : MonoBehaviour {
         health -= damage;
     }
 
-    public void SetPosition() {
+    public void SetPosition(Vector3 position, Quaternion rotation) {
+        transform.position = position;
+        transform.rotation = rotation;
+
+        photonView.RPC("SetPositionRpc", RpcTarget.AllBuffered);
+    }
+
+    [PunRPC]
+    private void SetPositionRpc() {
         isSetted = true;
         GetComponent<BoxCollider>().isTrigger = false;
     }
 
-    private void FindPlayer() {
+    private void FindPlayer(int playerId) {
         GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
 
         for (int i = 0; i < players.Length; i++) {
-            if (players[i].GetComponent<PhotonView>().IsMine) {
+            if (players[i].GetComponent<PhotonView>().ViewID == playerId) {
                 playerTr = players[i].transform;
             }
         }

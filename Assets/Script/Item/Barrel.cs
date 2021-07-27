@@ -4,7 +4,7 @@ using Photon.Pun;
 
 using UnityEngine;
 
-public class Barrel : MonoBehaviour {
+public class Barrel : MonoBehaviourPun {
     private Transform playerTr;
     private SoundManager sound;
     private List<Zombie> zombies = new List<Zombie>();
@@ -25,7 +25,7 @@ public class Barrel : MonoBehaviour {
         DamageCheck();
     }
     private void PositionCheck() {
-        FindPlayer();
+        FindPlayer(GameManager.viewId);
 
         if (!isSetted) {
             transform.position = playerTr.position;
@@ -44,7 +44,15 @@ public class Barrel : MonoBehaviour {
         sound.BarrelHitSound();
     }
 
-    public void SetPosition() {
+    public void SetPosition(Vector3 position, Quaternion rotation) {
+        transform.position = position;
+        transform.rotation = rotation;
+
+        photonView.RPC("SetPositionRpc", RpcTarget.AllBuffered);
+    }
+
+    [PunRPC]
+    private void SetPositionRpc() {
         isSetted = true;
         GetComponent<CapsuleCollider>().isTrigger = false;
     }
@@ -77,11 +85,11 @@ public class Barrel : MonoBehaviour {
         Destroy(gameObject);
     }
 
-    private void FindPlayer() {
+    private void FindPlayer(int playerId) {
         GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
 
         for (int i = 0; i < players.Length; i++) {
-            if (players[i].GetComponent<PhotonView>().IsMine) {
+            if (players[i].GetComponent<PhotonView>().ViewID == playerId) {
                 playerTr = players[i].transform;
             }
         }

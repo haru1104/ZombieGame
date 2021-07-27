@@ -145,7 +145,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   explosion: {fileID: 4258896205553290849}
   health: 100
-  isSetted: 0
 --- !u!114 &-7661672953761245213
 MonoBehaviour:
   m_ObjectHideFlags: 0

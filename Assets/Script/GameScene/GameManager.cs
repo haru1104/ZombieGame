@@ -40,6 +40,8 @@ public class GameManager : MonoBehaviourPun
 
     public bool isShowDebugGUI = false;
 
+    public static int viewId = 0;
+
     //개발자 전용 무기 하나 제작 
 
     void Start()
@@ -90,6 +92,7 @@ public class GameManager : MonoBehaviourPun
     {
         playerSpawnPoint = GameObject.Find("PlayerSpawnPosition").GetComponent<Transform>();
         player = PhotonNetwork.Instantiate("Player", playerSpawnPoint.position, Quaternion.identity);
+        viewId = player.GetComponent<PhotonView>().ViewID;
         camSet.Follow = player.transform;
         camSet.LookAt = player.transform;
         isPlayerSpawn = true;

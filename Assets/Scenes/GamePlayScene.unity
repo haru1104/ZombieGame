@@ -4774,6 +4774,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 46ac1147f1429794f8386ae03b94bc48, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  barricade: {fileID: 3032221249990675752, guid: 455289530efb1ea43a5c53851893e84f, type: 3}
+  barrel: {fileID: 4153192341419275006, guid: d1b23372f081a30498e3f5448d4cc127, type: 3}
 --- !u!4 &707528766
 Transform:
   m_ObjectHideFlags: 0

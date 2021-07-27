@@ -49,22 +49,27 @@ public class UiManager : MonoBehaviourPun
     {
         isShopDown = !isShopDown;
     }
+
     public void OnClickInstall()
     {
         itemSpawn.IsInstall();
     }
+
     public void OnClickCancel()
     {
         itemSpawn.IsCancel();
     }
+
     public void OnClickBarrel()
     {
         itemSpawn.Barrel();
     }
+
     public void OnClickBarricade()
     {
         itemSpawn.Barricade();
     }
+
     public void Update()
     {
         if (PhotonNetwork.CurrentRoom.PlayerCount <= 1) {
@@ -82,6 +87,7 @@ public class UiManager : MonoBehaviourPun
         ShopUiDown();
         
     }
+
     private void ShopUiDown()
     {
         // int downSpeed = 10;
@@ -103,6 +109,7 @@ public class UiManager : MonoBehaviourPun
         }
 
     }
+
     public void AttackButton()
     {
         if (gm.isPlayerSpawn == true)
@@ -113,5 +120,4 @@ public class UiManager : MonoBehaviourPun
             gunFireButton.onClick.AddListener(gun.Fire);
         }
     }
-
 }

@@ -55,6 +55,10 @@ public class Gun : MonoBehaviourPun
     }
   
     private void updateAmmoStatus() {
+        if (!photonView.IsMine) {
+            return;
+        }
+
         remainAmmo.text = nowAmmo + " / " + maxAmmo;
     }
 
@@ -70,18 +74,22 @@ public class Gun : MonoBehaviourPun
             Shot();
         }
         else {
-            reloadAmmo();
+            photonView.RPC("reloadAmmo", RpcTarget.AllBuffered);
         }
     }
 
     private void Shot()
     {
-        audioManager.GunShotSound();
+        if (!photonView.IsMine) {
+            return;
+        }
+
+        nowAmmo--;
         photonView.RPC("RpcShot", RpcTarget.AllBuffered);
     }
+
     [PunRPC]
     private void RpcShot() {
-        nowAmmo--;
         GameObject _target = null;
         RaycastHit hit;
 
@@ -106,6 +114,7 @@ public class Gun : MonoBehaviourPun
 
         if (target != null)
         {
+            audioManager.GunShotSound();
             StartCoroutine(FireGun(hitPos, _target));
         }
 
@@ -139,6 +148,7 @@ public class Gun : MonoBehaviourPun
         bulletLineRenderer.enabled = false;
     }
 
+    [PunRPC]
     public void reloadAmmo() {
         audioManager.GunReloadSound();
         nowAmmo = 20;

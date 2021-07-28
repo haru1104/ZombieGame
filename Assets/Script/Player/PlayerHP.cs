@@ -15,6 +15,7 @@ public class PlayerHP : MonoBehaviour {
     void Update() {
         
     }
+
     private void Reset() {
         health = 100.0f;
         ani = GetComponent<Animator>();

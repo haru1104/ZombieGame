@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 
+using Photon.Pun;
+
 using UnityEngine;
 
 public class ZombieAttack : MonoBehaviour {
@@ -15,7 +17,6 @@ public class ZombieAttack : MonoBehaviour {
     {
         //스폰과 동시에 공격력 세팅
         StartReset();
-
     }
 
     private void StartReset()
@@ -25,30 +26,18 @@ public class ZombieAttack : MonoBehaviour {
 
         if (gm != null)
         {
-            Debug.Log("GameManager Find Success");
             //기본 데미지 * 라운드 수
             attackDamage = attackDamage * gm.Round;
-            Debug.Log("좀비 공격력 셋팅 : " + attackDamage);
         }
         else
         {
-            Debug.LogWarning("GameManager Fail");
-        }
-
-        player_HP = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerHP>();
-
-        if (player_HP != null)
-        {
-            Debug.Log("Player Hp Find Success");
-        }
-        else
-        {
-            Debug.LogWarning("Player Hp Fail");
+            Debug.LogError("[Zombie:Attack] GameManager is not found.");
         }
     }
 
     private void OnTriggerEnter(Collider other) {
         if (other.tag == "Player") {
+            player_HP = other.gameObject.GetComponent<PlayerHP>();
             StartCoroutine("AttackPlayer");
         }
 

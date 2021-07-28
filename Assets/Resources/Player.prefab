@@ -2736,7 +2736,7 @@ MonoBehaviour:
     SynchronizeType: 2
     Name: Dead
   - Type: 9
-    SynchronizeType: 2
+    SynchronizeType: 0
     Name: Damage
   m_SynchronizeLayers:
   - SynchronizeType: 2

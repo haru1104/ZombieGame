@@ -163,7 +163,7 @@ MonoBehaviour:
   ShowParameterInspector: 1
   m_SynchronizeParameters:
   - Type: 4
-    SynchronizeType: 0
+    SynchronizeType: 2
     Name: Run
   - Type: 9
     SynchronizeType: 0
@@ -175,7 +175,7 @@ MonoBehaviour:
     SynchronizeType: 0
     Name: Die 2
   m_SynchronizeLayers:
-  - SynchronizeType: 0
+  - SynchronizeType: 2
     LayerIndex: 0
 --- !u!1001 &3952987058615538513
 PrefabInstance:

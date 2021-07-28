@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 
+using Photon.Pun;
+
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -8,13 +10,15 @@ public enum ZombieType {
     Normal, Heavy, Lite
 }
 
-public abstract class Zombie : MonoBehaviour {
+public abstract class Zombie : MonoBehaviourPunCallbacks {
     protected List<Transform> playerTr = new List<Transform>();
     protected List<Transform> obstacleTr = new List<Transform>();
 
     protected Animator ani;
     protected NavMeshAgent agent;
     protected ParticleSystem particle;
+
+    protected GameManager manager;
 
     public bool isDead { get; protected set; }
 
@@ -27,8 +31,10 @@ public abstract class Zombie : MonoBehaviour {
 
     public Color zombieColor { get; set; }
 
-    void OnEnable() {
+    // MonobehaviorPunCallbacks.OnEnable() 이 public virtual로 정의되어 있어서 override 진행.
+    public override void OnEnable() {
         isDead = false;
+        manager = GameObject.Find("GameManager").GetComponent<GameManager>();
 
         onSpawn();
     }
@@ -77,49 +83,57 @@ public abstract class Zombie : MonoBehaviour {
     }
 
     public virtual void onMove() {
-        if (agent.enabled && !agent.isStopped) {
-            findPlayers();
-            findBarricade();
+        if (PhotonNetwork.IsConnected && PhotonNetwork.IsMasterClient) {
+            if (agent.enabled && !agent.isStopped) {
+                findPlayers();
+                findBarricade();
 
-            int index = 0;
-            bool isObstacle = false;
-            float dist = float.MaxValue;
+                int index = 0;
+                bool isObstacle = false;
+                float dist = float.MaxValue;
 
-            for (int i = 0; i < playerTr.Count; i++) {
-                float tempDist = Vector3.Distance(transform.position, playerTr[i].position);
-
-                if (tempDist <= dist) {
-                    isObstacle = false;
-                    index = i;
-                    dist = tempDist;
-                }
-            }
-
-            for (int i = 0; i < obstacleTr.Count; i++) {
-                if (obstacleTr[i] != null) {
-                    float tempDist = Vector3.Distance(transform.position, obstacleTr[i].position);
+                for (int i = 0; i < playerTr.Count; i++) {
+                    float tempDist = Vector3.Distance(transform.position, playerTr[i].position);
 
                     if (tempDist <= dist) {
-                        isObstacle = true;
+                        isObstacle = false;
                         index = i;
                         dist = tempDist;
                     }
                 }
-                else {
-                    obstacleTr.RemoveAt(i);
-                    onMove();
-                    return;
+
+                for (int i = 0; i < obstacleTr.Count; i++) {
+                    if (obstacleTr[i] != null) {
+                        float tempDist = Vector3.Distance(transform.position, obstacleTr[i].position);
+
+                        if (tempDist <= dist) {
+                            isObstacle = true;
+                            index = i;
+                            dist = tempDist;
+                        }
+                    }
+                    else {
+                        obstacleTr.RemoveAt(i);
+                        onMove();
+                        return;
+                    }
                 }
-            }
 
-            if (isObstacle) {
-                agent.SetDestination(obstacleTr[index].position);
-            }
-            else {
-                agent.SetDestination(playerTr[index].position);
-            }
+                if (isObstacle) {
+                    agent.SetDestination(obstacleTr[index].position);
+                }
+                else {
+                    agent.SetDestination(playerTr[index].position);
+                }
 
-            playZombieAnimation();
+                playZombieAnimation();
+            }
+        }
+        else {
+            if (agent.enabled) {
+                agent.isStopped = true;
+                agent.enabled = false;
+            }
         }
     }
 
@@ -152,4 +166,5 @@ public abstract class Zombie : MonoBehaviour {
     }
 
     public abstract void onSpawn();
+
 }

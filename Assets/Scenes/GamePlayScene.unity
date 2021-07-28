@@ -745,6 +745,7 @@ GameObject:
   - component: {fileID: 90284803}
   - component: {fileID: 90284802}
   - component: {fileID: 90284806}
+  - component: {fileID: 90284807}
   m_Layer: 5
   m_Name: GamePlayUi
   m_TagString: Untagged
@@ -861,6 +862,30 @@ MonoBehaviour:
   roundText: {fileID: 125815992}
   istimeCheck: 0
   isShopDown: 0
+  isGameStart: 0
+--- !u!114 &90284807
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 90284801}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents:
+  - {fileID: 90284806}
+  sceneViewId: 5
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1001 &90647396
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7567,7 +7592,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1198874171}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2042766903}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+        m_MethodName: OnClickStartButton
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1198874171
 MonoBehaviour:
   m_ObjectHideFlags: 0

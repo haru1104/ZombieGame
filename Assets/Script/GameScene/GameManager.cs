@@ -43,7 +43,10 @@ public class GameManager : MonoBehaviourPun
     void Update()
     {
         if (PhotonNetwork.CurrentRoom.PlayerCount >= 2) {
-            ui.GameStartButton(true);
+            if (PhotonNetwork.IsMasterClient == true)
+            {
+                ui.GameStartButton(true);
+            }
             RoundTextUpdata();
         }
         State();
@@ -52,7 +55,13 @@ public class GameManager : MonoBehaviourPun
     {
         roundText.text = "Round : " + Round;
     }
-
+    public void OnClickStartButton()
+    {
+        if (ui.isGameStart == false)
+        {
+            ui.isGameStart = true;
+        }
+    }
     private void SpawnSet()
     {
         playerSpawnPoint = GameObject.Find("PlayerSpawnPosition").GetComponent<Transform>();

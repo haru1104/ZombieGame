@@ -5,7 +5,7 @@ using Photon.Pun;
 
 using UnityEngine;
 using UnityEngine.UI;
-public class UiManager : MonoBehaviourPun
+public class UiManager : MonoBehaviourPun , IPunObservable
 {
     public GameObject attackButton;
     public GameObject shopButton;
@@ -130,6 +130,18 @@ public class UiManager : MonoBehaviourPun
 
             gun = GameObject.FindGameObjectWithTag("Player").GetComponentInChildren<Gun>();
             gunFireButton.onClick.AddListener(gun.Fire);
+        }
+    }
+
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        if (stream.IsWriting)
+        {
+            stream.SendNext(isGameStart);
+        }
+        else
+        {
+            isGameStart = (bool)stream.ReceiveNext();
         }
     }
 }

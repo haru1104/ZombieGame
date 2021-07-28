@@ -6,41 +6,29 @@ using UnityEngine.UI;
 using Photon.Pun;
 
 
-[System.Serializable]
-public class Zombies {
-    public GameObject normal;
-    public GameObject lite;
-    public GameObject heavy;
-}
-
 public class GameManager : MonoBehaviourPun
 {
     public CinemachineVirtualCamera camSet;
 
     private GameObject player;
-    private GameObject playerSpawnPosition;
-    private GameObject zombieSpawnPosition;
     private Text roundText;
     private Transform playerSpawnPoint;
     private UiManager ui;
-    private int getCoin;
 
+    public List<Transform> zombieSpawnPoint = new List<Transform>();
+    public GameObject gameStartButton;
+    private int getCoin;
+    private int zombieCount = 10;
+    private int zombieSpawnCount;
+    public int Round = 1;
     private bool isSpawnPlayer;
     private bool isSpawnZombie;
     public bool isPlayerSpawn = true;
     private bool nextGame;
     private bool gameOver;
-
-    public List<Transform> zombieSpawnPoint = new List<Transform>();
-
-    public Zombies zombie;
-
-    public int Round = 1;
     public bool isPlayerDead;
-
     public bool isShowDebugGUI = false;
-
-    public static int viewId = 0;
+    public static int viewId=0;
 
     //개발자 전용 무기 하나 제작 
 
@@ -48,14 +36,17 @@ public class GameManager : MonoBehaviourPun
     {
         roundText = GameObject.Find("RoundText").GetComponent<Text>();
         ui = GameObject.Find("GamePlayUi").GetComponent<UiManager>();
+        ui.GameStartButton(false); 
         SpawnSet();
     }
 
     void Update()
     {
         if (PhotonNetwork.CurrentRoom.PlayerCount >= 2) {
+            ui.GameStartButton(true);
             RoundTextUpdata();
         }
+        State();
     }
     private void RoundTextUpdata()
     {
@@ -66,23 +57,52 @@ public class GameManager : MonoBehaviourPun
     {
         playerSpawnPoint = GameObject.Find("PlayerSpawnPosition").GetComponent<Transform>();
         player = PhotonNetwork.Instantiate("Player", playerSpawnPoint.position, Quaternion.identity);
-        viewId = player.GetComponent<PhotonView>().ViewID;
+        viewId = player.GetPhotonView().ViewID;
         camSet.Follow = player.transform;
         camSet.LookAt = player.transform;
         isPlayerSpawn = true;
         ui.AttackButton();
     }
-    private void GetPoint()
+    private void State()
     {
+
+    }
+    private void EnemySpawn()
+    {
+        if (PhotonNetwork.IsMasterClient == false || PhotonNetwork.IsConnected == false)
+        {
+            return;
+        }
         if (nextGame == true)
         {
-            //게임클리어를 성공하면 좀비스폰&&특수좀비 스폰 확률 증가.
-            //플레이어 통합 (무기)포인트 증가 
-
+            zombieSpawnCount = zombieCount * Round;
+            StartCoroutine("Enemy_Spawn");
         }
-        else if (gameOver == true)
+    }
+    private IEnumerator Enemy_Spawn()
+    {
+        for (int i = 0; i >= zombieSpawnCount; i++)
         {
-            //게임오버시 초기값으로 돌려주는 루틴 제작
+            yield return new WaitForSeconds(0.8f);
+            int temp = Random.Range(1, 6);
+            int transTemp = Random.Range(1, 5);
+            ZombieSpawn(temp, transTemp);
+        }
+        isSpawnZombie = true;
+    }
+    private void ZombieSpawn(int spawnNum, int transTemp)
+    {
+        if (spawnNum >= 1 && spawnNum <= 3)
+        {
+            PhotonNetwork.Instantiate("Normal Zombie", zombieSpawnPoint[transTemp].position, Quaternion.identity);
+        }
+        else if (spawnNum == 4)
+        {
+            PhotonNetwork.Instantiate("Lite Zombie", zombieSpawnPoint[transTemp].position, Quaternion.identity);
+        }
+        else if (spawnNum == 5)
+        {
+            PhotonNetwork.Instantiate("Heavy Zombie", zombieSpawnPoint[transTemp].position, Quaternion.identity);
         }
     }
 }

@@ -13,6 +13,7 @@ public class UiManager : MonoBehaviourPun
     public GameObject installButton;
     public GameObject hpBer;
     public GameObject shopInven;
+    public GameObject startButton;
 
     public Text roundText;
 
@@ -23,7 +24,7 @@ public class UiManager : MonoBehaviourPun
 
     public bool istimeCheck = true;
     public bool isShopDown = false;
-
+    public bool isGameStart = false;    
     private void Start()
     {
         itemSpawn = GameObject.Find("ItemSpawn").GetComponent<ItemSpawn>();
@@ -39,12 +40,20 @@ public class UiManager : MonoBehaviourPun
     }
     public void GamePlayTime()
     {
-      
         shopButton.SetActive(false);
         attackButton.SetActive(true);
         hpBer.SetActive(true);
     }
-    
+    public void GameStartButton(bool temp)
+    {
+        startButton.SetActive(temp);
+    }
+    public void PlayerWaitingTime()
+    {
+        attackButton.SetActive(false);
+        shopButton.SetActive(false);
+        hpBer.SetActive(false);
+    }
     public void ShopOnclick()
     {
         isShopDown = !isShopDown;
@@ -76,16 +85,19 @@ public class UiManager : MonoBehaviourPun
             roundText.text = "Waiting for players... (1/2)";
         }
 
-        if (istimeCheck == true)
+        if (istimeCheck == true && isGameStart == true)
         {
             Breaktime();
         }
-        else
+        else if(isGameStart == true && istimeCheck == false)
         {
             GamePlayTime();
         }
+        else if (isGameStart == false)
+        {
+            PlayerWaitingTime();
+        }
         ShopUiDown();
-        
     }
 
     private void ShopUiDown()

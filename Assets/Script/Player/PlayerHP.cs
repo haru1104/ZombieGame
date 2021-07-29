@@ -1,8 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
+using Photon.Realtime;
 
-public class PlayerHP : MonoBehaviour {
+
+public class PlayerHP : MonoBehaviourPun {
     private int attackDamage;
     private Animator ani;
 
@@ -13,7 +16,7 @@ public class PlayerHP : MonoBehaviour {
     }
 
     void Update() {
-        
+        HPCheck();
     }
 
     private void Reset() {
@@ -25,9 +28,24 @@ public class PlayerHP : MonoBehaviour {
         ani.SetTrigger("Damage");
     }
 
+  
     public void onDamaged(float damage) {
-        health -= damage;
+        photonView.RPC("SetHealth", RpcTarget.AllBuffered,damage);
         playDamagedAnimation();
     }
 
+    [PunRPC]
+    private void SetHealth(float damage) {
+        if (photonView.IsMine == true)
+        {
+            health -= damage;
+        }
+    }
+    public void HPCheck()
+    {
+        if (health <= 0 )
+        {
+            ani.SetBool("Dead",true);
+        }
+    }
 }

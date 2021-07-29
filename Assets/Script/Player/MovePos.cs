@@ -12,7 +12,7 @@ public class MovePos : MonoBehaviourPunCallbacks
     private Vector3 movePos;
     private float h, v;
     private float TurnSpeed = 2;
-
+    private PlayerHP hp;
     [SerializeField]
     private float moveSpeed = 12f;
     //private float jumpPos;
@@ -33,6 +33,7 @@ public class MovePos : MonoBehaviourPunCallbacks
     {
         playerRigid = GetComponent<Rigidbody>();
         playerAni = GetComponent<Animator>();
+        hp = GetComponent<PlayerHP>();
         //jumpPos = 5;
         //isJump = false;
         //isWalk = false;
@@ -40,7 +41,7 @@ public class MovePos : MonoBehaviourPunCallbacks
     }
     private void MovePosSet()
     {
-        if (photonView.IsMine == false && PhotonNetwork.IsConnected == true)
+        if (photonView.IsMine == false && PhotonNetwork.IsConnected == true || hp.health <= 0)
         {
             return;
         }

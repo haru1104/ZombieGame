@@ -149,6 +149,7 @@ public abstract class Zombie : MonoBehaviourPunCallbacks {
     public virtual void onDeath() {
         if (!isDead && health <= 0) {
             isDead = true;
+            manager.addMoney(100);
 
             agent.isStopped = true;
             agent.enabled = false;

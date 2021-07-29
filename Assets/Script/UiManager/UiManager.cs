@@ -27,8 +27,6 @@ public class UiManager : MonoBehaviourPun , IPunObservable
     public bool isShopDown = false;
     public bool isGameStart = false;
 
-    public int money = 1000;
-
     private void Start()
     {
         itemSpawn = GameObject.Find("ItemSpawn").GetComponent<ItemSpawn>();
@@ -137,24 +135,8 @@ public class UiManager : MonoBehaviourPun , IPunObservable
         }
     }
 
-    public void addMoney(int amount) {
-        if (PhotonNetwork.IsMasterClient && PhotonNetwork.IsConnected) {
-            money += amount;
-        }
-
-        updateMoneyAmount();
-    }
-
-    public void removeMoney(int amount) {
-        if (PhotonNetwork.IsMasterClient && PhotonNetwork.IsConnected) {
-            money -= amount;
-        }
-
-        updateMoneyAmount();
-    }
-
     public void updateMoneyAmount() {
-        moneyText.text = money.ToString();
+        moneyText.text = gm.money.ToString();
     }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
@@ -162,12 +144,10 @@ public class UiManager : MonoBehaviourPun , IPunObservable
         if (stream.IsWriting)
         {
             stream.SendNext(isGameStart);
-            stream.SendNext(money);
         }
         else
         {
             isGameStart = (bool) stream.ReceiveNext();
-            money = (int) stream.ReceiveNext();
         }
     }
 }

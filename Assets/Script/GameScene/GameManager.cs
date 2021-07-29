@@ -6,29 +6,33 @@ using UnityEngine.UI;
 using Photon.Pun;
 
 
-public class GameManager : MonoBehaviourPun
-{
-    public CinemachineVirtualCamera camSet;
+public class GameManager : MonoBehaviourPun, IPunObservable {
+    public static int viewId = 0;
 
     private GameObject player;
     private Text roundText;
     private Transform playerSpawnPoint;
     private UiManager ui;
 
-    public List<Transform> zombieSpawnPoint = new List<Transform>();
-    public GameObject gameStartButton;
+    private bool isSpawnPlayer;
+    private bool isSpawnZombie;
+    private bool nextGame;
+    private bool gameOver;
+
     private int getCoin;
     private int zombieCount = 10;
     private int zombieSpawnCount;
-    public int Round = 1;
-    private bool isSpawnPlayer;
-    private bool isSpawnZombie;
+
+    public CinemachineVirtualCamera camSet;
+    public List<Transform> zombieSpawnPoint = new List<Transform>();
+    public GameObject gameStartButton;
+
     public bool isPlayerSpawn = true;
-    private bool nextGame;
-    private bool gameOver;
     public bool isPlayerDead;
     public bool isShowDebugGUI = false;
-    public static int viewId=0;
+
+    public int Round = 1;
+    public int money = 1000;
 
     //개발자 전용 무기 하나 제작 
 
@@ -51,17 +55,12 @@ public class GameManager : MonoBehaviourPun
         }
         State();
     }
+
     private void RoundTextUpdata()
     {
         roundText.text = "Round : " + Round;
     }
-    public void OnClickStartButton()
-    {
-        if (ui.isGameStart == false)
-        {
-            ui.isGameStart = true;
-        }
-    }
+
     private void SpawnSet()
     {
         playerSpawnPoint = GameObject.Find("PlayerSpawnPosition").GetComponent<Transform>();
@@ -72,10 +71,12 @@ public class GameManager : MonoBehaviourPun
         isPlayerSpawn = true;
         ui.AttackButton();
     }
+
     private void State()
     {
 
     }
+
     private void EnemySpawn()
     {
         if (PhotonNetwork.IsMasterClient == false || PhotonNetwork.IsConnected == false)
@@ -88,6 +89,7 @@ public class GameManager : MonoBehaviourPun
             StartCoroutine("Enemy_Spawn");
         }
     }
+
     private IEnumerator Enemy_Spawn()
     {
         for (int i = 0; i >= zombieSpawnCount; i++)
@@ -99,6 +101,7 @@ public class GameManager : MonoBehaviourPun
         }
         isSpawnZombie = true;
     }
+
     private void ZombieSpawn(int spawnNum, int transTemp)
     {
         if (spawnNum >= 1 && spawnNum <= 3)
@@ -112,6 +115,37 @@ public class GameManager : MonoBehaviourPun
         else if (spawnNum == 5)
         {
             PhotonNetwork.Instantiate("Heavy Zombie", zombieSpawnPoint[transTemp].position, Quaternion.identity);
+        }
+    }
+
+    public void OnClickStartButton() {
+        if (ui.isGameStart == false) {
+            ui.isGameStart = true;
+        }
+    }
+
+    public void addMoney(int amount) {
+        if (PhotonNetwork.IsMasterClient && PhotonNetwork.IsConnected) {
+            money += amount;
+        }
+
+        ui.updateMoneyAmount();
+    }
+
+    public void removeMoney(int amount) {
+        if (PhotonNetwork.IsMasterClient && PhotonNetwork.IsConnected) {
+            money -= amount;
+        }
+
+        ui.updateMoneyAmount();
+    }
+
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info) {
+        if (stream.IsWriting) {
+            stream.SendNext(money);
+        }
+        else {
+            money = (int) stream.ReceiveNext();
         }
     }
 }

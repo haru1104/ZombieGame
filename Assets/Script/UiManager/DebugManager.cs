@@ -21,10 +21,12 @@ public class DebugManager : MonoBehaviour {
 
     public ZombiePrefabs zombie;
 
-    private UiManager manager;
+    private UiManager uiManager;
+    private GameManager gameManager;
 
     void Start() {
-        manager = GameObject.Find("GamePlayUi").GetComponent<UiManager>();
+        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        uiManager = GameObject.Find("GamePlayUi").GetComponent<UiManager>();
     }
 
     void OnGUI() {
@@ -50,13 +52,13 @@ public class DebugManager : MonoBehaviour {
         }
 
         if (GUI.Button(new Rect(30, allBtn, 230, 40), "라운드 상태 전환")) {
-            manager.istimeCheck = !manager.istimeCheck;
-            Debug.LogWarning("[Debug:All] 플레이어의 라운드 대기 상태를 " + manager.istimeCheck + "(으)로 변경하였습니다.");
+            uiManager.istimeCheck = !uiManager.istimeCheck;
+            Debug.LogWarning("[Debug:All] 플레이어의 라운드 대기 상태를 " + uiManager.istimeCheck + "(으)로 변경하였습니다.");
         }
 
         if (GUI.Button(new Rect(30, allBtn + 50, 230, 40), "돈 추가")) {
-            manager.addMoney(1000);
-            Debug.LogWarning("[Debug:All] 플레이어들의 돈을 1000만큼 추가하여 현재 " + manager.money + "원이 되었습니다.");
+            gameManager.addMoney(1000);
+            Debug.LogWarning("[Debug:All] 플레이어들의 돈을 1000만큼 추가하여 현재 " + gameManager.money + "원이 되었습니다.");
         }
 
         GUI.EndGroup();

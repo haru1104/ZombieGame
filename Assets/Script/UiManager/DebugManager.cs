@@ -54,6 +54,11 @@ public class DebugManager : MonoBehaviour {
             Debug.LogWarning("[Debug:All] 플레이어의 라운드 대기 상태를 " + manager.istimeCheck + "(으)로 변경하였습니다.");
         }
 
+        if (GUI.Button(new Rect(30, allBtn + 50, 230, 40), "돈 추가")) {
+            manager.addMoney(1000);
+            Debug.LogWarning("[Debug:All] 플레이어들의 돈을 1000만큼 추가하여 현재 " + manager.money + "원이 되었습니다.");
+        }
+
         GUI.EndGroup();
     }
 

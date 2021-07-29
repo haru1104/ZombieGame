@@ -150,6 +150,7 @@ public abstract class Zombie : MonoBehaviourPunCallbacks {
         if (!isDead && health <= 0) {
             isDead = true;
             manager.addMoney(100);
+            manager.zombieSpawnCount--;
 
             agent.isStopped = true;
             agent.enabled = false;

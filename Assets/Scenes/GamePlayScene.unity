@@ -862,7 +862,6 @@ MonoBehaviour:
   startButton: {fileID: 1198874168}
   roundText: {fileID: 125815992}
   moneyText: {fileID: 1213002849}
-  istimeCheck: 0
   isShopDown: 0
   isGameStart: 0
 --- !u!114 &90284807
@@ -8180,7 +8179,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1235164123}
   - component: {fileID: 1235164122}
-  - component: {fileID: 1235164125}
   - component: {fileID: 1235164124}
   m_Layer: 0
   m_Name: PlayerCam
@@ -8261,18 +8259,6 @@ MonoBehaviour:
   sceneViewId: 1
   InstantiationId: 0
   isRuntimeInstantiated: 0
---- !u!114 &1235164125
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1235164121}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 793e2339e43a59340ab6137702f28cf0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1242079430
 GameObject:
   m_ObjectHideFlags: 0
@@ -12697,8 +12683,11 @@ MonoBehaviour:
   isPlayerSpawn: 1
   isPlayerDead: 0
   isShowDebugGUI: 0
-  Round: 1
+  isRestTime: 0
+  round: 1
   money: 1000
+  zombieSpawnCount: 0
+  restTime: 60
 --- !u!4 &2042766904
 Transform:
   m_ObjectHideFlags: 0

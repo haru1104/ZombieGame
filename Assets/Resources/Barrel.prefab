@@ -143,6 +143,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0dc90c97d7773074da0c4b16c2a5b252, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  PurchaseCost: 700
   explosion: {fileID: 4258896205553290849}
   health: 100
 --- !u!114 &-7661672953761245213

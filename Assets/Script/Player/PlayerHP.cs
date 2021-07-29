@@ -5,11 +5,12 @@ using Photon.Pun;
 using Photon.Realtime;
 
 
-public class PlayerHP : MonoBehaviourPun {
+public class PlayerHP : MonoBehaviourPun, IPunObservable {
     private int attackDamage;
     private Animator ani;
     public float health = 100.0f;
     public bool isDead = false;
+    public bool isInvis = true;
 
     void Start() {
         Reset();
@@ -37,7 +38,7 @@ public class PlayerHP : MonoBehaviourPun {
 
     [PunRPC]
     private void SetHealth(float damage) {
-        if (photonView.IsMine == true)
+        if (!isInvis && photonView.IsMine == true)
         {
             health -= damage;
         }
@@ -56,6 +57,17 @@ public class PlayerHP : MonoBehaviourPun {
             {
                 isDead = true;
             }
+        }
+    }
+
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info) {
+        if (stream.IsWriting) {
+            stream.SendNext(isDead);
+            stream.SendNext(isInvis);
+        }
+        else {
+            isDead = (bool) stream.ReceiveNext();
+            isInvis = (bool) stream.ReceiveNext();
         }
     }
 }

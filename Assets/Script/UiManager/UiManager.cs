@@ -23,7 +23,6 @@ public class UiManager : MonoBehaviourPun , IPunObservable
     private GameManager gm;
     private Gun gun;
 
-    public bool istimeCheck = true;
     public bool isShopDown = false;
     public bool isGameStart = false;
 
@@ -39,13 +38,15 @@ public class UiManager : MonoBehaviourPun , IPunObservable
             roundText.text = "Waiting for players... (1/2)";
         }
 
-        if (istimeCheck == true && isGameStart == true) {
-            Breaktime();
+        if (isGameStart) {
+            if (gm.isRestTime) {
+                Breaktime();
+            }
+            else {
+                GamePlayTime();
+            }
         }
-        else if (isGameStart == true && istimeCheck == false) {
-            GamePlayTime();
-        }
-        else if (isGameStart == false) {
+        else {
             PlayerWaitingTime();
         }
 
@@ -55,11 +56,11 @@ public class UiManager : MonoBehaviourPun , IPunObservable
             {
                 GameStartButton(true);
             }
-           gm.RoundTextUpdata();
         }
 
         ShopUiDown();
         updateMoneyAmount();
+        gm.RoundTextUpdate();
     }
 
     private void ShopUiDown() {
@@ -84,8 +85,12 @@ public class UiManager : MonoBehaviourPun , IPunObservable
     {
         if (isGameStart == false)
         {
-           isGameStart = true;
-           GameStartButton(false);
+            gm.isRestTime = false;
+            isGameStart = true;
+
+            gm.EnemySpawn();
+
+            GameStartButton(false);
         }
     }
     public void Breaktime()

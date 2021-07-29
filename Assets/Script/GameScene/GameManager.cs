@@ -1,9 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
+using System.Security.Cryptography;
+
 using Cinemachine;
-using UnityEngine.UI;
+
 using Photon.Pun;
+
+using UnityEngine;
+using UnityEngine.UI;
 
 
 public class GameManager : MonoBehaviourPun, IPunObservable {
@@ -14,27 +18,29 @@ public class GameManager : MonoBehaviourPun, IPunObservable {
     private Transform playerSpawnPoint;
     private UiManager ui;
 
-    private bool isSpawnPlayer;
+    /*private bool isSpawnPlayer;
     private bool isSpawnZombie;
-    private bool nextGame;
     private bool gameOver;
 
     private int getCoin;
-    private int zombieCount = 10;
-    private int zombieSpawnCount;
+    private int zombieCount = 10;*/
 
     public CinemachineVirtualCamera camSet;
     public List<Transform> zombieSpawnPoint = new List<Transform>();
     public GameObject gameStartButton;
 
     public bool isPlayerSpawn = true;
-    public bool isPlayerDead;
+    public bool isPlayerDead = false;
     public bool isShowDebugGUI = false;
+    public bool isRestTime = false;
 
-    public int Round = 1;
+    public int round = 1;
     public int money = 1000;
+    public int zombieSpawnCount;
 
-    //개발자 전용 무기 하나 제작 
+    public float restTime = 1f;
+
+    int deadCount;
 
     void Start()
     {
@@ -46,15 +52,14 @@ public class GameManager : MonoBehaviourPun, IPunObservable {
 
     void Update()
     {
-     
-        State();
+        CheckRemainZombies();
+        onGameOver();
         DeadCam();
-
     }
 
-    public void RoundTextUpdata()
+    public void RoundTextUpdate()
     {
-        roundText.text = "Round : " + Round;
+        roundText.text = "Round : " + round;
     }
 
     private void SpawnSet()
@@ -92,34 +97,60 @@ public class GameManager : MonoBehaviourPun, IPunObservable {
             }
         }
     }
-    private void State()
-    {
 
+    private void CheckRemainZombies() {
+        if (PhotonNetwork.IsMasterClient && ui.isGameStart && !isRestTime && zombieSpawnCount <= 0) {
+            Debug.LogWarning("쉬는시간 시작!");
+
+            if (!isRestTime) {
+                isRestTime = true;
+                StartCoroutine("RestTime");
+            }
+        }
     }
 
-    private void EnemySpawn()
+    IEnumerator RestTime() {
+        Debug.LogWarning(restTime + "초간 휴식을 취합니다.");
+
+        yield return new WaitForSecondsRealtime(restTime);
+        isRestTime = false;
+
+        round++;
+        Debug.LogWarning("현재 라운드 수 : " + round);
+
+        EnemySpawn();
+    }
+
+    public void EnemySpawn()
     {
-        if (PhotonNetwork.IsMasterClient == false || PhotonNetwork.IsConnected == false)
+        if (PhotonNetwork.IsMasterClient == false && PhotonNetwork.IsConnected == false)
         {
             return;
         }
-        if (nextGame == true)
+        if (!isRestTime && PhotonNetwork.IsMasterClient)
         {
-            zombieSpawnCount = zombieCount * Round;
+            Debug.LogWarning("쉬는시간 종료!");
+
+            zombieSpawnCount = 1; // zombieCount * Round;
             StartCoroutine("Enemy_Spawn");
         }
     }
 
     private IEnumerator Enemy_Spawn()
     {
-        for (int i = 0; i >= zombieSpawnCount; i++)
+        Debug.Log("Start coroutine");
+
+        for (int i = 0; i < zombieSpawnCount; i++)
         {
             yield return new WaitForSeconds(0.8f);
+
             int temp = Random.Range(1, 6);
-            int transTemp = Random.Range(1, 5);
+            int transTemp = Random.Range(0, 4);
+
             ZombieSpawn(temp, transTemp);
         }
-        isSpawnZombie = true;
+
+        // isSpawnZombie = true;
     }
 
     private void ZombieSpawn(int spawnNum, int transTemp)
@@ -138,7 +169,23 @@ public class GameManager : MonoBehaviourPun, IPunObservable {
         }
     }
 
- 
+    private void onGameOver() {
+        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+
+        for (int i = 0; i < players.Length; i++) {
+            if (players[i].GetComponent<PlayerHP>().isDead && photonView.IsMine) {
+                deadCount++;
+
+                isPlayerDead = true;
+            }
+        }
+
+        if (deadCount >= players.Length && isPlayerDead) {
+            isPlayerDead = false;
+
+            // 게임오버 화면 띄우기
+        }
+    }
 
     public void addMoney(int amount) {
         if (PhotonNetwork.IsConnected) {
@@ -158,10 +205,18 @@ public class GameManager : MonoBehaviourPun, IPunObservable {
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info) {
         if (stream.IsWriting) {
+            stream.SendNext(round);
             stream.SendNext(money);
+            stream.SendNext(deadCount);
+
+            stream.SendNext(isRestTime);
         }
         else {
+            round = (int) stream.ReceiveNext();
             money = (int) stream.ReceiveNext();
+            deadCount = (int) stream.ReceiveNext();
+
+            isRestTime = (bool) stream.ReceiveNext();
         }
     }
 }

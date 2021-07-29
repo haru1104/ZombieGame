@@ -52,8 +52,13 @@ public class DebugManager : MonoBehaviour {
         }
 
         if (GUI.Button(new Rect(30, allBtn, 230, 40), "라운드 상태 전환")) {
-            uiManager.istimeCheck = !uiManager.istimeCheck;
-            Debug.LogWarning("[Debug:All] 플레이어의 라운드 대기 상태를 " + uiManager.istimeCheck + "(으)로 변경하였습니다.");
+            gameManager.isRestTime = !gameManager.isRestTime;
+            Debug.LogWarning("[Debug:All] 플레이어의 라운드 대기 상태를 " + (gameManager.isRestTime ? "쉬는시간" : "게임 중") + "(으)로 변경하였습니다.");
+
+            if (!uiManager.isGameStart) {
+                uiManager.OnClickStartButton();
+                Debug.LogWarning("[Debug:All] 게임 시작상태가 아니여서 게임을 시작상태로 변경하였습니다.");
+            }
         }
 
         if (GUI.Button(new Rect(30, allBtn + 50, 230, 40), "돈 추가")) {

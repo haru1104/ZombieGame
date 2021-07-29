@@ -27,7 +27,7 @@ public class ZombieAttack : MonoBehaviour {
         if (gm != null)
         {
             //기본 데미지 * 라운드 수
-            attackDamage = attackDamage * gm.Round;
+            attackDamage = attackDamage * gm.round;
         }
         else
         {

@@ -8,8 +8,8 @@ using Photon.Realtime;
 public class PlayerHP : MonoBehaviourPun {
     private int attackDamage;
     private Animator ani;
-
     public float health = 100.0f;
+    public bool isDead = false;
 
     void Start() {
         Reset();
@@ -17,6 +17,7 @@ public class PlayerHP : MonoBehaviourPun {
 
     void Update() {
         HPCheck();
+        photonView.RPC("HpCheck", RpcTarget.AllBuffered);
     }
 
     private void Reset() {
@@ -41,11 +42,16 @@ public class PlayerHP : MonoBehaviourPun {
             health -= damage;
         }
     }
+    [PunRPC]
     public void HPCheck()
     {
         if (health <= 0 )
         {
             ani.SetBool("Dead",true);
+            if (photonView.IsMine == true)
+            {
+                isDead = true;
+            }
         }
     }
 }

@@ -48,6 +48,8 @@ public class GameManager : MonoBehaviourPun, IPunObservable {
     {
      
         State();
+        DeadCam();
+
     }
 
     public void RoundTextUpdata()
@@ -65,7 +67,26 @@ public class GameManager : MonoBehaviourPun, IPunObservable {
         isPlayerSpawn = true;
         ui.AttackButton();
     }
+    private void DeadCam()
+    {
+        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
 
+        for (int i = 0; i < players.Length; i++)
+        {
+            if (players[i].GetPhotonView().IsMine == true && players[i].GetComponent<PlayerHP>().isDead == true)
+            {
+                for (int x = 0; x < players.Length; x++)
+                {
+                    if (players[x].GetPhotonView().IsMine == false && players[x].GetComponent<PlayerHP>().isDead == false)
+                    {
+                        camSet.Follow = players[x].transform;
+                        camSet.LookAt = players[x].transform;
+                    }
+                }
+            }
+        }
+    }
+    
     private void State()
     {
 

@@ -14,6 +14,8 @@ public class UiManager : MonoBehaviourPun , IPunObservable
     public GameObject hpBar;
     public GameObject shopInven;
     public GameObject startButton;
+    public GameObject Gameover;
+
 
     public Text roundText;
     public Text moneyText;
@@ -31,6 +33,7 @@ public class UiManager : MonoBehaviourPun , IPunObservable
         itemSpawn = GameObject.Find("ItemSpawn").GetComponent<ItemSpawn>();
         gunFireButton = GameObject.Find("AttackButton").GetComponent<Button>();
         gm = GameObject.Find("GameManager").GetComponent<GameManager>();
+        Gameover.SetActive(false);   
     }
 
     private void Update() {

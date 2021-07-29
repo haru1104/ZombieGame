@@ -2675,7 +2675,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   health: 0
   isDead: 0
-  isInvis: 1
+  isInvis: 0
 --- !u!114 &925816529606070818
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2695,6 +2695,7 @@ MonoBehaviour:
   OwnershipTransfer: 0
   observableSearch: 2
   ObservedComponents:
+  - {fileID: 1440474093}
   - {fileID: 4265602973369905816}
   - {fileID: 7925986163619711712}
   sceneViewId: 0

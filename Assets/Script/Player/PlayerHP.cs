@@ -10,7 +10,7 @@ public class PlayerHP : MonoBehaviourPun, IPunObservable {
     private Animator ani;
     public float health = 100.0f;
     public bool isDead = false;
-    public bool isInvis = true;
+    public bool isInvis = false;
 
     void Start() {
         Reset();

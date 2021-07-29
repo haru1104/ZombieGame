@@ -52,7 +52,9 @@ public abstract class Zombie : MonoBehaviourPunCallbacks {
         GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
 
         for (int i = 0; i < players.Length; i++) {
-            playerTr.Add(players[i].transform);
+            if (!players[i].GetComponent<PlayerHP>().isDead) {
+                playerTr.Add(players[i].transform);
+            }
         }
     }
 

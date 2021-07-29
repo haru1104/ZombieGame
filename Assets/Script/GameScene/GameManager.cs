@@ -170,17 +170,19 @@ public class GameManager : MonoBehaviourPun, IPunObservable {
     }
 
     private void onGameOver() {
+        int _deadCount = 0;
+
         GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
 
         for (int i = 0; i < players.Length; i++) {
-            if (players[i].GetComponent<PlayerHP>().isDead && photonView.IsMine) {
-                deadCount++;
+            if (players[i].GetComponent<PlayerHP>().isDead) {
+                _deadCount++;
 
                 isPlayerDead = true;
             }
         }
 
-        if (deadCount >= players.Length && isPlayerDead) {
+        if (_deadCount == players.Length && isPlayerDead) {
             isPlayerDead = false;
 
             // 게임오버 화면 띄우기

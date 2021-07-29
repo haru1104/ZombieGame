@@ -16,8 +16,8 @@ public class PlayerHP : MonoBehaviourPun {
     }
 
     void Update() {
-        HPCheck();
-        photonView.RPC("HpCheck", RpcTarget.AllBuffered);
+       // HPCheck();
+        photonView.RPC("HPCheck", RpcTarget.AllBuffered);
     }
 
     private void Reset() {

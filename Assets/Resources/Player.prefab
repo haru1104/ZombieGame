@@ -2674,6 +2674,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 0
+  isDead: 0
 --- !u!114 &925816529606070818
 MonoBehaviour:
   m_ObjectHideFlags: 0

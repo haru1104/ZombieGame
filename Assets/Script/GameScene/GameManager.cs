@@ -84,9 +84,14 @@ public class GameManager : MonoBehaviourPun, IPunObservable {
                     }
                 }
             }
+            if (players[i].GetPhotonView().IsMine == true && players[i].GetComponent<PlayerHP>().isDead == false)
+            {
+                camSet.Follow = players[i].transform;
+                camSet.LookAt = players[i].transform;
+                players[i].GetComponent<Animator>().SetBool("Dead", false);
+            }
         }
     }
-    
     private void State()
     {
 

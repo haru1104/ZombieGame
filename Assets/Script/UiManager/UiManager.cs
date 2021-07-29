@@ -116,12 +116,28 @@ public class UiManager : MonoBehaviourPun , IPunObservable
 
     public void OnClickBarrel()
     {
-        itemSpawn.Barrel();
+        if (gm.money >=700)
+        {
+            itemSpawn.Barrel();
+        }
+        else
+        {
+            return;
+        }
+        
     }
 
     public void OnClickBarricade()
     {
-        itemSpawn.Barricade();
+        if (gm.money >= 500)
+        {
+            itemSpawn.Barricade();
+        }
+        else
+        {
+            return;
+        }
+        
     }
 
     public void AttackButton()

@@ -9,13 +9,13 @@ public class ItemSpawn : MonoBehaviourPun
 {
     private GameObject obstacle;
     private GameObject player;
-
+    private GameManager gm;
     public GameObject barricade;
     public GameObject barrel;
 
     private void Start()
     {
-        
+        gm = GameObject.Find("GameManager").GetComponent<GameManager>();
     }
 
     public void Barricade()
@@ -47,7 +47,7 @@ public class ItemSpawn : MonoBehaviourPun
                         player = players[i];
 
                         obstacle.GetComponent<Barricade>().SetPosition(player.transform.position, player.transform.rotation);
-
+                        gm.removeMoney(500);
                         break;
                     }
                 }
@@ -62,7 +62,7 @@ public class ItemSpawn : MonoBehaviourPun
                         player = players[i];
 
                         obstacle.GetComponent<Barrel>().SetPosition(player.transform.position, player.transform.rotation);
-
+                        gm.removeMoney(700);
                         break;
                     }
                 }

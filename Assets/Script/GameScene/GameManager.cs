@@ -125,7 +125,7 @@ public class GameManager : MonoBehaviourPun, IPunObservable {
     }
 
     public void addMoney(int amount) {
-        if (PhotonNetwork.IsMasterClient && PhotonNetwork.IsConnected) {
+        if (PhotonNetwork.IsConnected) {
             money += amount;
         }
 
@@ -133,7 +133,7 @@ public class GameManager : MonoBehaviourPun, IPunObservable {
     }
 
     public void removeMoney(int amount) {
-        if (PhotonNetwork.IsMasterClient && PhotonNetwork.IsConnected) {
+        if (PhotonNetwork.IsConnected) {
             money -= amount;
         }
 

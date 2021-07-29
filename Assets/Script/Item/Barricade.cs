@@ -11,7 +11,7 @@ public class Barricade : MonoBehaviourPun {
 
     private bool isSetted = false;
     private bool isDestory = false;
-
+    public int PurchaseCost = 500;
     public float health = 100.0f;
 
     void Start() {

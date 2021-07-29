@@ -161,6 +161,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4772eddc3e96a446ab428860b7792cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  PurchaseCost: 500
   health: 100
 --- !u!54 &-6966893097396839368
 Rigidbody:

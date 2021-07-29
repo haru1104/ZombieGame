@@ -11,7 +11,7 @@ public class Barrel : MonoBehaviourPun {
 
     private bool isSetted = false;
     private bool isDestory = false;
-
+    public int PurchaseCost = 700;
     public ParticleSystem explosion;
 
     public float health = 100.0f;

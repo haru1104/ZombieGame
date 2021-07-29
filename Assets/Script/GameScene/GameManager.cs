@@ -46,17 +46,11 @@ public class GameManager : MonoBehaviourPun, IPunObservable {
 
     void Update()
     {
-        if (PhotonNetwork.CurrentRoom.PlayerCount >= 2) {
-            if (PhotonNetwork.IsMasterClient == true)
-            {
-                ui.GameStartButton(true);
-            }
-            RoundTextUpdata();
-        }
+     
         State();
     }
 
-    private void RoundTextUpdata()
+    public void RoundTextUpdata()
     {
         roundText.text = "Round : " + Round;
     }
@@ -118,11 +112,7 @@ public class GameManager : MonoBehaviourPun, IPunObservable {
         }
     }
 
-    public void OnClickStartButton() {
-        if (ui.isGameStart == false) {
-            ui.isGameStart = true;
-        }
-    }
+ 
 
     public void addMoney(int amount) {
         if (PhotonNetwork.IsConnected) {

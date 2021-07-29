@@ -49,6 +49,15 @@ public class UiManager : MonoBehaviourPun , IPunObservable
             PlayerWaitingTime();
         }
 
+        if (PhotonNetwork.CurrentRoom.PlayerCount >= 2 && isGameStart == false)
+        {
+            if (PhotonNetwork.IsMasterClient == true)
+            {
+                GameStartButton(true);
+            }
+           gm.RoundTextUpdata();
+        }
+
         ShopUiDown();
         updateMoneyAmount();
     }
@@ -71,7 +80,14 @@ public class UiManager : MonoBehaviourPun , IPunObservable
             destoryButton.SetActive(false);
         }
     }
-
+    public void OnClickStartButton()
+    {
+        if (isGameStart == false)
+        {
+           isGameStart = true;
+           GameStartButton(false);
+        }
+    }
     public void Breaktime()
     {
         attackButton.SetActive(false);

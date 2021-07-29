@@ -42,12 +42,16 @@ public class PlayerHP : MonoBehaviourPun {
             health -= damage;
         }
     }
+    
     [PunRPC]
     public void HPCheck()
     {
         if (health <= 0 )
         {
-            ani.SetBool("Dead",true);
+            if (ani != null) {
+                ani.SetBool("Dead", true);
+            }
+            
             if (photonView.IsMine == true)
             {
                 isDead = true;

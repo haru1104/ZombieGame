@@ -11,7 +11,7 @@ public class UiManager : MonoBehaviourPun , IPunObservable
     public GameObject shopButton;
     public GameObject destoryButton;
     public GameObject installButton;
-    public GameObject hpBar;
+    //public GameObject hpBar;
     public GameObject shopInven;
     public GameObject startButton;
     public GameObject Gameover;
@@ -101,14 +101,14 @@ public class UiManager : MonoBehaviourPun , IPunObservable
         attackButton.SetActive(false);
         shopButton.SetActive(true);
 
-        hpBar.SetActive(false);
+       // hpBar.SetActive(false);
     }
 
     public void GamePlayTime()
     {
         shopButton.SetActive(false);
         attackButton.SetActive(true);
-        hpBar.SetActive(true);
+       // hpBar.SetActive(true);
     }
 
     public void GameStartButton(bool temp)
@@ -120,7 +120,7 @@ public class UiManager : MonoBehaviourPun , IPunObservable
     {
         attackButton.SetActive(false);
         shopButton.SetActive(false);
-        hpBar.SetActive(false);
+      //  hpBar.SetActive(false);
     }
 
     public void ShopOnclick()

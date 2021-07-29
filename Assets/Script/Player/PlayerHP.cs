@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using Photon.Pun;
 using Photon.Realtime;
 
@@ -8,22 +9,32 @@ using Photon.Realtime;
 public class PlayerHP : MonoBehaviourPun, IPunObservable {
     private int attackDamage;
     private Animator ani;
+    private Image hpBar;
     public float health = 100.0f;
     public bool isDead = false;
     public bool isInvis = false;
 
     void Start() {
-        Reset();
+        Reset_();
     }
 
     void Update() {
        // HPCheck();
         photonView.RPC("HPCheck", RpcTarget.AllBuffered);
+
+        if (photonView.IsMine == true)
+        {
+            hpBar.fillAmount = health / 100;
+        }
     }
 
-    private void Reset() {
+    private void Reset_() {
         health = 100.0f;
         ani = GetComponent<Animator>();
+        if (photonView.IsMine)
+        {
+            hpBar = GameObject.Find("Hp_Bar").GetComponent<Image>();
+        }
     }
 
     public void playDamagedAnimation() {
@@ -57,6 +68,19 @@ public class PlayerHP : MonoBehaviourPun, IPunObservable {
             {
                 isDead = true;
             }
+        }
+    }
+    public void NextRound()
+    {
+        if (photonView.IsMine == true)
+        {
+            health = 100;
+            if (isDead == true)
+            {
+                isDead = false;
+                ani.SetBool("Dead", false);
+            }
+            
         }
     }
 

@@ -18,12 +18,12 @@ public class GameManager : MonoBehaviourPun, IPunObservable {
     private Transform playerSpawnPoint;
     private UiManager ui;
 
-    /*private bool isSpawnPlayer;
+    private bool isSpawnPlayer;
     private bool isSpawnZombie;
     private bool gameOver;
 
     private int getCoin;
-    private int zombieCount = 10;*/
+    private int zombieCount = 10;
 
     public CinemachineVirtualCamera camSet;
     public List<Transform> zombieSpawnPoint = new List<Transform>();
@@ -109,9 +109,13 @@ public class GameManager : MonoBehaviourPun, IPunObservable {
         }
     }
 
-    IEnumerator RestTime() {
+    IEnumerator RestTime() { // 다음 라운드 시작시 적용
         Debug.LogWarning(restTime + "초간 휴식을 취합니다.");
-
+        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+        for (int i = 0; i < players.Length; i++)
+        {
+            players[i].GetComponent<PlayerHP>().NextRound();
+        }
         yield return new WaitForSecondsRealtime(restTime);
         isRestTime = false;
 
@@ -131,7 +135,7 @@ public class GameManager : MonoBehaviourPun, IPunObservable {
         {
             Debug.LogWarning("쉬는시간 종료!");
 
-            zombieSpawnCount = 1; // zombieCount * Round;
+            zombieSpawnCount = zombieCount * round;
             StartCoroutine("Enemy_Spawn");
         }
     }
@@ -150,7 +154,7 @@ public class GameManager : MonoBehaviourPun, IPunObservable {
             ZombieSpawn(temp, transTemp);
         }
 
-        // isSpawnZombie = true;
+         isSpawnZombie = true;
     }
 
     private void ZombieSpawn(int spawnNum, int transTemp)
@@ -186,6 +190,8 @@ public class GameManager : MonoBehaviourPun, IPunObservable {
             isPlayerDead = false;
 
             // 게임오버 화면 띄우기
+
+            ui.Gameover.SetActive(true);
         }
     }
 

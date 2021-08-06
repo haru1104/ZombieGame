@@ -857,9 +857,9 @@ MonoBehaviour:
   shopButton: {fileID: 27064394}
   destoryButton: {fileID: 1255771713}
   installButton: {fileID: 1102109191}
-  hpBar: {fileID: 458233433}
   shopInven: {fileID: 536103811}
   startButton: {fileID: 1198874168}
+  Gameover: {fileID: 2018375981}
   roundText: {fileID: 125815992}
   moneyText: {fileID: 1213002849}
   isShopDown: 0
@@ -2504,7 +2504,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: 0.0018310547, y: 16}
+  m_AnchoredPosition: {x: 0.001953125, y: 16}
   m_SizeDelta: {x: 0, y: 315.9119}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &343275769
@@ -3390,7 +3390,7 @@ GameObject:
   - component: {fileID: 497593646}
   m_Layer: 5
   m_Name: Hp_Bar
-  m_TagString: Untagged
+  m_TagString: PlayerHP
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -12285,7 +12285,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1982308155
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12548,7 +12548,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.00012207031, y: -0.000061035156}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2018375983

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 
 using Photon.Pun;
 
+using UnityEditor.SearchService;
+
 using UnityEngine;
 using UnityEngine.UI;
 public class UiManager : MonoBehaviourPun , IPunObservable
@@ -16,17 +18,18 @@ public class UiManager : MonoBehaviourPun , IPunObservable
     public GameObject startButton;
     public GameObject Gameover;
 
-
     public Text roundText;
     public Text moneyText;
+
+    public bool isShopDown = false;
+    public bool isGameStart = false;
 
     private ItemSpawn itemSpawn;
     private Button gunFireButton;
     private GameManager gm;
     private Gun gun;
 
-    public bool isShopDown = false;
-    public bool isGameStart = false;
+    private string obstacleType = "None";
 
     private void Start()
     {
@@ -130,7 +133,12 @@ public class UiManager : MonoBehaviourPun , IPunObservable
 
     public void OnClickInstall()
     {
-        itemSpawn.IsInstall();
+        if (obstacleType == "None") {
+            return;
+        }
+        else {
+            itemSpawn.IsInstall();
+        }
     }
 
     public void OnClickCancel()
@@ -142,10 +150,12 @@ public class UiManager : MonoBehaviourPun , IPunObservable
     {
         if (gm.money >=700)
         {
+            obstacleType = "Barrel";
             itemSpawn.Barrel();
         }
         else
         {
+            obstacleType = "None";
             return;
         }
         
@@ -155,10 +165,12 @@ public class UiManager : MonoBehaviourPun , IPunObservable
     {
         if (gm.money >= 500)
         {
+            obstacleType = "Barricade";
             itemSpawn.Barricade();
         }
         else
         {
+            obstacleType = "None";
             return;
         }
         
@@ -184,10 +196,12 @@ public class UiManager : MonoBehaviourPun , IPunObservable
         if (stream.IsWriting)
         {
             stream.SendNext(isGameStart);
+            stream.SendNext(obstacleType);
         }
         else
         {
             isGameStart = (bool) stream.ReceiveNext();
+            obstacleType = (string) stream.ReceiveNext();
         }
     }
 }

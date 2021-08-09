@@ -28,6 +28,7 @@ public class GameManager : MonoBehaviourPun, IPunObservable {
     public CinemachineVirtualCamera camSet;
     public List<Transform> zombieSpawnPoint = new List<Transform>();
     public GameObject gameStartButton;
+    private GameObject timer;
 
     public bool isPlayerSpawn = true;
     public bool isPlayerDead = false;
@@ -46,6 +47,7 @@ public class GameManager : MonoBehaviourPun, IPunObservable {
     {
         roundText = GameObject.Find("RoundText").GetComponent<Text>();
         ui = GameObject.Find("GamePlayUi").GetComponent<UiManager>();
+        timer = GameObject.Find("Timer");
         ui.GameStartButton(false); 
         SpawnSet();
     }
@@ -101,7 +103,7 @@ public class GameManager : MonoBehaviourPun, IPunObservable {
     private void CheckRemainZombies() {
         if (PhotonNetwork.IsMasterClient && ui.isGameStart && !isRestTime && zombieSpawnCount <= 0) {
             Debug.LogWarning("쉬는시간 시작!");
-
+            timer.SetActive(true);
             if (!isRestTime) {
                 isRestTime = true;
                 StartCoroutine("RestTime");

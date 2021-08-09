@@ -19,7 +19,6 @@ public class GameManager : MonoBehaviourPun, IPunObservable {
     private UiManager ui;
 
     private bool isSpawnPlayer;
-    private bool isSpawnZombie;
     private bool gameOver;
 
     private int getCoin;
@@ -28,7 +27,7 @@ public class GameManager : MonoBehaviourPun, IPunObservable {
     public CinemachineVirtualCamera camSet;
     public List<Transform> zombieSpawnPoint = new List<Transform>();
     public GameObject gameStartButton;
-    private GameObject timer;
+    public GameObject timer;
 
     public bool isPlayerSpawn = true;
     public bool isPlayerDead = false;
@@ -43,29 +42,28 @@ public class GameManager : MonoBehaviourPun, IPunObservable {
 
     int deadCount;
 
-    void Start()
-    {
+    void Start() {
         roundText = GameObject.Find("RoundText").GetComponent<Text>();
         ui = GameObject.Find("GamePlayUi").GetComponent<UiManager>();
-        timer = GameObject.Find("Timer");
-        ui.GameStartButton(false); 
+        ui.GameStartButton(false);
         SpawnSet();
     }
 
-    void Update()
-    {
+    void Update() {
+        if (!ui.isGameStart) {
+            timer.SetActive(false);
+        }
+
         CheckRemainZombies();
         onGameOver();
         DeadCam();
     }
 
-    public void RoundTextUpdate()
-    {
+    public void RoundTextUpdate() {
         roundText.text = "Round : " + round;
     }
 
-    private void SpawnSet()
-    {
+    private void SpawnSet() {
         playerSpawnPoint = GameObject.Find("PlayerSpawnPosition").GetComponent<Transform>();
         player = PhotonNetwork.Instantiate("Player", playerSpawnPoint.position, Quaternion.identity);
         viewId = player.GetPhotonView().ViewID;
@@ -74,25 +72,19 @@ public class GameManager : MonoBehaviourPun, IPunObservable {
         isPlayerSpawn = true;
         ui.AttackButton();
     }
-    private void DeadCam()
-    {
+    private void DeadCam() {
         GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
 
-        for (int i = 0; i < players.Length; i++)
-        {
-            if (players[i].GetPhotonView().IsMine == true && players[i].GetComponent<PlayerHP>().isDead == true)
-            {
-                for (int x = 0; x < players.Length; x++)
-                {
-                    if (players[x].GetPhotonView().IsMine == false && players[x].GetComponent<PlayerHP>().isDead == false)
-                    {
+        for (int i = 0; i < players.Length; i++) {
+            if (players[i].GetPhotonView().IsMine == true && players[i].GetComponent<PlayerHP>().isDead == true) {
+                for (int x = 0; x < players.Length; x++) {
+                    if (players[x].GetPhotonView().IsMine == false && players[x].GetComponent<PlayerHP>().isDead == false) {
                         camSet.Follow = players[x].transform;
                         camSet.LookAt = players[x].transform;
                     }
                 }
             }
-            if (players[i].GetPhotonView().IsMine == true && players[i].GetComponent<PlayerHP>().isDead == false)
-            {
+            if (players[i].GetPhotonView().IsMine == true && players[i].GetComponent<PlayerHP>().isDead == false) {
                 camSet.Follow = players[i].transform;
                 camSet.LookAt = players[i].transform;
                 players[i].GetComponent<Animator>().SetBool("Dead", false);
@@ -101,12 +93,16 @@ public class GameManager : MonoBehaviourPun, IPunObservable {
     }
 
     private void CheckRemainZombies() {
-        if (PhotonNetwork.IsMasterClient && ui.isGameStart && !isRestTime && zombieSpawnCount <= 0) {
-            Debug.LogWarning("쉬는시간 시작!");
+        if (ui.isGameStart && !isRestTime && zombieSpawnCount <= 0) {
             timer.SetActive(true);
-            if (!isRestTime) {
-                isRestTime = true;
-                StartCoroutine("RestTime");
+
+            if (PhotonNetwork.IsMasterClient) {
+                Debug.LogWarning("쉬는시간 시작!");
+
+                if (!isRestTime) {
+                    isRestTime = true;
+                    StartCoroutine("RestTime");
+                }
             }
         }
     }
@@ -114,8 +110,7 @@ public class GameManager : MonoBehaviourPun, IPunObservable {
     IEnumerator RestTime() { // 다음 라운드 시작시 적용
         Debug.LogWarning(restTime + "초간 휴식을 취합니다.");
         GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
-        for (int i = 0; i < players.Length; i++)
-        {
+        for (int i = 0; i < players.Length; i++) {
             players[i].GetComponent<PlayerHP>().NextRound();
         }
         yield return new WaitForSecondsRealtime(restTime);
@@ -127,27 +122,27 @@ public class GameManager : MonoBehaviourPun, IPunObservable {
         EnemySpawn();
     }
 
-    public void EnemySpawn()
-    {
-        if (PhotonNetwork.IsMasterClient == false && PhotonNetwork.IsConnected == false)
-        {
+    public void EnemySpawn() {
+        if (PhotonNetwork.IsMasterClient == false && PhotonNetwork.IsConnected == false) {
             return;
         }
-        if (!isRestTime && PhotonNetwork.IsMasterClient)
-        {
-            Debug.LogWarning("쉬는시간 종료!");
 
-            zombieSpawnCount = zombieCount * round;
-            StartCoroutine("Enemy_Spawn");
+        if (!isRestTime) {
+            timer.SetActive(false);
+
+            if (PhotonNetwork.IsMasterClient) {
+                Debug.LogWarning("쉬는시간 종료!");
+
+                zombieSpawnCount = zombieCount * round;
+                StartCoroutine("Enemy_Spawn");
+            }
         }
     }
 
-    private IEnumerator Enemy_Spawn()
-    {
+    private IEnumerator Enemy_Spawn() {
         Debug.Log("Start coroutine");
 
-        for (int i = 0; i < zombieSpawnCount; i++)
-        {
+        for (int i = 0; i < zombieSpawnCount; i++) {
             yield return new WaitForSeconds(0.8f);
 
             int temp = Random.Range(1, 6);
@@ -155,22 +150,16 @@ public class GameManager : MonoBehaviourPun, IPunObservable {
 
             ZombieSpawn(temp, transTemp);
         }
-
-         isSpawnZombie = true;
     }
 
-    private void ZombieSpawn(int spawnNum, int transTemp)
-    {
-        if (spawnNum >= 1 && spawnNum <= 3)
-        {
+    private void ZombieSpawn(int spawnNum, int transTemp) {
+        if (spawnNum >= 1 && spawnNum <= 3) {
             PhotonNetwork.Instantiate("Normal Zombie", zombieSpawnPoint[transTemp].position, Quaternion.identity);
         }
-        else if (spawnNum == 4)
-        {
+        else if (spawnNum == 4) {
             PhotonNetwork.Instantiate("Lite Zombie", zombieSpawnPoint[transTemp].position, Quaternion.identity);
         }
-        else if (spawnNum == 5)
-        {
+        else if (spawnNum == 5) {
             PhotonNetwork.Instantiate("Heavy Zombie", zombieSpawnPoint[transTemp].position, Quaternion.identity);
         }
     }
@@ -218,6 +207,7 @@ public class GameManager : MonoBehaviourPun, IPunObservable {
             stream.SendNext(round);
             stream.SendNext(money);
             stream.SendNext(deadCount);
+            stream.SendNext(zombieSpawnCount);
 
             stream.SendNext(isRestTime);
         }
@@ -225,6 +215,7 @@ public class GameManager : MonoBehaviourPun, IPunObservable {
             round = (int) stream.ReceiveNext();
             money = (int) stream.ReceiveNext();
             deadCount = (int) stream.ReceiveNext();
+            zombieSpawnCount = (int) stream.ReceiveNext();
 
             isRestTime = (bool) stream.ReceiveNext();
         }

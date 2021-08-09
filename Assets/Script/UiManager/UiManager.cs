@@ -3,12 +3,10 @@ using System.Collections.Generic;
 
 using Photon.Pun;
 
-using UnityEditor.SearchService;
-
 using UnityEngine;
 using UnityEngine.UI;
-public class UiManager : MonoBehaviourPun , IPunObservable
-{
+
+public class UiManager : MonoBehaviourPun, IPunObservable {
     public GameObject attackButton;
     public GameObject shopButton;
     public GameObject destoryButton;
@@ -31,12 +29,11 @@ public class UiManager : MonoBehaviourPun , IPunObservable
 
     private string obstacleType = "None";
 
-    private void Start()
-    {
+    private void Start() {
         itemSpawn = GameObject.Find("ItemSpawn").GetComponent<ItemSpawn>();
         gunFireButton = GameObject.Find("AttackButton").GetComponent<Button>();
         gm = GameObject.Find("GameManager").GetComponent<GameManager>();
-        Gameover.SetActive(false);   
+        Gameover.SetActive(false);
     }
 
     private void Update() {
@@ -56,10 +53,8 @@ public class UiManager : MonoBehaviourPun , IPunObservable
             PlayerWaitingTime();
         }
 
-        if (PhotonNetwork.CurrentRoom.PlayerCount >= 2 && isGameStart == false)
-        {
-            if (PhotonNetwork.IsMasterClient == true)
-            {
+        if (PhotonNetwork.CurrentRoom.PlayerCount >= 2 && isGameStart == false) {
+            if (PhotonNetwork.IsMasterClient == true) {
                 GameStartButton(true);
             }
         }
@@ -87,10 +82,8 @@ public class UiManager : MonoBehaviourPun , IPunObservable
             destoryButton.SetActive(false);
         }
     }
-    public void OnClickStartButton()
-    {
-        if (isGameStart == false)
-        {
+    public void OnClickStartButton() {
+        if (isGameStart == false) {
             gm.isRestTime = false;
             isGameStart = true;
 
@@ -99,40 +92,34 @@ public class UiManager : MonoBehaviourPun , IPunObservable
             GameStartButton(false);
         }
     }
-    public void Breaktime()
-    {
+    public void Breaktime() {
         attackButton.SetActive(false);
         shopButton.SetActive(true);
 
-       // hpBar.SetActive(false);
+        // hpBar.SetActive(false);
     }
 
-    public void GamePlayTime()
-    {
+    public void GamePlayTime() {
         shopButton.SetActive(false);
         attackButton.SetActive(true);
-       // hpBar.SetActive(true);
+        // hpBar.SetActive(true);
     }
 
-    public void GameStartButton(bool temp)
-    {
+    public void GameStartButton(bool temp) {
         startButton.SetActive(temp);
     }
 
-    public void PlayerWaitingTime()
-    {
+    public void PlayerWaitingTime() {
         attackButton.SetActive(false);
         shopButton.SetActive(false);
-      //  hpBar.SetActive(false);
+        //  hpBar.SetActive(false);
     }
 
-    public void ShopOnclick()
-    {
+    public void ShopOnclick() {
         isShopDown = !isShopDown;
     }
 
-    public void OnClickInstall()
-    {
+    public void OnClickInstall() {
         if (obstacleType == "None") {
             return;
         }
@@ -141,45 +128,36 @@ public class UiManager : MonoBehaviourPun , IPunObservable
         }
     }
 
-    public void OnClickCancel()
-    {
+    public void OnClickCancel() {
         itemSpawn.IsCancel();
     }
 
-    public void OnClickBarrel()
-    {
-        if (gm.money >=700)
-        {
+    public void OnClickBarrel() {
+        if (gm.money >= 700) {
             obstacleType = "Barrel";
             itemSpawn.Barrel();
         }
-        else
-        {
+        else {
             obstacleType = "None";
             return;
         }
-        
+
     }
 
-    public void OnClickBarricade()
-    {
-        if (gm.money >= 500)
-        {
+    public void OnClickBarricade() {
+        if (gm.money >= 500) {
             obstacleType = "Barricade";
             itemSpawn.Barricade();
         }
-        else
-        {
+        else {
             obstacleType = "None";
             return;
         }
-        
+
     }
 
-    public void AttackButton()
-    {
-        if (gm.isPlayerSpawn == true)
-        {
+    public void AttackButton() {
+        if (gm.isPlayerSpawn == true) {
             Debug.Log(gunFireButton);
 
             gun = GameObject.FindGameObjectWithTag("Player").GetComponentInChildren<Gun>();
@@ -191,15 +169,12 @@ public class UiManager : MonoBehaviourPun , IPunObservable
         moneyText.text = gm.money.ToString();
     }
 
-    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
-    {
-        if (stream.IsWriting)
-        {
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info) {
+        if (stream.IsWriting) {
             stream.SendNext(isGameStart);
             stream.SendNext(obstacleType);
         }
-        else
-        {
+        else {
             isGameStart = (bool) stream.ReceiveNext();
             obstacleType = (string) stream.ReceiveNext();
         }

@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Photon.Pun;
-using Photon.Realtime;
 
 
 public class PlayerHP : MonoBehaviourPun, IPunObservable {
     private int attackDamage;
     private Animator ani;
     private Image hpBar;
+
     public float health = 100.0f;
     public bool isDead = false;
     public bool isInvis = false;
@@ -19,11 +19,9 @@ public class PlayerHP : MonoBehaviourPun, IPunObservable {
     }
 
     void Update() {
-       // HPCheck();
         photonView.RPC("HPCheck", RpcTarget.AllBuffered);
 
-        if (photonView.IsMine == true)
-        {
+        if (photonView.IsMine == true) {
             hpBar.fillAmount = health / 100;
         }
     }
@@ -31,8 +29,7 @@ public class PlayerHP : MonoBehaviourPun, IPunObservable {
     private void Reset_() {
         health = 100.0f;
         ani = GetComponent<Animator>();
-        if (photonView.IsMine)
-        {
+        if (photonView.IsMine) {
             hpBar = GameObject.Find("Hp_Bar").GetComponent<Image>();
         }
     }
@@ -41,46 +38,47 @@ public class PlayerHP : MonoBehaviourPun, IPunObservable {
         ani.SetTrigger("Damage");
     }
 
-  
+
     public void onDamaged(float damage) {
-        photonView.RPC("SetHealth", RpcTarget.AllBuffered,damage);
+        photonView.RPC("SetDamage", RpcTarget.AllBuffered, damage);
         playDamagedAnimation();
     }
 
     [PunRPC]
-    private void SetHealth(float damage) {
-        if (!isInvis && photonView.IsMine == true)
-        {
+    private void SetHealth(float health) {
+        if (photonView.IsMine == true) {
+            this.health = health;
+        }
+    }
+
+    [PunRPC]
+    private void SetDamage(float damage) {
+        if (!isInvis && photonView.IsMine == true) {
             health -= damage;
         }
     }
-    
+
     [PunRPC]
-    public void HPCheck()
-    {
-        if (health <= 0 )
-        {
+    public void HPCheck() {
+        if (health <= 0) {
             if (ani != null) {
                 ani.SetBool("Dead", true);
             }
-            
-            if (photonView.IsMine == true)
-            {
+
+            if (photonView.IsMine == true) {
                 isDead = true;
             }
         }
     }
-    public void NextRound()
-    {
-        if (photonView.IsMine == true)
-        {
-            health = 100;
-            if (isDead == true)
-            {
+    public void NextRound() {
+        if (photonView.IsMine == true) {
+            photonView.RPC("SetHealth", RpcTarget.AllBuffered, 100.0f);
+
+            if (isDead == true) {
                 isDead = false;
                 ani.SetBool("Dead", false);
             }
-            
+
         }
     }
 

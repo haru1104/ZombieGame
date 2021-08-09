@@ -6,8 +6,7 @@ using Photon.Pun;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Gun : MonoBehaviourPun
-{
+public class Gun : MonoBehaviourPun {
     private LineRenderer bulletLineRenderer;
     private SoundManager audioManager;
 
@@ -33,8 +32,7 @@ public class Gun : MonoBehaviourPun
     public float bulletDistance = 50.0f;
     public float lastFireTime;
 
-    private void Awake()
-    {
+    private void Awake() {
         bulletLineRenderer = GetComponent<LineRenderer>();
 
         //사용할 점을 두개로 변경 
@@ -53,7 +51,7 @@ public class Gun : MonoBehaviourPun
     private void Update() {
         updateAmmoStatus();
     }
-  
+
     private void updateAmmoStatus() {
         if (!photonView.IsMine) {
             return;
@@ -78,8 +76,7 @@ public class Gun : MonoBehaviourPun
         }
     }
 
-    private void Shot()
-    {
+    private void Shot() {
         if (!photonView.IsMine) {
             return;
         }
@@ -96,8 +93,7 @@ public class Gun : MonoBehaviourPun
         Vector3 hitPos = new Vector3(0, 0, 0);
         string target = "";
 
-        if (Physics.Raycast(fireEffectTransform.position, fireEffectTransform.forward, out hit, bulletDistance))
-        {
+        if (Physics.Raycast(fireEffectTransform.position, fireEffectTransform.forward, out hit, bulletDistance)) {
             //레이가 어떤 오브젝트에 충돌한 경우 
             _target = hit.collider.gameObject;
             target = _target.tag;
@@ -105,25 +101,22 @@ public class Gun : MonoBehaviourPun
             //맞은위치 저장
             hitPos = hit.point;
         }
-        else
-        {
+        else {
             //레이가 다른 오브젝트와 충돌하지 않았다면 
             //총알이 최대 사정거리까지 날아갔을때의 위치를 저장
             hitPos = fireEffectTransform.position + fireEffectTransform.forward * bulletDistance;
         }
 
-        if (target != null)
-        {
+        if (target != null) {
             audioManager.GunShotSound();
             StartCoroutine(FireGun(hitPos, _target));
         }
 
     }
-  
-       
-   
-    private IEnumerator FireGun(Vector3 pos, GameObject target)
-    {
+
+
+
+    private IEnumerator FireGun(Vector3 pos, GameObject target) {
         muzzleFlashEffect.Play();
 
         bulletLineRenderer.SetPosition(0, fireEffectTransform.position);

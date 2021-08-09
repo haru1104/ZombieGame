@@ -5,41 +5,34 @@ using Photon.Pun;
 
 using UnityEngine;
 
-public class ItemSpawn : MonoBehaviourPun
-{
+public class ItemSpawn : MonoBehaviourPun {
     private GameObject obstacle;
     private GameObject player;
     private GameManager gm;
     public GameObject barricade;
     public GameObject barrel;
 
-    private void Start()
-    {
+    private void Start() {
         gm = GameObject.Find("GameManager").GetComponent<GameManager>();
     }
 
-    public void Barricade()
-    {
-        
+    public void Barricade() {
+
         FindPlayer(GameManager.viewId);
         obstacle = Instantiate(barricade, player.transform.position, Quaternion.identity);
     }
 
-    public void Barrel()
-    {
+    public void Barrel() {
         FindPlayer(GameManager.viewId);
         obstacle = Instantiate(barrel, player.transform.position, Quaternion.identity);
     }
 
-    public void IsInstall()
-    {
-        if (obstacle != null)
-        {
+    public void IsInstall() {
+        if (obstacle != null) {
             Destroy(obstacle);
             GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
 
-            if (obstacle.tag == "Barricade")
-            {
+            if (obstacle.tag == "Barricade") {
                 obstacle = PhotonNetwork.Instantiate("Barricade", player.transform.position, Quaternion.identity);
 
                 for (int i = 0; i < players.Length; i++) {
@@ -53,8 +46,7 @@ public class ItemSpawn : MonoBehaviourPun
                 }
 
             }
-            if (obstacle.tag == "Barrel")
-            {
+            if (obstacle.tag == "Barrel") {
                 obstacle = PhotonNetwork.Instantiate("Barrel", player.transform.position, Quaternion.identity);
 
                 for (int i = 0; i < players.Length; i++) {
@@ -70,10 +62,8 @@ public class ItemSpawn : MonoBehaviourPun
         }
     }
 
-    public void IsCancel()
-    {
-        if (obstacle != null)
-        {
+    public void IsCancel() {
+        if (obstacle != null) {
             Destroy(obstacle.gameObject);
             obstacle = null;
         }

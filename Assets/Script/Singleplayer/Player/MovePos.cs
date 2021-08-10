@@ -39,8 +39,8 @@ namespace haruroad.szd.singleplayer {
         }
         private void MovePosSet()
         {
-            // h = Input.GetAxis("Horizontal");
-            //v = Input.GetAxis("Vertical");
+          //  h = Input.GetAxis("Horizontal");
+          //  v = Input.GetAxis("Vertical");
             movePos = v * transform.forward;
             movePos = movePos.normalized * moveSpeed * Time.deltaTime;
             playerRigid.MovePosition(transform.position + movePos);

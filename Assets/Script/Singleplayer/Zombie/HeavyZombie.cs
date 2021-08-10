@@ -29,6 +29,7 @@ namespace haruroad.szd.singleplayer
             agent.stoppingDistance = stopDistance;
 
             particle = GetComponentInChildren<ParticleSystem>();
+            ani.speed = 2;
         }
     }
 }

@@ -8,7 +8,7 @@ namespace haruroad.szd.singleplayer
     public class Gun : MonoBehaviour
     {
         private LineRenderer bulletLineRenderer;
-        private SoundManager audioManager;
+        public SoundManager audioManager;
 
         private int maxAmmo = 20;
         private int nowAmmo = 20;

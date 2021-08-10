@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 namespace haruroad.szd.singleplayer
 {
-    public class SoundManager : MonoBehaviour
+    public class init : MonoBehaviour
     {
         public AudioSource audioSource;
         public AudioClip buttonClick;

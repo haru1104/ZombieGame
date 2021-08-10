@@ -97,6 +97,12 @@ namespace haruroad.szd.multiplayer {
 
                 timer.SetActive(true);
 
+                GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+
+                for (int i = 0; i < players.Length; i++) {
+                    players[i].GetComponent<PlayerHP>().NextRound();
+                }
+
                 if (PhotonNetwork.IsMasterClient) {
                     Debug.LogWarning("쉬는시간 시작!");
 
@@ -109,40 +115,40 @@ namespace haruroad.szd.multiplayer {
         }
 
         private void killAllZombies() {
-            int count = 0;
+            List<GameObject> dyingZombies = new List<GameObject>();
+            GameObject[] livedZombies = GameObject.FindGameObjectsWithTag("Zombie");
 
-            GameObject[] temp = GameObject.FindGameObjectsWithTag("Zombie");
-
-            for (int i = 0; i < temp.Length; i++) {
-                if (!temp[i].GetComponent<Zombie>().isDead) {
-                    count++;
+            for (int i = 0; i < livedZombies.Length; i++) {
+                if (!livedZombies[i].GetComponent<Zombie>().isDead) {
+                    dyingZombies.Add(livedZombies[i]);
                 }
             }
 
-            GameObject[] livingZombie = new GameObject[count];
-
-            if (livingZombie.Length == 0) {
-                Debug.Log("더 이상 죽일 살아있는 좀비가 존재하지 않습니다.");
+            if (dyingZombies.Count == 0) {
+                Debug.LogError("마스터 클라이언트와 동기화 되지 않은 좀비가 존재하지 않습니다! (아주좋소)");
+                return;
             }
             else {
-                for (int i = 0; i < count; i++) {
-                    if (!livingZombie[i].GetComponent<Zombie>().isDead) {
-                        Destroy(livingZombie[i]);
+                int count = 0;
+
+                if (dyingZombies.Count == count) {
+                    return;
+                }
+                else {
+                    for (int i = 0; i < dyingZombies.Count; i++) {
+                        GameObject temp = dyingZombies[i];
+                        dyingZombies.RemoveAt(i);
+
+                        Destroy(temp);
                     }
                 }
-
-                Debug.LogError("개체수에 포함되지 않았던 좀비 " + count + "마리를 강제로 삭제하였습니다.");
             }
         }
 
         IEnumerator RestTime() {
             Debug.LogWarning(restTime + "초간 휴식을 취합니다.");
-            GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
-            for (int i = 0; i < players.Length; i++) {
-                players[i].GetComponent<PlayerHP>().NextRound();
-            }
+
             yield return new WaitForSecondsRealtime(restTime);
-            isRestTime = false;
 
             round++;
             Debug.LogWarning("현재 라운드 수 : " + round);
@@ -151,6 +157,8 @@ namespace haruroad.szd.multiplayer {
         }
 
         public void EnemySpawn() {
+            isRestTime = false;
+
             if (PhotonNetwork.IsMasterClient == false || PhotonNetwork.IsConnected == false) {
                 return;
             }

@@ -46,14 +46,14 @@ namespace haruroad.szd.multiplayer {
 
         [PunRPC]
         private void SetHealth(float health) {
-            if (photonView.IsMine == true) {
+            if (photonView.IsMine) {
                 this.health = health;
             }
         }
 
         [PunRPC]
         private void SetDamage(float damage) {
-            if (!isInvis && photonView.IsMine == true) {
+            if (!isInvis && photonView.IsMine) {
                 health -= damage;
             }
         }
@@ -72,13 +72,10 @@ namespace haruroad.szd.multiplayer {
         }
         public void NextRound() {
             if (photonView.IsMine == true) {
+                isDead = false;
+                ani.SetBool("Dead", false);
+
                 photonView.RPC("SetHealth", RpcTarget.AllBuffered, 100.0f);
-
-                if (isDead == true) {
-                    isDead = false;
-                    ani.SetBool("Dead", false);
-                }
-
             }
         }
 
@@ -86,10 +83,14 @@ namespace haruroad.szd.multiplayer {
             if (stream.IsWriting) {
                 stream.SendNext(isDead);
                 stream.SendNext(isInvis);
+
+                stream.SendNext(health);
             }
             else {
                 isDead = (bool) stream.ReceiveNext();
                 isInvis = (bool) stream.ReceiveNext();
+
+                health = (float) stream.ReceiveNext();
             }
         }
     }

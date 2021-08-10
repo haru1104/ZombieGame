@@ -45,7 +45,6 @@ namespace haruroad.szd.multiplayer {
 
         public override void OnJoinedRoom() {
             base.OnJoinedRoom();
-            Debug.LogError(prefix + "클라이언트가 '" + PhotonNetwork.CurrentRoom.Name + "' 게임 방에 접속됨");
             ClientCheck();
         }
 
@@ -55,7 +54,7 @@ namespace haruroad.szd.multiplayer {
         }
 
         private void ClientCheck() {
-            Debug.LogError(PhotonNetwork.CurrentRoom.Name);
+            Debug.LogError(prefix + "클라이언트가 '" + PhotonNetwork.CurrentRoom.Name + "' 게임 방에 접속됨");
             PhotonNetwork.LoadLevel("GamePlayScene");
         }
     }

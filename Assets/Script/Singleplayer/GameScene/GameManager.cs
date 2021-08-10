@@ -4,14 +4,14 @@ using UnityEngine;
 using Cinemachine;
 using UnityEngine.UI;
 
-[System.Serializable]
-public class Zombies {
-    public GameObject normal;
-    public GameObject lite;
-    public GameObject heavy;
-}
+namespace haruroad.szd.singleplayer {
+    [System.Serializable]
+    public class Zombies {
+        public GameObject normal;
+        public GameObject lite;
+        public GameObject heavy;
+    }
 
-namespace haruRoad.szd.SinglePlayer {
     public class GameManager : MonoBehaviour
     {
         private CinemachineVirtualCamera camSet;

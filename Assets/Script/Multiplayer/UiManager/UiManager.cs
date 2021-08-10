@@ -6,177 +6,179 @@ using Photon.Pun;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UiManager : MonoBehaviourPun, IPunObservable {
-    public GameObject attackButton;
-    public GameObject shopButton;
-    public GameObject destoryButton;
-    public GameObject installButton;
-    //public GameObject hpBar;
-    public GameObject shopInven;
-    public GameObject startButton;
-    public GameObject Gameover;
+namespace haruroad.szd.multiplayer {
+    public class UiManager : MonoBehaviourPun, IPunObservable {
+        public GameObject attackButton;
+        public GameObject shopButton;
+        public GameObject destoryButton;
+        public GameObject installButton;
+        //public GameObject hpBar;
+        public GameObject shopInven;
+        public GameObject startButton;
+        public GameObject Gameover;
 
-    public Text roundText;
-    public Text moneyText;
+        public Text roundText;
+        public Text moneyText;
 
-    public bool isShopDown = false;
-    public bool isGameStart = false;
+        public bool isShopDown = false;
+        public bool isGameStart = false;
 
-    private ItemSpawn itemSpawn;
-    private Button gunFireButton;
-    private GameManager gm;
-    private Gun gun;
+        private ItemSpawn itemSpawn;
+        private Button gunFireButton;
+        private GameManager gm;
+        private Gun gun;
 
-    private string obstacleType = "None";
+        private string obstacleType = "None";
 
-    private void Start() {
-        itemSpawn = GameObject.Find("ItemSpawn").GetComponent<ItemSpawn>();
-        gunFireButton = GameObject.Find("AttackButton").GetComponent<Button>();
-        gm = GameObject.Find("GameManager").GetComponent<GameManager>();
-        Gameover.SetActive(false);
-    }
-
-    private void Update() {
-        if (PhotonNetwork.CurrentRoom.PlayerCount <= 1) {
-            roundText.text = "Waiting for players... (1/2)";
+        private void Start() {
+            itemSpawn = GameObject.Find("ItemSpawn").GetComponent<ItemSpawn>();
+            gunFireButton = GameObject.Find("AttackButton").GetComponent<Button>();
+            gm = GameObject.Find("GameManager").GetComponent<GameManager>();
+            Gameover.SetActive(false);
         }
 
-        if (isGameStart) {
-            if (gm.isRestTime) {
-                Breaktime();
+        private void Update() {
+            if (PhotonNetwork.CurrentRoom.PlayerCount <= 1) {
+                roundText.text = "Waiting for players... (1/2)";
+            }
+
+            if (isGameStart) {
+                if (gm.isRestTime) {
+                    Breaktime();
+                }
+                else {
+                    GamePlayTime();
+                }
             }
             else {
-                GamePlayTime();
+                PlayerWaitingTime();
+            }
+
+            if (PhotonNetwork.CurrentRoom.PlayerCount >= 2 && isGameStart == false) {
+                if (PhotonNetwork.IsMasterClient == true) {
+                    GameStartButton(true);
+                }
+            }
+
+            ShopUiDown();
+            updateMoneyAmount();
+            gm.RoundTextUpdate();
+        }
+
+        private void ShopUiDown() {
+            // int downSpeed = 10;
+
+            Transform shopTr = shopInven.GetComponent<Transform>();
+            Vector3 targetPos = new Vector3(shopTr.position.x, 735, shopTr.position.z);
+
+            if (isShopDown == true) {
+                shopTr.position = Vector3.MoveTowards(shopTr.position, targetPos, 10);
+                destoryButton.SetActive(true);
+                installButton.SetActive(true);
+            }
+            else {
+                targetPos = new Vector3(shopTr.position.x, 1420, shopTr.position.z);
+                shopTr.position = Vector3.MoveTowards(shopTr.position, targetPos, 10);
+                installButton.SetActive(false);
+                destoryButton.SetActive(false);
             }
         }
-        else {
-            PlayerWaitingTime();
+        public void OnClickStartButton() {
+            if (isGameStart == false) {
+                gm.isRestTime = false;
+                isGameStart = true;
+
+                gm.EnemySpawn();
+
+                GameStartButton(false);
+            }
+        }
+        public void Breaktime() {
+            attackButton.SetActive(false);
+            shopButton.SetActive(true);
+
+            // hpBar.SetActive(false);
         }
 
-        if (PhotonNetwork.CurrentRoom.PlayerCount >= 2 && isGameStart == false) {
-            if (PhotonNetwork.IsMasterClient == true) {
-                GameStartButton(true);
+        public void GamePlayTime() {
+            shopButton.SetActive(false);
+            attackButton.SetActive(true);
+            // hpBar.SetActive(true);
+        }
+
+        public void GameStartButton(bool temp) {
+            startButton.SetActive(temp);
+        }
+
+        public void PlayerWaitingTime() {
+            attackButton.SetActive(false);
+            shopButton.SetActive(false);
+            //  hpBar.SetActive(false);
+        }
+
+        public void ShopOnclick() {
+            isShopDown = !isShopDown;
+        }
+
+        public void OnClickInstall() {
+            if (obstacleType == "None") {
+                return;
+            }
+            else {
+                itemSpawn.IsInstall();
             }
         }
 
-        ShopUiDown();
-        updateMoneyAmount();
-        gm.RoundTextUpdate();
-    }
-
-    private void ShopUiDown() {
-        // int downSpeed = 10;
-
-        Transform shopTr = shopInven.GetComponent<Transform>();
-        Vector3 targetPos = new Vector3(shopTr.position.x, 735, shopTr.position.z);
-
-        if (isShopDown == true) {
-            shopTr.position = Vector3.MoveTowards(shopTr.position, targetPos, 10);
-            destoryButton.SetActive(true);
-            installButton.SetActive(true);
-        }
-        else {
-            targetPos = new Vector3(shopTr.position.x, 1420, shopTr.position.z);
-            shopTr.position = Vector3.MoveTowards(shopTr.position, targetPos, 10);
-            installButton.SetActive(false);
-            destoryButton.SetActive(false);
-        }
-    }
-    public void OnClickStartButton() {
-        if (isGameStart == false) {
-            gm.isRestTime = false;
-            isGameStart = true;
-
-            gm.EnemySpawn();
-
-            GameStartButton(false);
-        }
-    }
-    public void Breaktime() {
-        attackButton.SetActive(false);
-        shopButton.SetActive(true);
-
-        // hpBar.SetActive(false);
-    }
-
-    public void GamePlayTime() {
-        shopButton.SetActive(false);
-        attackButton.SetActive(true);
-        // hpBar.SetActive(true);
-    }
-
-    public void GameStartButton(bool temp) {
-        startButton.SetActive(temp);
-    }
-
-    public void PlayerWaitingTime() {
-        attackButton.SetActive(false);
-        shopButton.SetActive(false);
-        //  hpBar.SetActive(false);
-    }
-
-    public void ShopOnclick() {
-        isShopDown = !isShopDown;
-    }
-
-    public void OnClickInstall() {
-        if (obstacleType == "None") {
-            return;
-        }
-        else {
-            itemSpawn.IsInstall();
-        }
-    }
-
-    public void OnClickCancel() {
-        itemSpawn.IsCancel();
-    }
-
-    public void OnClickBarrel() {
-        if (gm.money >= 700) {
-            obstacleType = "Barrel";
-            itemSpawn.Barrel();
-        }
-        else {
-            obstacleType = "None";
-            return;
+        public void OnClickCancel() {
+            itemSpawn.IsCancel();
         }
 
-    }
+        public void OnClickBarrel() {
+            if (gm.money >= 700) {
+                obstacleType = "Barrel";
+                itemSpawn.Barrel();
+            }
+            else {
+                obstacleType = "None";
+                return;
+            }
 
-    public void OnClickBarricade() {
-        if (gm.money >= 500) {
-            obstacleType = "Barricade";
-            itemSpawn.Barricade();
         }
-        else {
-            obstacleType = "None";
-            return;
+
+        public void OnClickBarricade() {
+            if (gm.money >= 500) {
+                obstacleType = "Barricade";
+                itemSpawn.Barricade();
+            }
+            else {
+                obstacleType = "None";
+                return;
+            }
+
         }
 
-    }
+        public void AttackButton() {
+            if (gm.isPlayerSpawn == true) {
+                Debug.Log(gunFireButton);
 
-    public void AttackButton() {
-        if (gm.isPlayerSpawn == true) {
-            Debug.Log(gunFireButton);
-
-            gun = GameObject.FindGameObjectWithTag("Player").GetComponentInChildren<Gun>();
-            gunFireButton.onClick.AddListener(gun.Fire);
+                gun = GameObject.FindGameObjectWithTag("Player").GetComponentInChildren<Gun>();
+                gunFireButton.onClick.AddListener(gun.Fire);
+            }
         }
-    }
 
-    public void updateMoneyAmount() {
-        moneyText.text = gm.money.ToString();
-    }
-
-    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info) {
-        if (stream.IsWriting) {
-            stream.SendNext(isGameStart);
-            stream.SendNext(obstacleType);
+        public void updateMoneyAmount() {
+            moneyText.text = gm.money.ToString();
         }
-        else {
-            isGameStart = (bool) stream.ReceiveNext();
-            obstacleType = (string) stream.ReceiveNext();
+
+        public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info) {
+            if (stream.IsWriting) {
+                stream.SendNext(isGameStart);
+                stream.SendNext(obstacleType);
+            }
+            else {
+                isGameStart = (bool) stream.ReceiveNext();
+                obstacleType = (string) stream.ReceiveNext();
+            }
         }
     }
 }

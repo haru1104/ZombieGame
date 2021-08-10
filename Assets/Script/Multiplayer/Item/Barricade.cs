@@ -4,66 +4,68 @@ using Photon.Pun;
 
 using UnityEngine;
 
-public class Barricade : MonoBehaviourPun {
-    private Transform playerTr;
-    private Vector3 moveTr;
-    private SoundManager sound;
+namespace haruroad.szd.multiplayer {
+    public class Barricade : MonoBehaviourPun {
+        private Transform playerTr;
+        private Vector3 moveTr;
+        private SoundManager sound;
 
-    private bool isSetted = false;
-    private bool isDestory = false;
-    public int PurchaseCost = 500;
-    public float health = 100.0f;
+        private bool isSetted = false;
+        private bool isDestory = false;
+        public int PurchaseCost = 500;
+        public float health = 100.0f;
 
-    void Start() {
-        sound = GameObject.FindGameObjectWithTag("Audio").GetComponent<SoundManager>();
-    }
-
-    void Update() {
-        MoveSet();
-        DamageCheck();
-    }
-
-    private void MoveSet() {
-        FindPlayer(GameManager.viewId);
-
-        if (!isSetted) {
-            moveTr = playerTr.position;
-            transform.position = moveTr ;
-            transform.rotation = playerTr.rotation;
+        void Start() {
+            sound = GameObject.FindGameObjectWithTag("Audio").GetComponent<SoundManager>();
         }
-    }
 
-    private void DamageCheck() {
-        if (health <= 0 && isSetted && !isDestory) {
-            isDestory = true;
-            Destroy(gameObject);
+        void Update() {
+            MoveSet();
+            DamageCheck();
         }
-    }
 
-    public void onDamaged(float damage) {
-        sound.BarricadeDamage();
-        health -= damage;
-    }
+        private void MoveSet() {
+            FindPlayer(GameManager.viewId);
 
-    public void SetPosition(Vector3 position, Quaternion rotation) {
-        transform.position = position;
-        transform.rotation = rotation;
+            if (!isSetted) {
+                moveTr = playerTr.position;
+                transform.position = moveTr;
+                transform.rotation = playerTr.rotation;
+            }
+        }
 
-        photonView.RPC("SetPositionRpc", RpcTarget.AllBuffered);
-    }
+        private void DamageCheck() {
+            if (health <= 0 && isSetted && !isDestory) {
+                isDestory = true;
+                Destroy(gameObject);
+            }
+        }
 
-    [PunRPC]
-    private void SetPositionRpc() {
-        isSetted = true;
-        GetComponent<BoxCollider>().isTrigger = false;
-    }
+        public void onDamaged(float damage) {
+            sound.BarricadeDamage();
+            health -= damage;
+        }
 
-    private void FindPlayer(int playerId) {
-        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+        public void SetPosition(Vector3 position, Quaternion rotation) {
+            transform.position = position;
+            transform.rotation = rotation;
 
-        for (int i = 0; i < players.Length; i++) {
-            if (players[i].GetComponent<PhotonView>().ViewID == playerId) {
-                playerTr = players[i].transform;
+            photonView.RPC("SetPositionRpc", RpcTarget.AllBuffered);
+        }
+
+        [PunRPC]
+        private void SetPositionRpc() {
+            isSetted = true;
+            GetComponent<BoxCollider>().isTrigger = false;
+        }
+
+        private void FindPlayer(int playerId) {
+            GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+
+            for (int i = 0; i < players.Length; i++) {
+                if (players[i].GetComponent<PhotonView>().ViewID == playerId) {
+                    playerTr = players[i].transform;
+                }
             }
         }
     }

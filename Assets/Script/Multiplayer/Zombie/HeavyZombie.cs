@@ -1,30 +1,32 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 
 using UnityEngine;
 using UnityEngine.AI;
 
-public class HeavyZombie : Zombie {
-    float stopDistance = 1.5f;
+namespace haruroad.szd.multiplayer {
+    public class HeavyZombie : Zombie {
+        float stopDistance = 1.5f;
 
-    public float speed = 4f;
+        public float speed = 4f;
 
-    public override void onSpawn() {
-        type = ZombieType.Normal;
+        public override void onSpawn() {
+            type = ZombieType.Normal;
 
-        health = 200f;
+            health = 200f;
 
-        attackDamage = 15f;
-        attackSpeed = 3.2f;
+            attackDamage = 15f;
+            attackSpeed = 3.2f;
 
-        moveSpeed = speed;
+            moveSpeed = speed;
 
-        ani = GetComponent<Animator>();
+            ani = GetComponent<Animator>();
 
-        agent = GetComponent<NavMeshAgent>();
-        agent.speed = moveSpeed;
-        agent.stoppingDistance = stopDistance;
+            agent = GetComponent<NavMeshAgent>();
+            agent.speed = moveSpeed;
+            agent.stoppingDistance = stopDistance;
 
-        particle = GetComponentInChildren<ParticleSystem>();
+            particle = GetComponentInChildren<ParticleSystem>();
+        }
     }
 }

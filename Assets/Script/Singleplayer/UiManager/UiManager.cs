@@ -14,6 +14,7 @@ namespace haruroad.szd.singleplayer
         public GameObject hpBer;
         public GameObject shopInven;
         private ItemSpawn itemSpawn;
+        private GameObject deadScreen;
         private Button gunFireButton;
         private GameManager gm;
         private Gun gun;
@@ -26,6 +27,9 @@ namespace haruroad.szd.singleplayer
             itemSpawn = GameObject.Find("ItemSpawn").GetComponent<ItemSpawn>();
             gunFireButton = GameObject.Find("AttackButton").GetComponent<Button>();
             gm = GameObject.Find("GameManager").GetComponent<GameManager>();
+            deadScreen = GameObject.Find("DeadScreen");
+            deadScreen.SetActive(false);
+
         }
         public void Breaktime()
         {

@@ -164,6 +164,7 @@ GameObject:
   - component: {fileID: 3531412094570814932}
   - component: {fileID: 6003710683132130513}
   - component: {fileID: 5228417403057722445}
+  - component: {fileID: 2098207641}
   m_Layer: 0
   m_Name: AttackRange
   m_TagString: Untagged
@@ -209,6 +210,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4403d67593a465d4b8760eb0b65399f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &2098207641
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 863831060131120691}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1ab470313e2ac3f41872f09da7974f64, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &939989494928347718
@@ -1847,10 +1860,7 @@ GameObject:
   - component: {fileID: 129207400626482989}
   - component: {fileID: 3278455847798644057}
   - component: {fileID: 6889152967766096684}
-  - component: {fileID: 807349122102507342}
-  - component: {fileID: 7153157078174605289}
-  - component: {fileID: -2435241118813234505}
-  - component: {fileID: -4439995223460087966}
+  - component: {fileID: 437905474}
   m_Layer: 0
   m_Name: Heavy Zombie 1
   m_TagString: Zombie
@@ -1890,7 +1900,7 @@ Animator:
   m_Controller: {fileID: 9100000, guid: 642a090f361af87459b9cd181ce2ce31, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
-  m_ApplyRootMotion: 1
+  m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
@@ -1932,7 +1942,7 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!114 &807349122102507342
+--- !u!114 &437905474
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1941,80 +1951,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 8280681985055354509}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: df4bb2478f46a594eaa8e3dbcfc45e0e, type: 3}
+  m_Script: {fileID: 11500000, guid: aa5e3f00ac9a77144877000bc5169f05, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 1.5
---- !u!114 &7153157078174605289
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8280681985055354509}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ObservedComponentsFoldoutOpen: 1
-  Group: 0
-  prefixField: -1
-  Synchronization: 3
-  OwnershipTransfer: 0
-  observableSearch: 2
-  ObservedComponents:
-  - {fileID: -2435241118813234505}
-  - {fileID: -4439995223460087966}
-  sceneViewId: 0
-  InstantiationId: 0
-  isRuntimeInstantiated: 0
---- !u!114 &-2435241118813234505
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8280681985055354509}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9b8c4a61274f60b4ea5fb4299cfdbf14, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ShowLayerWeightsInspector: 1
-  ShowParameterInspector: 1
-  m_SynchronizeParameters:
-  - Type: 4
-    SynchronizeType: 2
-    Name: Run
-  - Type: 9
-    SynchronizeType: 0
-    Name: Attack
-  - Type: 9
-    SynchronizeType: 0
-    Name: Die 1
-  - Type: 9
-    SynchronizeType: 0
-    Name: Die 2
-  m_SynchronizeLayers:
-  - SynchronizeType: 2
-    LayerIndex: 0
---- !u!114 &-4439995223460087966
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8280681985055354509}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_SynchronizePosition: 1
-  m_SynchronizeRotation: 1
-  m_SynchronizeScale: 1
-  m_UseLocal: 1
+  speed: 4
 --- !u!1 &8493663379740420271
 GameObject:
   m_ObjectHideFlags: 0

@@ -23,7 +23,7 @@ namespace haruroad.szd.singleplayer {
         private Transform playerSpawnPoint;
         private UiManager ui;
         private int getCoin;
-
+        private int zombieSpawnCount;
         private bool isSpawnPlayer;
         private bool isSpawnZombie;
         public bool isPlayerSpawn = true;
@@ -44,7 +44,8 @@ namespace haruroad.szd.singleplayer {
         {
             roundText = GameObject.Find("RoundText").GetComponent<Text>();
             ui = GameObject.Find("GamePlayUi").GetComponent<UiManager>();
-            Spawn();
+            
+            PlayerSpawn();
         }
 
         // Update is called once per frame
@@ -55,13 +56,12 @@ namespace haruroad.szd.singleplayer {
         private void RoundTextUpdata()
         {
             roundText.text = "Round : " + Round;
+
         }
         
-
-        private void Spawn()
+        private void PlayerSpawn()
         {
             playerSpawnPoint = GameObject.Find("PlayerSpawnPosition").GetComponent<Transform>();
-            
             ui.AttackButton();
         }
         private void GetPoint()
@@ -77,5 +77,7 @@ namespace haruroad.szd.singleplayer {
                 //게임오버시 초기값으로 돌려주는 루틴 제작
             }
         }
+
+
     }
-};
+}

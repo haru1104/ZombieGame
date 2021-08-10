@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 6787311725869576495}
   - component: {fileID: 6787311725869576494}
   - component: {fileID: 6787311725869576489}
+  - component: {fileID: 836959858}
   m_Layer: 0
   m_Name: AttackRange
   m_TagString: Untagged
@@ -56,6 +57,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4403d67593a465d4b8760eb0b65399f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &836959858
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6787311725869576492}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1ab470313e2ac3f41872f09da7974f64, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &6787311726178143745
@@ -1907,10 +1920,7 @@ GameObject:
   - component: {fileID: 6787311726168669571}
   - component: {fileID: 6787311724689148641}
   - component: {fileID: 6787311724689148640}
-  - component: {fileID: 316983466147000287}
-  - component: {fileID: -6546659935713285938}
-  - component: {fileID: -4194507843196197044}
-  - component: {fileID: 6475941320379433350}
+  - component: {fileID: 168597411}
   m_Layer: 0
   m_Name: Normal Zombie 1
   m_TagString: Zombie
@@ -1996,7 +2006,7 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!114 &316983466147000287
+--- !u!114 &168597411
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2005,80 +2015,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 6787311726178144169}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 518d6759c6abc63429d91e07912be869, type: 3}
+  m_Script: {fileID: 11500000, guid: 57ba293a96200ed4eaafc6231efc5764, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 2.5
---- !u!114 &-6546659935713285938
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6787311726178144169}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ObservedComponentsFoldoutOpen: 1
-  Group: 0
-  prefixField: -1
-  Synchronization: 3
-  OwnershipTransfer: 0
-  observableSearch: 0
-  ObservedComponents:
-  - {fileID: -4194507843196197044}
-  - {fileID: 6475941320379433350}
-  sceneViewId: 0
-  InstantiationId: 0
-  isRuntimeInstantiated: 0
---- !u!114 &-4194507843196197044
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6787311726178144169}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_SynchronizePosition: 1
-  m_SynchronizeRotation: 1
-  m_SynchronizeScale: 1
-  m_UseLocal: 1
---- !u!114 &6475941320379433350
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6787311726178144169}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9b8c4a61274f60b4ea5fb4299cfdbf14, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ShowLayerWeightsInspector: 1
-  ShowParameterInspector: 1
-  m_SynchronizeParameters:
-  - Type: 4
-    SynchronizeType: 2
-    Name: Run
-  - Type: 9
-    SynchronizeType: 0
-    Name: Attack
-  - Type: 9
-    SynchronizeType: 0
-    Name: Die 1
-  - Type: 9
-    SynchronizeType: 0
-    Name: Die 2
-  m_SynchronizeLayers:
-  - SynchronizeType: 2
-    LayerIndex: 0
+  speed: 5.5
 --- !u!1 &6787311726178144171
 GameObject:
   m_ObjectHideFlags: 0

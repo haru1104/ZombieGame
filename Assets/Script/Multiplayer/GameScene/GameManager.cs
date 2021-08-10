@@ -1,6 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Security.Cryptography;
+using System.Text.RegularExpressions;
 
 using Cinemachine;
 
@@ -94,6 +94,8 @@ public class GameManager : MonoBehaviourPun, IPunObservable {
 
     private void CheckRemainZombies() {
         if (ui.isGameStart && !isRestTime && zombieSpawnCount <= 0) {
+            killAllZombies();
+
             timer.SetActive(true);
 
             if (PhotonNetwork.IsMasterClient) {
@@ -107,7 +109,29 @@ public class GameManager : MonoBehaviourPun, IPunObservable {
         }
     }
 
-    IEnumerator RestTime() { // 다음 라운드 시작시 적용
+    private void killAllZombies() {
+        GameObject[] remainZombies = GameObject.FindGameObjectsWithTag("Zombie");
+
+        for (int i = 0; i < remainZombies.Length; i++) {
+
+        }
+
+        int length = remainZombies.Length;
+
+        if (length == 0) {
+            Debug.Log("더 이상 죽일 좀비 개체가 존재하지 않습니다.");
+        }
+        else {
+            for (int i = 0; i < length; i++) {
+                
+            }
+
+            zombieSpawnCount = 0;
+            Debug.LogError("클라이언트 측에만 남아있던 좀비 " + length + "마리를 삭제하였습니다.");
+        }
+    }
+
+    IEnumerator RestTime() {
         Debug.LogWarning(restTime + "초간 휴식을 취합니다.");
         GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
         for (int i = 0; i < players.Length; i++) {
@@ -123,7 +147,7 @@ public class GameManager : MonoBehaviourPun, IPunObservable {
     }
 
     public void EnemySpawn() {
-        if (PhotonNetwork.IsMasterClient == false && PhotonNetwork.IsConnected == false) {
+        if (PhotonNetwork.IsMasterClient == false || PhotonNetwork.IsConnected == false) {
             return;
         }
 
@@ -140,8 +164,6 @@ public class GameManager : MonoBehaviourPun, IPunObservable {
     }
 
     private IEnumerator Enemy_Spawn() {
-        Debug.Log("Start coroutine");
-
         for (int i = 0; i < zombieSpawnCount; i++) {
             yield return new WaitForSeconds(0.8f);
 
@@ -179,8 +201,6 @@ public class GameManager : MonoBehaviourPun, IPunObservable {
 
         if (_deadCount == players.Length && isPlayerDead) {
             isPlayerDead = false;
-
-            // 게임오버 화면 띄우기
 
             ui.Gameover.SetActive(true);
         }

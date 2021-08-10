@@ -31,7 +31,6 @@ public abstract class Zombie : MonoBehaviourPunCallbacks {
 
     public Color zombieColor { get; set; }
 
-    // MonobehaviorPunCallbacks.OnEnable() 이 public virtual로 정의되어 있어서 override 진행.
     public override void OnEnable() {
         isDead = false;
         manager = GameObject.Find("GameManager").GetComponent<GameManager>();

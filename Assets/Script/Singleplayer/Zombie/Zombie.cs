@@ -18,6 +18,8 @@ namespace haruroad.szd.singleplayer
         protected NavMeshAgent agent;
         protected ParticleSystem particle;
 
+        GameManager gm;
+
         public bool isDead { get; protected set; }
 
         public ZombieType type { get; set; }
@@ -32,7 +34,7 @@ namespace haruroad.szd.singleplayer
         void OnEnable()
         {
             isDead = false;
-
+             gm = GameObject.Find("GameManager").GetComponent<GameManager>();
             onSpawn();
         }
 
@@ -170,6 +172,7 @@ namespace haruroad.szd.singleplayer
                 ani.SetTrigger("Die " + Random.Range(1, 3));
 
                 Invoke("destroyBody", 3f);
+
             }
         }
 
@@ -177,7 +180,8 @@ namespace haruroad.szd.singleplayer
         {
             if (isDead)
             {
-                Destroy(gameObject);
+                //Destroy(gameObject);
+                gm.ZombieDead();
             }
         }
 

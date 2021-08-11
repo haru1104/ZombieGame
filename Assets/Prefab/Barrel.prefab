@@ -141,7 +141,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 048a6993d81de5c46811efe697879822, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isSetted: 0
+  isSetted: 1
   PurchaseCost: 700
   explosion: {fileID: 4258896205553290849}
   health: 100

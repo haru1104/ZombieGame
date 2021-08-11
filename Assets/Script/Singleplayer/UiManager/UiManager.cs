@@ -13,13 +13,14 @@ namespace haruroad.szd.singleplayer
         public GameObject installButton;
         public GameObject hpBer;
         public GameObject shopInven;
+        public GameObject Timer;
         private ItemSpawn itemSpawn;
         private GameObject deadScreen;
         private Button gunFireButton;
         private GameManager gm;
         private Gun gun;
 
-        public bool istimeCheck = true;
+        public bool istimeCheck = false;
         public bool isShopDown = false;
 
         private void Start()
@@ -29,18 +30,22 @@ namespace haruroad.szd.singleplayer
             gm = GameObject.Find("GameManager").GetComponent<GameManager>();
             deadScreen = GameObject.Find("DeadScreen");
             deadScreen.SetActive(false);
-
+            
+        }
+        public void DeadCheck()
+        {
+            deadScreen.SetActive(true);
         }
         public void Breaktime()
         {
             attackButton.SetActive(false);
             shopButton.SetActive(true);
-
+            Timer.SetActive(true);
             hpBer.SetActive(false);
         }
         public void GamePlayTime()
         {
-
+            Timer.SetActive(false);
             shopButton.SetActive(false);
             attackButton.SetActive(true);
             hpBer.SetActive(true);

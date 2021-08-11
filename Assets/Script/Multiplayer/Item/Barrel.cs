@@ -5,7 +5,7 @@ using Photon.Pun;
 using UnityEngine;
 
 namespace haruroad.szd.multiplayer {
-    public class Barrel : MonoBehaviourPun {
+    public class Barrel : MonoBehaviourPun, IPunObservable {
         private Transform playerTr;
         private SoundManager sound;
         private List<Zombie> zombies = new List<Zombie>();
@@ -83,7 +83,7 @@ namespace haruroad.szd.multiplayer {
             }
 
             yield return new WaitForSeconds(1.0f);
-            Destroy(gameObject);
+            PhotonNetwork.Destroy(gameObject);
         }
 
         private void FindPlayer(int playerId) {
@@ -93,6 +93,15 @@ namespace haruroad.szd.multiplayer {
                 if (players[i].GetComponent<PhotonView>().ViewID == playerId) {
                     playerTr = players[i].transform;
                 }
+            }
+        }
+
+        public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info) {
+            if (stream.IsWriting) {
+                stream.SendNext(health);
+            }
+            else {
+                health = (float) stream.ReceiveNext();
             }
         }
     }

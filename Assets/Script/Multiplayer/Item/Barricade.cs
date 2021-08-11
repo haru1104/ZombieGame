@@ -37,7 +37,7 @@ namespace haruroad.szd.multiplayer {
         private void DamageCheck() {
             if (health <= 0 && isSetted && !isDestory) {
                 isDestory = true;
-                Destroy(gameObject);
+                PhotonNetwork.Destroy(gameObject);
             }
         }
 

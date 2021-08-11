@@ -121,12 +121,7 @@ namespace haruroad.szd.multiplayer {
         }
 
         public void OnClickInstall() {
-            if (obstacleType == "None") {
-                return;
-            }
-            else {
-                itemSpawn.IsInstall();
-            }
+            itemSpawn.IsInstall();
         }
 
         public void OnClickCancel() {
@@ -134,27 +129,11 @@ namespace haruroad.szd.multiplayer {
         }
 
         public void OnClickBarrel() {
-            if (gm.money >= 700) {
-                obstacleType = "Barrel";
-                itemSpawn.Barrel();
-            }
-            else {
-                obstacleType = "None";
-                return;
-            }
-
+            itemSpawn.Barrel();
         }
 
         public void OnClickBarricade() {
-            if (gm.money >= 500) {
-                obstacleType = "Barricade";
-                itemSpawn.Barricade();
-            }
-            else {
-                obstacleType = "None";
-                return;
-            }
-
+            itemSpawn.Barricade();
         }
 
         public void AttackButton() {

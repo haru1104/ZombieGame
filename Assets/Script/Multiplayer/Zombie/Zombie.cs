@@ -152,7 +152,7 @@ namespace haruroad.szd.multiplayer {
             if (!isDead && health <= 0) {
                 isDead = true;
                 manager.addMoney(100);
-                manager.zombieSpawnCount--;
+                manager.remainZombieCount--;
 
                 agent.isStopped = true;
                 agent.enabled = false;

@@ -21,7 +21,8 @@ namespace haruroad.szd.multiplayer {
         private bool gameOver;
 
         private int getCoin;
-        private int zombieCount = 10;
+        private int defaultZombieCount = 10;
+        private int zombieSpawnCount = 0;
 
         public CinemachineVirtualCamera camSet;
         public List<Transform> zombieSpawnPoint = new List<Transform>();
@@ -35,7 +36,7 @@ namespace haruroad.szd.multiplayer {
 
         public int round = 1;
         public int money = 1000;
-        public int zombieSpawnCount;
+        public int remainZombieCount = 0;
 
         public float restTime = 1f;
 
@@ -56,6 +57,8 @@ namespace haruroad.szd.multiplayer {
             CheckRemainZombies();
             onGameOver();
             DeadCam();
+
+            Debug.LogError("현재 남은 좀비 수 : " + remainZombieCount + " / " + zombieSpawnCount);
         }
 
         public void RoundTextUpdate() {
@@ -92,7 +95,7 @@ namespace haruroad.szd.multiplayer {
         }
 
         private void CheckRemainZombies() {
-            if (ui.isGameStart && !isRestTime && zombieSpawnCount <= 0) {
+            if (ui.isGameStart && !isRestTime && remainZombieCount <= 0) {
                 killAllZombies();
 
                 timer.SetActive(true);
@@ -124,8 +127,7 @@ namespace haruroad.szd.multiplayer {
                 }
             }
 
-            if (dyingZombies.Count == 0) {
-                Debug.LogError("마스터 클라이언트와 동기화 되지 않은 좀비가 존재하지 않습니다! (아주좋소)");
+            if (dyingZombies.Count <= 0) {
                 return;
             }
             else {
@@ -169,7 +171,8 @@ namespace haruroad.szd.multiplayer {
                 if (PhotonNetwork.IsMasterClient) {
                     Debug.LogWarning("쉬는시간 종료!");
 
-                    zombieSpawnCount = zombieCount * round;
+                    zombieSpawnCount = defaultZombieCount * round;
+                    remainZombieCount = zombieSpawnCount;
                     StartCoroutine("Enemy_Spawn");
                 }
             }
@@ -200,6 +203,7 @@ namespace haruroad.szd.multiplayer {
 
         private void onGameOver() {
             int _deadCount = 0;
+            isPlayerDead = false;
 
             GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
 
@@ -240,6 +244,7 @@ namespace haruroad.szd.multiplayer {
                 stream.SendNext(money);
                 stream.SendNext(deadCount);
                 stream.SendNext(zombieSpawnCount);
+                stream.SendNext(remainZombieCount);
 
                 stream.SendNext(isRestTime);
             }
@@ -248,6 +253,7 @@ namespace haruroad.szd.multiplayer {
                 money = (int) stream.ReceiveNext();
                 deadCount = (int) stream.ReceiveNext();
                 zombieSpawnCount = (int) stream.ReceiveNext();
+                remainZombieCount = (int) stream.ReceiveNext();
 
                 isRestTime = (bool) stream.ReceiveNext();
             }

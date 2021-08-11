@@ -152,7 +152,8 @@ namespace haruroad.szd.multiplayer {
             if (!isDead && health <= 0) {
                 isDead = true;
                 manager.addMoney(100);
-                manager.remainZombieCount--;
+                // manager.removeZombieCount();
+                Debug.LogWarning(gameObject.name + "(ID: " + photonView.ViewID + ") is dead.");
 
                 agent.isStopped = true;
                 agent.enabled = false;

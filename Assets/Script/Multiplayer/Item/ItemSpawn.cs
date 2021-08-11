@@ -19,11 +19,19 @@ namespace haruroad.szd.multiplayer {
         }
 
         public void Barricade() {
+            if (gm.money < barricade.GetComponent<Barricade>().PurchaseCost) {
+                return;
+            }
+
             FindPlayer(GameManager.viewId);
             obstacle = Instantiate(barricade, player.transform.position, Quaternion.identity);
         }
 
         public void Barrel() {
+            if (gm.money < barrel.GetComponent<Barrel>().PurchaseCost) {
+                return;
+            }
+
             FindPlayer(GameManager.viewId);
             obstacle = Instantiate(barrel, player.transform.position, Quaternion.identity);
         }
@@ -47,9 +55,8 @@ namespace haruroad.szd.multiplayer {
                             break;
                         }
                     }
-
                 }
-                if (obstacle.tag == "Barrel") {
+                else if (obstacle.tag == "Barrel") {
                     obstacle = PhotonNetwork.Instantiate("Barrel", player.transform.position, Quaternion.identity);
 
                     for (int i = 0; i < players.Length; i++) {

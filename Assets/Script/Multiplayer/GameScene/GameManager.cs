@@ -17,12 +17,10 @@ namespace haruroad.szd.multiplayer {
         private Transform playerSpawnPoint;
         private UiManager ui;
 
+        private GameObject[] zombies;
+
         private bool isSpawnPlayer;
         private bool gameOver;
-
-        private int getCoin;
-        private int defaultZombieCount = 10;
-        private int zombieSpawnCount = 0;
 
         public CinemachineVirtualCamera camSet;
         public List<Transform> zombieSpawnPoint = new List<Transform>();
@@ -36,7 +34,6 @@ namespace haruroad.szd.multiplayer {
 
         public int round = 1;
         public int money = 1000;
-        public int remainZombieCount = 0;
 
         public float restTime = 1f;
 
@@ -54,15 +51,47 @@ namespace haruroad.szd.multiplayer {
                 timer.SetActive(false);
             }
 
+            if (!isRestTime) {
+                timer.SetActive(false);
+            }
+
             CheckRemainZombies();
             onGameOver();
             DeadCam();
-
-            Debug.LogError("현재 남은 좀비 수 : " + remainZombieCount + " / " + zombieSpawnCount);
         }
 
         public void RoundTextUpdate() {
             roundText.text = "Round : " + round;
+        }
+
+        public int getLiveZombieCount() {
+            int count = 0;
+
+            if (zombies.Length != 0) {
+                for (int i = 0; i < zombies.Length; i++) {
+                    if (!zombies[i].GetComponent<Zombie>().isDead) {
+                        count++;
+                    }
+                }
+            }
+
+            return count;
+        }
+
+        private int getSpawnRemainCount() {
+            int count = 0;
+
+            if (zombies.Length != 0) {
+                for (int i = 0; i < zombies.Length; i++) {
+                    if (zombies[i] != null) {
+                        count++;
+                    }
+                }
+
+                return zombies.Length - count;
+            }
+
+            return count;
         }
 
         private void SpawnSet() {
@@ -95,10 +124,11 @@ namespace haruroad.szd.multiplayer {
         }
 
         private void CheckRemainZombies() {
-            if (ui.isGameStart && !isRestTime && remainZombieCount <= 0) {
+            if (ui.isGameStart && !isRestTime && getLiveZombieCount() <= 0) {
                 killAllZombies();
 
                 timer.SetActive(true);
+                Debug.LogWarning("쉬는 시간 시작!");
 
                 GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
 
@@ -107,8 +137,6 @@ namespace haruroad.szd.multiplayer {
                 }
 
                 if (PhotonNetwork.IsMasterClient) {
-                    Debug.LogWarning("쉬는시간 시작!");
-
                     if (!isRestTime) {
                         isRestTime = true;
                         StartCoroutine("RestTime");
@@ -166,20 +194,18 @@ namespace haruroad.szd.multiplayer {
             }
 
             if (!isRestTime) {
+                ui.isShopDown = false;
                 timer.SetActive(false);
 
                 if (PhotonNetwork.IsMasterClient) {
-                    Debug.LogWarning("쉬는시간 종료!");
-
-                    zombieSpawnCount = defaultZombieCount * round;
-                    remainZombieCount = zombieSpawnCount;
+                    zombies = new GameObject[10 * round];
                     StartCoroutine("Enemy_Spawn");
                 }
             }
         }
 
         private IEnumerator Enemy_Spawn() {
-            for (int i = 0; i < zombieSpawnCount; i++) {
+            for (int i = 0; i < zombies.Length; i++) {
                 yield return new WaitForSeconds(0.8f);
 
                 int temp = Random.Range(1, 6);
@@ -191,13 +217,16 @@ namespace haruroad.szd.multiplayer {
 
         private void ZombieSpawn(int spawnNum, int transTemp) {
             if (spawnNum >= 1 && spawnNum <= 3) {
-                PhotonNetwork.Instantiate("Normal Zombie", zombieSpawnPoint[transTemp].position, Quaternion.identity);
+                GameObject go = PhotonNetwork.Instantiate("Normal Zombie", zombieSpawnPoint[transTemp].position, Quaternion.identity);
+                zombies[getSpawnRemainCount()] = go;
             }
             else if (spawnNum == 4) {
-                PhotonNetwork.Instantiate("Lite Zombie", zombieSpawnPoint[transTemp].position, Quaternion.identity);
+                GameObject go = PhotonNetwork.Instantiate("Lite Zombie", zombieSpawnPoint[transTemp].position, Quaternion.identity);
+                zombies[getSpawnRemainCount()] = go;
             }
             else if (spawnNum == 5) {
-                PhotonNetwork.Instantiate("Heavy Zombie", zombieSpawnPoint[transTemp].position, Quaternion.identity);
+                GameObject go =PhotonNetwork.Instantiate("Heavy Zombie", zombieSpawnPoint[transTemp].position, Quaternion.identity);
+                zombies[getSpawnRemainCount()] = go;
             }
         }
 
@@ -243,8 +272,6 @@ namespace haruroad.szd.multiplayer {
                 stream.SendNext(round);
                 stream.SendNext(money);
                 stream.SendNext(deadCount);
-                stream.SendNext(zombieSpawnCount);
-                stream.SendNext(remainZombieCount);
 
                 stream.SendNext(isRestTime);
             }
@@ -252,8 +279,6 @@ namespace haruroad.szd.multiplayer {
                 round = (int) stream.ReceiveNext();
                 money = (int) stream.ReceiveNext();
                 deadCount = (int) stream.ReceiveNext();
-                zombieSpawnCount = (int) stream.ReceiveNext();
-                remainZombieCount = (int) stream.ReceiveNext();
 
                 isRestTime = (bool) stream.ReceiveNext();
             }

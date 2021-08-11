@@ -82,7 +82,8 @@ namespace haruroad.szd.multiplayer {
                 zombies[i].onDamaged(100);
             }
 
-            yield return new WaitForSeconds(1.0f);
+            yield return new WaitForSeconds(0.1f);
+            Debug.LogError("혼돈 파괴 망가");
             PhotonNetwork.Destroy(gameObject);
         }
 

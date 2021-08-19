@@ -45,7 +45,7 @@ namespace haruroad.szd.singleplayer
         }
         public void GamePlayTime()
         {
-            Timer.SetActive(false);
+            //Timer.SetActive(false);
             shopButton.SetActive(false);
             attackButton.SetActive(true);
             hpBer.SetActive(true);

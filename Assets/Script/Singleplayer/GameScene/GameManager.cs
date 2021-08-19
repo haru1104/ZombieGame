@@ -74,6 +74,7 @@ namespace haruroad.szd.singleplayer {
                     Round++;
                     
 
+
                 }
                 else if(playerHP.health <= 0)
                 {

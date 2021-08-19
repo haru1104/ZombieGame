@@ -1,18 +1,33 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
-public class Timer : MonoBehaviour
+namespace haruroad.szd.singleplayer
 {
-    // Start is called before the first frame update
-    void Start()
+    public class Timer : MonoBehaviour
     {
-        
-    }
+        private int time = 60;
+        private Text text;
+        // Start is called before the first frame update
+        public void Awake()
+        {
+            text = GetComponent<Text>();
+            time = 60;
+        }
 
-    // Update is called once per frame
-    void Update()
-    {
+        private void Start()
+        {
+            StartCoroutine("StartTime");
+        }
         
+        IEnumerator StartTime()
+        {
+            yield return new WaitForSeconds(1f);
+            time--;
+            text.text = time.ToString(); ;
+            StartCoroutine("StartTime");
+        }
+
     }
 }

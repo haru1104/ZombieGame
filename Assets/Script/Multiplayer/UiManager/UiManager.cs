@@ -12,7 +12,6 @@ namespace haruroad.szd.multiplayer {
         public GameObject shopButton;
         public GameObject destoryButton;
         public GameObject installButton;
-        //public GameObject hpBar;
         public GameObject shopInven;
         public GameObject startButton;
         public GameObject Gameover;
@@ -66,8 +65,6 @@ namespace haruroad.szd.multiplayer {
         }
 
         private void ShopUiDown() {
-            // int downSpeed = 10;
-
             Transform shopTr = shopInven.GetComponent<Transform>();
             Vector3 targetPos = new Vector3(shopTr.position.x, 735, shopTr.position.z);
 
@@ -85,8 +82,8 @@ namespace haruroad.szd.multiplayer {
         }
         public void OnClickStartButton() {
             if (isGameStart == false) {
-                gm.isRestTime = false;
                 isGameStart = true;
+                gm.isRestTime = false;
 
                 gm.EnemySpawn();
 

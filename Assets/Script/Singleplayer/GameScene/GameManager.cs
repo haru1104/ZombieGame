@@ -22,7 +22,7 @@ namespace haruroad.szd.singleplayer {
         private bool isSpawnPlayer;
         private bool isSpawnZombie;
         public bool isPlayerSpawn = true;
-        private bool nextGame=false;
+        public bool nextGame=false;
         private bool gameOver=false;
 
         public List<Transform> zombieSpawnPoint = new List<Transform>();
@@ -48,12 +48,11 @@ namespace haruroad.szd.singleplayer {
         {
             RoundTextUpdata();
             ZombieSpawn();
-            state();
+            State();
         }
         private void RoundTextUpdata()
         {
             roundText.text = "Round : " + Round;
-
         }
         
         private void PlayerSpawn()
@@ -61,7 +60,7 @@ namespace haruroad.szd.singleplayer {
            
             ui.AttackButton();
         }
-        private void state()
+        private void State()
         {
             if (nextGame == false)
             {
@@ -72,8 +71,7 @@ namespace haruroad.szd.singleplayer {
                     nextGame = true;
                     Debug.LogError("다음 라운드");
                     Round++;
-                    
-
+                    nextGame = true;
 
                 }
                 else if(playerHP.health <= 0)
@@ -85,7 +83,7 @@ namespace haruroad.szd.singleplayer {
             }
             else if (nextGame == true)
             {
-
+                ui.istimeCheck = true;
             }
 
         }

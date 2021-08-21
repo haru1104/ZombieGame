@@ -49,6 +49,7 @@ namespace haruroad.szd.singleplayer
             shopButton.SetActive(false);
             attackButton.SetActive(true);
             hpBer.SetActive(true);
+            Timer.SetActive(false);
         }
 
         public void ShopOnclick()

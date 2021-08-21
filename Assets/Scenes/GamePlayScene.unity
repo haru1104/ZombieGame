@@ -12842,22 +12842,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ec36c358df43874980b17edc1940e79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  camSet: {fileID: 1235164122}
   zombieSpawnPoint:
   - {fileID: 1620358958}
   - {fileID: 1778471550}
   - {fileID: 1309117996}
   - {fileID: 966616555}
-  gameStartButton: {fileID: 1198874168}
   timer: {fileID: 1184915151}
-  isPlayerSpawn: 1
-  isPlayerDead: 0
-  isShowDebugGUI: 0
-  isRestTime: 0
-  round: 1
-  money: 1000
-  remainZombieCount: 0
-  restTime: 60
+  playerSpawnPoint: {fileID: 916737839}
+  ui: {fileID: 90284806}
+  vcam: {fileID: 1235164122}
 --- !u!4 &2042766904
 Transform:
   m_ObjectHideFlags: 0

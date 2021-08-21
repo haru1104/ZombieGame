@@ -21,7 +21,7 @@ namespace haruroad.szd.multiplayer {
         void Update() {
             photonView.RPC("HPCheck", RpcTarget.AllBuffered);
 
-            if (photonView.IsMine == true) {
+            if (photonView.IsMine) {
                 hpBar.fillAmount = health / 100;
             }
         }
@@ -65,16 +65,22 @@ namespace haruroad.szd.multiplayer {
                     ani.SetBool("Dead", true);
                 }
 
-                if (photonView.IsMine == true) {
+                if (photonView.IsMine) {
                     isDead = true;
+                }
+            }
+            else {
+                if (ani != null) {
+                    ani.SetBool("Dead", false);
+                }
+
+                if (photonView.IsMine) {
+                    isDead = false;
                 }
             }
         }
         public void NextRound() {
             if (photonView.IsMine == true) {
-                isDead = false;
-                ani.SetBool("Dead", false);
-
                 photonView.RPC("SetHealth", RpcTarget.AllBuffered, 100.0f);
             }
         }

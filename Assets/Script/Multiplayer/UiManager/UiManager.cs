@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 using Photon.Pun;
+using Photon.Pun.Demo.Cockpit;
 
 using UnityEngine;
 using UnityEngine.UI;
@@ -37,31 +38,37 @@ namespace haruroad.szd.multiplayer {
         }
 
         private void Update() {
+            GameStartButton(false);
+
             if (PhotonNetwork.CurrentRoom.PlayerCount <= 1) {
+                PlayerWaitingTime();
+
+                if (isGameStart) {
+                    gm.onForceStopGame();
+                    isGameStart = false;
+                }
+
                 roundText.text = "Waiting for players... (1/2)";
             }
-
-            if (isGameStart) {
-                if (gm.isRestTime) {
-                    Breaktime();
-                }
-                else {
-                    GamePlayTime();
-                }
-            }
             else {
-                PlayerWaitingTime();
-            }
+                if (!isGameStart) {
+                    if (PhotonNetwork.IsMasterClient) {
+                        GameStartButton(true);
+                    }
+                    else {
+                        PlayerWaitingTime();
+                    }
 
-            if (PhotonNetwork.CurrentRoom.PlayerCount >= 2 && isGameStart == false) {
-                if (PhotonNetwork.IsMasterClient == true) {
-                    GameStartButton(true);
+                    roundText.text = "All players connected";
+                }
+
+                if (isGameStart) {
+                    updateRoundText();
                 }
             }
 
             ShopUiDown();
             updateMoneyAmount();
-            gm.RoundTextUpdate();
         }
 
         private void ShopUiDown() {
@@ -81,26 +88,21 @@ namespace haruroad.szd.multiplayer {
             }
         }
         public void OnClickStartButton() {
-            if (isGameStart == false) {
+            if (!isGameStart) {
                 isGameStart = true;
-                gm.isRestTime = false;
-
-                gm.EnemySpawn();
+                gm.onInitGameStart();
 
                 GameStartButton(false);
             }
         }
-        public void Breaktime() {
+        public void RestTime() {
             attackButton.SetActive(false);
             shopButton.SetActive(true);
-
-            // hpBar.SetActive(false);
         }
 
         public void GamePlayTime() {
             shopButton.SetActive(false);
             attackButton.SetActive(true);
-            // hpBar.SetActive(true);
         }
 
         public void GameStartButton(bool temp) {
@@ -110,7 +112,6 @@ namespace haruroad.szd.multiplayer {
         public void PlayerWaitingTime() {
             attackButton.SetActive(false);
             shopButton.SetActive(false);
-            //  hpBar.SetActive(false);
         }
 
         public void ShopOnclick() {
@@ -134,16 +135,24 @@ namespace haruroad.szd.multiplayer {
         }
 
         public void AttackButton() {
-            if (gm.isPlayerSpawn == true) {
-                Debug.Log(gunFireButton);
+            if (gm.hasLocalPlayerSpawned() == true) {
+                GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
 
-                gun = GameObject.FindGameObjectWithTag("Player").GetComponentInChildren<Gun>();
-                gunFireButton.onClick.AddListener(gun.Fire);
+                for (int i = 0; i < players.Length; i++) {
+                    if (players[i].GetPhotonView().IsMine) {
+                        gun = players[i].GetComponentInChildren<Gun>();
+                        gunFireButton.onClick.AddListener(gun.Fire);
+                    }
+                }
             }
         }
 
         public void updateMoneyAmount() {
-            moneyText.text = gm.money.ToString();
+            moneyText.text = gm.getMoney().ToString();
+        }
+
+        private void updateRoundText() {
+            roundText.text = "Round " + gm.getRound();
         }
 
         public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info) {

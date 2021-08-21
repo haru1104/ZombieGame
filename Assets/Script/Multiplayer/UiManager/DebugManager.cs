@@ -52,19 +52,17 @@ namespace haruroad.szd.multiplayer {
                 allBtn = 40;
             }
 
-            if (GUI.Button(new Rect(30, allBtn, 230, 40), "라운드 상태 전환")) {
-                gameManager.isRestTime = !gameManager.isRestTime;
-                Debug.LogWarning("[Debug:All] 플레이어의 라운드 대기 상태를 " + (gameManager.isRestTime ? "쉬는시간" : "게임 중") + "(으)로 변경하였습니다.");
-
-                if (!uiManager.isGameStart) {
-                    uiManager.OnClickStartButton();
-                    Debug.LogWarning("[Debug:All] 게임 시작상태가 아니여서 게임을 시작상태로 변경하였습니다.");
-                }
+            if (GUI.Button(new Rect(30, allBtn, 230, 40), "라운드 강제 시작")) {
+                gameManager.onRoundStart();
             }
 
-            if (GUI.Button(new Rect(30, allBtn + 50, 230, 40), "돈 추가")) {
+            if (GUI.Button(new Rect(30, allBtn + 50, 230, 40), "라운드 강제 종료")) {
+                gameManager.onStartRestTime();
+            }
+
+            if (GUI.Button(new Rect(30, allBtn + 100, 230, 40), "돈 추가")) {
                 gameManager.addMoney(1000);
-                Debug.LogWarning("[Debug:All] 플레이어들의 돈을 1000만큼 추가하여 현재 " + gameManager.money + "원이 되었습니다.");
+                Debug.LogWarning("[Debug:All] 플레이어들의 돈을 1000만큼 추가하여 현재 " + gameManager.getMoney() + "원이 되었습니다.");
             }
 
             GUI.EndGroup();

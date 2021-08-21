@@ -165,7 +165,7 @@ namespace haruroad.szd.multiplayer {
 
         public virtual void destroyBody() {
             if (isDead) {
-                Destroy(gameObject);
+                PhotonNetwork.Destroy(gameObject);
             }
         }
 

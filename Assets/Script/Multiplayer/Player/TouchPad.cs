@@ -143,7 +143,7 @@ namespace haruroad.szd.multiplayer {
 
         // Update is called once per frame
         void Update() {
-            if (_player == null && GameObject.Find("GameManager").GetComponent<GameManager>().isPlayerSpawn) {
+            if (_player == null && GameObject.Find("GameManager").GetComponent<GameManager>().hasLocalPlayerSpawned()) {
                 _player = GameObject.FindGameObjectWithTag("Player").GetComponent<MovePos>();
             }
         }

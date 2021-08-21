@@ -19,7 +19,7 @@ namespace haruroad.szd.multiplayer {
         }
 
         public void Barricade() {
-            if (gm.money < barricade.GetComponent<Barricade>().PurchaseCost) {
+            if (gm.getMoney() < barricade.GetComponent<Barricade>().PurchaseCost) {
                 return;
             }
 
@@ -28,7 +28,7 @@ namespace haruroad.szd.multiplayer {
         }
 
         public void Barrel() {
-            if (gm.money < barrel.GetComponent<Barrel>().PurchaseCost) {
+            if (gm.getMoney() < barrel.GetComponent<Barrel>().PurchaseCost) {
                 return;
             }
 

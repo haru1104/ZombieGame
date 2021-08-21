@@ -6,10 +6,12 @@ using UnityEngine.UI;
 
 namespace haruroad.szd.multiplayer {
     public class Timer : MonoBehaviourPunCallbacks, IPunObservable {
+        private int time = 60;
+
         GameManager manager;
         Text text;
 
-        private int time = 60;
+        WaitForSecondsRealtime seconds = new WaitForSecondsRealtime(1f);
 
         public override void OnEnable() {
             StartCoroutine("WaitForFrame");
@@ -41,15 +43,13 @@ namespace haruroad.szd.multiplayer {
             FindCheck();
 
             if (PhotonNetwork.IsMasterClient && PhotonNetwork.IsConnected) {
-                if (manager.isRestTime == true) {
-                    time = 60;
-                    StartCoroutine("TimeDecrease");
-                }
+                time = 60;
+                StartCoroutine("TimeDecrease");
             }
         }
 
         IEnumerator TimeDecrease() {
-            yield return new WaitForSeconds(1f);
+            yield return seconds;
             time--;
             StartCoroutine("TimeDecrease");
         }

@@ -23,7 +23,7 @@ namespace haruroad.szd.multiplayer {
 
             if (gm != null) {
                 //기본 데미지 * 라운드 수
-                attackDamage = attackDamage * gm.round;
+                attackDamage = attackDamage * gm.getRound();
             }
             else {
                 Debug.LogError("[Zombie:Attack] GameManager is not found.");

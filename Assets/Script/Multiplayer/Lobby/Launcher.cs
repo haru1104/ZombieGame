@@ -55,7 +55,7 @@ namespace haruroad.szd.multiplayer {
 
         private void ClientCheck() {
             Debug.LogError(prefix + "클라이언트가 '" + PhotonNetwork.CurrentRoom.Name + "' 게임 방에 접속됨");
-            PhotonNetwork.LoadLevel("GamePlayScene");
+            PhotonNetwork.LoadLevel("MultiGame");
         }
     }
 }

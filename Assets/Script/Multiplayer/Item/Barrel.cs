@@ -10,6 +10,8 @@ namespace haruroad.szd.multiplayer {
         private SoundManager sound;
         private List<Zombie> zombies = new List<Zombie>();
 
+        private WaitForSecondsRealtime destroyDelay = new WaitForSecondsRealtime(1.0f);
+
         private bool isSetted = false;
         private bool isDestory = false;
         public int PurchaseCost = 700;
@@ -82,8 +84,7 @@ namespace haruroad.szd.multiplayer {
                 zombies[i].onDamaged(100);
             }
 
-            yield return new WaitForSeconds(0.1f);
-            Debug.LogError("혼돈 파괴 망가");
+            yield return destroyDelay;
             PhotonNetwork.Destroy(gameObject);
         }
 

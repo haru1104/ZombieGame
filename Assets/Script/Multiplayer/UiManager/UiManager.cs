@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 
 using Photon.Pun;
-using Photon.Pun.Demo.Cockpit;
 
 using UnityEngine;
 using UnityEngine.UI;
@@ -96,13 +95,44 @@ namespace haruroad.szd.multiplayer {
             }
         }
         public void RestTime() {
+            Debug.LogError("[UIManager:RestTime] Invoked.");
+
             attackButton.SetActive(false);
             shopButton.SetActive(true);
+
+            Debug.LogError("[UIManager:RestTime] Result { attackButton=" + attackButton.activeInHierarchy + " / shopButton=" + shopButton.activeInHierarchy + " }");
         }
 
         public void GamePlayTime() {
+            Debug.LogError("[UIManager:GamePlayTime] Invoked.");
+
             shopButton.SetActive(false);
             attackButton.SetActive(true);
+
+            isShopDown = false;
+            ShopUiDown();
+
+            Debug.LogError("[UIManager:GamePlayTime] Result { attackButton=" + attackButton.activeInHierarchy + " / shopButton=" + shopButton.activeInHierarchy + " }");
+        }
+
+        public void toggleUIButtons(string type) {
+            photonView.RPC("toggleUIButtonsRPC", RpcTarget.AllBufferedViaServer, type);
+        }
+
+        [PunRPC]
+        private void toggleUIButtonsRPC(string type) {
+            if (type.Equals("RestTime")) {
+                RestTime();
+            }
+            else if (type.Equals("GamePlayTime")) {
+                GamePlayTime();
+            }
+            else if (type.Equals("PlayerWaitingTime")) {
+                PlayerWaitingTime();
+            }
+            else {
+                Debug.LogError("[Multiplayer:UIManager] toggleUIButtonsRPC : 알 수 없는 UI Type 입니다 (" + type + ")");
+            }
         }
 
         public void GameStartButton(bool temp) {
@@ -148,6 +178,11 @@ namespace haruroad.szd.multiplayer {
         }
 
         public void updateMoneyAmount() {
+            photonView.RPC("updateMoneyAmountRPC", RpcTarget.AllBufferedViaServer);
+        }
+
+        [PunRPC]
+        private void updateMoneyAmountRPC() {
             moneyText.text = gm.getMoney().ToString();
         }
 

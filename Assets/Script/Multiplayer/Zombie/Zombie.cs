@@ -90,6 +90,12 @@ namespace haruroad.szd.multiplayer {
                     findPlayers();
                     findBarricade();
 
+                    if (playerTr.Count == 0) {
+                        agent.isStopped = true;
+                        agent.enabled = false;
+                        return;
+                    }
+
                     int index = 0;
                     bool isObstacle = false;
                     float dist = float.MaxValue;

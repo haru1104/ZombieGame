@@ -24,6 +24,11 @@ namespace haruroad.szd.multiplayer {
             }
 
             FindPlayer(GameManager.viewId);
+            
+            if (obstacle != null) {
+                Destroy(obstacle);
+            }
+
             obstacle = Instantiate(barricade, player.transform.position, Quaternion.identity);
         }
 
@@ -33,6 +38,11 @@ namespace haruroad.szd.multiplayer {
             }
 
             FindPlayer(GameManager.viewId);
+
+            if (obstacle != null) {
+                Destroy(obstacle);
+            }
+
             obstacle = Instantiate(barrel, player.transform.position, Quaternion.identity);
         }
 

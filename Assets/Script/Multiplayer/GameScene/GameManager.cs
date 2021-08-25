@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -13,20 +14,21 @@ namespace haruroad.szd.multiplayer {
 
         public static int viewId = 0;
 
-        public static float spawnCooldown = 1f;
-        public static float restCooldown = 60f;
+        public static float spawnSecond = 1f;
+        public static float restSecond = 60f;
 
         private int nowRound = 0;
         private int nowMoney = 1000;
 
+        private bool isRoundStarted = false;
         private bool isPlayerSpawned = false;
         private bool isZombieSpawnComplete = false;
 
         private GameObject[] zombies;
 
         private GameObject player;
-        private WaitForSecondsRealtime spawnSeconds = new WaitForSecondsRealtime(spawnCooldown);
-        private WaitForSecondsRealtime restSeconds = new WaitForSecondsRealtime(restCooldown);
+        private WaitForSecondsRealtime spawnDelay = new WaitForSecondsRealtime(spawnSecond);
+        private WaitForSecondsRealtime restDealy = new WaitForSecondsRealtime(restSecond);
 
         public List<Transform> zombieSpawnPoint = new List<Transform>();
 
@@ -51,13 +53,12 @@ namespace haruroad.szd.multiplayer {
         }
 
         void Update() {
-            onPlayerDead();
-
-            if (isPlayerSpawned) {
-                if (PhotonNetwork.IsMasterClient) {
-                    checkZombies();
-                }
+            if (PhotonNetwork.IsMasterClient && isRoundStarted) {
+                checkZombies();
             }
+
+            onPlayerDead();
+            onGameOver();
         }
 
         private bool isZombiesNull() {
@@ -100,18 +101,30 @@ namespace haruroad.szd.multiplayer {
             return count;
         }
 
-        private IEnumerator startRestTime() {
-            yield return restSeconds;
+        private void addZombie(GameObject go) {
+            if (!isZombiesNull()) {
+                for (int i = 0; i < zombies.Length; i++) {
+                    if (zombies[i] == null) {
+                        zombies[i] = go;
+                        break;
+                    }
+                }
+            }
+        }
 
-            photonView.RPC("onRoundStart", RpcTarget.All);
+        private IEnumerator startRestTime() {
+            yield return restDealy;
+
+            onRoundStart();
+            photonView.RPC("onReadyGameStartRPC", RpcTarget.AllBufferedViaServer);
         }
 
         private IEnumerator initZombies() {
             for (int i = 0; i < zombies.Length; i++) {
-                yield return spawnSeconds;
+                yield return spawnDelay;
 
-                int zombie = Random.Range(1, 6);
-                int position = Random.Range(0, 4);
+                int zombie = UnityEngine.Random.Range(1, 6);
+                int position = UnityEngine.Random.Range(0, 4);
 
                 spawnZombies(zombie, position);
             }
@@ -121,28 +134,34 @@ namespace haruroad.szd.multiplayer {
         }
 
         private void spawnZombies(int zombieNum, int spawnPoint) {
-            GameObject go;
+            GameObject go = null;
 
             if (zombieNum >= 1 && zombieNum <= 3) {
                 go = PhotonNetwork.Instantiate("Normal Zombie", zombieSpawnPoint[spawnPoint].position, Quaternion.identity);
-                zombies[zombies.Length - getEmptyZombieCount()] = go;
             }
             else if (zombieNum == 4) {
                 go = PhotonNetwork.Instantiate("Lite Zombie", zombieSpawnPoint[spawnPoint].position, Quaternion.identity);
-                zombies[zombies.Length - getEmptyZombieCount()] = go;
             }
             else if (zombieNum == 5) {
                 go = PhotonNetwork.Instantiate("Heavy Zombie", zombieSpawnPoint[spawnPoint].position, Quaternion.identity);
-                zombies[zombies.Length - getEmptyZombieCount()] = go;
+            }
+
+            if (go != null) {
+                addZombie(go);
+            }
+            else {
+                Debug.LogError("[Multiplayer:GameManager] 좀비를 관리 목록에 추가하지 못했습니다.");
             }
         }
 
         private void checkZombies() {
             if (isZombieSpawnComplete && zombies != null) {
+                Debug.LogWarning("[Multiplayer:GameManager] Zombies[] Info { Length: " + zombies.Length + " / Lived: " + getLivedZombieCount() + " / Died: " + getEmptyZombieCount() + " }");
+
                 if ((getEmptyZombieCount() == zombies.Length) && (getLivedZombieCount() == 0)) {
                     isZombieSpawnComplete = false;
 
-                    photonView.RPC("onStartRestTime", RpcTarget.All);
+                    photonView.RPC("onStartRestTime", RpcTarget.AllBufferedViaServer);
                 }
             }
         }
@@ -162,11 +181,20 @@ namespace haruroad.szd.multiplayer {
             Debug.LogError(prefix + "모든 플레이어가 접속하였습니다. 게임을 시작합니다!");
 
             nowRound = 0;
+
+            photonView.RPC("onReadyGameStartRPC", RpcTarget.AllBufferedViaServer);
             onRoundStart();
         }
 
+        [PunRPC]
+        private void onReadyGameStartRPC() {
+            ui.toggleUIButtons("GamePlayTime");
+
+            timer.SetActive(false);
+        }
+
         public void onInitGameStart() {
-            photonView.RPC("onGameStartRPC", RpcTarget.All);
+            photonView.RPC("onGameStartRPC", RpcTarget.AllBufferedViaServer);
         }
 
         public void onForceStopGame() {
@@ -175,12 +203,10 @@ namespace haruroad.szd.multiplayer {
             killAllZombies();
         }
 
-        [PunRPC]
         public void onRoundStart() {
             Debug.LogError(prefix + "라운드를 준비하고 있습니다...");
 
-            ui.GamePlayTime();
-            timer.SetActive(false);
+            isRoundStarted = true;
 
             if (PhotonNetwork.IsMasterClient) {
                 nowRound++;
@@ -194,12 +220,21 @@ namespace haruroad.szd.multiplayer {
 
         [PunRPC]
         public void onStartRestTime() {
-            Debug.LogError(prefix + "모든 좀비를 처치하였습니다. " + restCooldown + "초간 휴식을 취합니다...");
+            isRoundStarted = false;
 
-            ui.RestTime();
+            Debug.LogError(prefix + "모든 좀비를 처치하였습니다. " + restSecond + "초간 휴식을 취합니다...");
+
+            try {
+                killAllZombies();
+            } catch(NullReferenceException) {
+                Debug.LogError("[Multiplayer:GameManager] 죽일 좀비가 없습니다.");
+            } finally {
+                ui.toggleUIButtons("RestTime");
+            }
 
             timer.SetActive(true);
-            onAllPlayersRespawn();
+
+            photonView.RPC("onAllPlayersRespawn", RpcTarget.AllBufferedViaServer);
 
             if (PhotonNetwork.IsMasterClient) {
                 StopCoroutine("initZombies");
@@ -223,6 +258,7 @@ namespace haruroad.szd.multiplayer {
             }
         }
 
+        [PunRPC]
         public void onAllPlayersRespawn() {
             Debug.LogError(prefix + "모든 플레이어의 체력을 100으로 설정하고 죽은 플레이어를 리스폰합니다.");
 
@@ -231,9 +267,6 @@ namespace haruroad.szd.multiplayer {
             for (int i = 0; i < players.Length; i++) {
                 if (players[i].GetPhotonView().IsMine) {
                     players[i].GetComponent<PlayerHP>().NextRound();
-
-                    vcam.Follow = players[i].transform;
-                    vcam.LookAt = players[i].transform;
                 }
             }
         }
@@ -242,11 +275,21 @@ namespace haruroad.szd.multiplayer {
             GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
 
             for (int i = 0; i < players.Length; i++) {
-                if (players[i].GetPhotonView().IsMine && players[i].GetComponent<PlayerHP>().isDead) {
-                    for (int j = 0; j < players.Length; j++) {
-                        if (!players[j].GetPhotonView().IsMine && !players[j].GetComponent<PlayerHP>().isDead) {
-                            vcam.Follow = players[j].transform;
-                            vcam.LookAt = players[j].transform;
+                if (players[i].GetPhotonView().IsMine) {
+                    if (players[i].GetComponent<PlayerHP>().isDead) {
+                        for (int j = 0; j < players.Length; j++) {
+                            if (!players[j].GetPhotonView().IsMine && !players[j].GetComponent<PlayerHP>().isDead) {
+                                vcam.Follow = players[j].transform;
+                                vcam.LookAt = players[j].transform;
+                            }
+                        }
+                    }
+                    else {
+                        for (int j = 0; j < players.Length; j++) {
+                            if (players[j].GetPhotonView().IsMine) {
+                                vcam.Follow = players[j].transform;
+                                vcam.LookAt = players[j].transform;
+                            }
                         }
                     }
                 }
@@ -285,10 +328,16 @@ namespace haruroad.szd.multiplayer {
             if (stream.IsWriting) {
                 stream.SendNext(nowRound);
                 stream.SendNext(nowMoney);
+                
+                if (PhotonNetwork.IsMasterClient) {
+                    stream.SendNext(isRoundStarted);
+                }
             }
             else {
                 nowRound = (int) stream.ReceiveNext();
                 nowMoney = (int) stream.ReceiveNext();
+
+                isRoundStarted = (bool) stream.ReceiveNext();
             }
         }
     }

@@ -177,6 +177,20 @@ namespace haruroad.szd.multiplayer {
         }
 
         [PunRPC]
+        private void addMoneyRPC(int amount) {
+            if (PhotonNetwork.IsConnected) {
+                nowMoney += amount;
+            }
+        }
+
+        [PunRPC]
+        private void removeMoneyRPC(int amount) {
+            if (PhotonNetwork.IsConnected) {
+                nowMoney -= amount;
+            }
+        }
+
+        [PunRPC]
         private void onGameStartRPC() {
             Debug.LogError(prefix + "모든 플레이어가 접속하였습니다. 게임을 시작합니다!");
 
@@ -297,17 +311,13 @@ namespace haruroad.szd.multiplayer {
         }
 
         public void addMoney(int amount) {
-            if (PhotonNetwork.IsConnected) {
-                nowMoney += amount;
-            }
+            photonView.RPC("addMoneyRPC", RpcTarget.AllBuffered, amount);
 
             ui.updateMoneyAmount();
         }
 
         public void removeMoney(int amount) {
-            if (PhotonNetwork.IsConnected) {
-                nowMoney -= amount;
-            }
+            photonView.RPC("removeMoneyRPC", RpcTarget.AllBuffered, amount);
 
             ui.updateMoneyAmount();
         }
